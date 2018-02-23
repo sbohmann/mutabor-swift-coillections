@@ -555,9 +555,9 @@ public struct PersistentHashSet<E: Hashable> : Sequence, CustomStringConvertible
         return SetIterator<E>(set: self)
     }
     
-    public func foreach(_ f: ((E) -> Void)) {
+    public func foreach(_ function: ((E) -> Void)) {
         if let root = root {
-            root.foreach(function: f)
+            root.foreach(function: function)
         } else {
             return
         }

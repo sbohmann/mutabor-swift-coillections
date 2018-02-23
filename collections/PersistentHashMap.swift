@@ -556,9 +556,9 @@ public struct PersistentHashMap<K: Hashable, V> : Sequence, CustomStringConverti
         return MapIterator<K, V>(map: self)
     }
     
-    public func foreach(_ f: ((K, V) -> Void)) {
+    public func foreach(_ function: ((K, V) -> Void)) {
         if let root = root {
-            root.foreach(function: f)
+            root.foreach(function: function)
         } else {
             return
         }
