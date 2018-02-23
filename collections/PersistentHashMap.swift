@@ -6,7 +6,7 @@ private class Node<K: Hashable, V> {
     var size: Int
     
     init(shift: Int, size: Int) {
-        if (shift >= HASH_BITS + SHIFT_PER_LEVEL) {
+        if shift >= HASH_BITS + SHIFT_PER_LEVEL {
             fatalError("Creating node with shift \(shift)")
         }
         
@@ -41,7 +41,7 @@ private final class TreeNode<K: Hashable, V> : Node<K, V> {
     }
     
     func check() {
-        if (shift >= HASH_BITS) {
+        if shift >= HASH_BITS {
             fatalError("Logical error in TreeNode")
         }
     }
@@ -71,7 +71,7 @@ private final class TreeNode<K: Hashable, V> : Node<K, V> {
             if unshared {
                 let (replace, replacement) = subnode.put(entry: entry, hash: hash)
                 
-                if (replace) {
+                if replace {
                     nodes[idx] = replacement
                 }
             } else {
@@ -189,11 +189,11 @@ private final class TreeNode<K: Hashable, V> : Node<K, V> {
                 
                 newSize = size + (newSubnode.size - subnode.size)
             } else {
-                if (size == 1) {
+                if size == 1 {
                     return nil
                 }
                 
-                if (subnode.size != 1) {
+                if subnode.size != 1 {
                     fatalError("Logical error: subnode of size \(subnode.size) returned null on without")
                 }
                 
@@ -242,10 +242,10 @@ private final class EntryNode<K: Hashable, V> : Node<K, V> {
     }
     
     override func put(entry: (K, V), hash: Int) -> (Bool, Node<K, V>?) {
-        if (hash == self.hash && entry.0 == self.entry.0) {
+        if hash == self.hash && entry.0 == self.entry.0 {
             self.entry = entry
             self.hash = hash
-        } else if (shift < HASH_BITS) {
+        } else if shift < HASH_BITS {
             return (true, createTreeNode(shift: shift, firstEntry: self.entry, firstHash: self.hash, secondEntry: entry, secondHash: hash))
         } else {
             let data = [self.entry, entry]
@@ -259,7 +259,7 @@ private final class EntryNode<K: Hashable, V> : Node<K, V> {
     override func with(entry: (K, V), hash: Int) -> Node<K, V> {
         if hash == self.hash && entry.0 == self.entry.0 {
             return EntryNode(shift: shift, entry: entry, hash: hash)
-        } else if (shift < HASH_BITS) {
+        } else if shift < HASH_BITS {
             return createTreeNode(shift: shift, firstEntry: self.entry, firstHash: self.hash, secondEntry: entry, secondHash: hash)
         } else {
             let data = [self.entry, entry]
@@ -370,9 +370,9 @@ private final class MultiNode<K: Hashable, V> : Node<K, V> {
             let entry = data[idx]
             
             if key == entry.0 {
-                if (data.count == 1) {
+                if data.count == 1 {
                     return nil
-                } else if (data.count == 2) {
+                } else if data.count == 2 {
                     let retainedIndex = (idx + 1) % 2
                     
                     return EntryNode(shift: shift, entry: data[retainedIndex], hash: hash)
@@ -440,7 +440,7 @@ public struct MapIterator<K: Hashable, V> : IteratorProtocol {
         
         var node = map.root
         
-        while (true) {
+        while true {
             if let treeNode = node as? TreeNode {
                 var idx = 0
                 
@@ -460,8 +460,8 @@ public struct MapIterator<K: Hashable, V> : IteratorProtocol {
             }
         }
         
-        if (valueNode == nil || valueNode!.size == 0) {
-            if (pathSize != 0) {
+        if valueNode == nil || valueNode!.size == 0 {
+            if pathSize != 0 {
                 fatalError("Logical error: depth > 1 but empty")
             }
             
@@ -487,11 +487,11 @@ public struct MapIterator<K: Hashable, V> : IteratorProtocol {
             
             valueIdx += 1
             
-            if (valueIdx == valueNodeLength) {
-                if (pathSize > 0) {
+            if valueIdx == valueNodeLength {
+                if pathSize > 0 {
                     var idx = pathSize - 1
                     
-                    while (true) {
+                    while true {
                         let currentTreeNode = path[idx]!
                         
                         var nextPathIdx = pathIdx[idx]! + 1
@@ -526,7 +526,7 @@ public struct MapIterator<K: Hashable, V> : IteratorProtocol {
                             valueIdx = 0
                             break
                         } else {
-                            if (idx > 0) {
+                            if idx > 0 {
                                 pathSize -= 1
                                 path[idx] = nil
                                 pathIdx[idx] = 0
@@ -693,7 +693,7 @@ public struct PersistentHashMap<K: Hashable, V> : Sequence, CustomStringConverti
         
         if let root = root {
             if unshared {
-                if (root.remove(key: key, hash: key.hashValue)) {
+                if root.remove(key: key, hash: key.hashValue) {
                     self.root = nil
                 }
             } else {
@@ -734,7 +734,7 @@ private func eq<K, V: Equatable>(lhs: Node<K, V>, rhs: Node<K, V>) -> Bool {
     
     let size = lhs.size
     
-    if (lhs.shift != rhs.shift) {
+    if lhs.shift != rhs.shift {
         fatalError("shift mismatch: \(lhs.shift) / \(rhs.shift)")
     }
     

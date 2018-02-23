@@ -6,7 +6,7 @@ private class Node<E: Hashable> {
     var size: Int
     
     init(shift: Int, size: Int) {
-        if (shift >= HASH_BITS + SHIFT_PER_LEVEL) {
+        if shift >= HASH_BITS + SHIFT_PER_LEVEL {
             fatalError("Creating node with shift \(shift)")
         }
         
@@ -41,7 +41,7 @@ private final class TreeNode<E: Hashable> : Node<E> {
     }
     
     func check() {
-        if (shift >= HASH_BITS) {
+        if shift >= HASH_BITS {
             fatalError("Logical error in TreeNode")
         }
     }
@@ -71,7 +71,7 @@ private final class TreeNode<E: Hashable> : Node<E> {
             if unshared {
                 let (replace, replacement) = subnode.put(entry: entry, hash: hash)
                 
-                if (replace) {
+                if replace {
                     nodes[idx] = replacement
                 }
             } else {
@@ -189,11 +189,11 @@ private final class TreeNode<E: Hashable> : Node<E> {
                 
                 newSize = size + (newSubnode.size - subnode.size)
             } else {
-                if (size == 1) {
+                if size == 1 {
                     return nil
                 }
                 
-                if (subnode.size != 1) {
+                if subnode.size != 1 {
                     fatalError("Logical error: subnode of size \(subnode.size) returned null on without")
                 }
                 
@@ -242,10 +242,10 @@ private final class EntryNode<E: Hashable> : Node<E> {
     }
     
     override func put(entry: E, hash: Int) -> (Bool, Node<E>?) {
-        if (hash == self.hash && entry == self.entry) {
+        if hash == self.hash && entry == self.entry {
             self.entry = entry
             self.hash = hash
-        } else if (shift < HASH_BITS) {
+        } else if shift < HASH_BITS {
             return (true, createTreeNode(shift: shift, firstEntry: self.entry, firstHash: self.hash, secondEntry: entry, secondHash: hash))
         } else {
             let data = [self.entry, entry]
@@ -259,7 +259,7 @@ private final class EntryNode<E: Hashable> : Node<E> {
     override func with(entry: E, hash: Int) -> Node<E> {
         if hash == self.hash && entry == self.entry {
             return EntryNode(shift: shift, entry: entry, hash: hash)
-        } else if (shift < HASH_BITS) {
+        } else if shift < HASH_BITS {
             return createTreeNode(shift: shift, firstEntry: self.entry, firstHash: self.hash, secondEntry: entry, secondHash: hash)
         } else {
             let data = [self.entry, entry]
@@ -370,9 +370,9 @@ private final class MultiNode<E: Hashable> : Node<E> {
             let entry = data[idx]
             
             if key == entry {
-                if (data.count == 1) {
+                if data.count == 1 {
                     return nil
-                } else if (data.count == 2) {
+                } else if data.count == 2 {
                     let retainedIndex = (idx + 1) % 2
                     
                     return EntryNode(shift: shift, entry: data[retainedIndex], hash: hash)
@@ -440,7 +440,7 @@ public struct SetIterator<E: Hashable> : IteratorProtocol {
         
         var node = set.root
         
-        while (true) {
+        while true {
             if let treeNode = node as? TreeNode {
                 var idx = 0
                 
@@ -460,8 +460,8 @@ public struct SetIterator<E: Hashable> : IteratorProtocol {
             }
         }
         
-        if (valueNode == nil || valueNode!.size == 0) {
-            if (pathSize != 0) {
+        if valueNode == nil || valueNode!.size == 0 {
+            if pathSize != 0 {
                 fatalError("Logical error: depth > 1 but empty")
             }
             
@@ -487,11 +487,11 @@ public struct SetIterator<E: Hashable> : IteratorProtocol {
             
             valueIdx += 1
             
-            if (valueIdx == valueNodeLength) {
-                if (pathSize > 0) {
+            if valueIdx == valueNodeLength {
+                if pathSize > 0 {
                     var idx = pathSize - 1
                     
-                    while (true) {
+                    while true {
                         let currentTreeNode = path[idx]!
                         
                         var nextPathIdx = pathIdx[idx]! + 1
@@ -526,7 +526,7 @@ public struct SetIterator<E: Hashable> : IteratorProtocol {
                             valueIdx = 0
                             break
                         } else {
-                            if (idx > 0) {
+                            if idx > 0 {
                                 pathSize -= 1
                                 path[idx] = nil
                                 pathIdx[idx] = 0
@@ -659,7 +659,7 @@ public struct PersistentHashSet<E: Hashable> : Sequence, CustomStringConvertible
         
         if let root = root {
             if unshared {
-                if (root.remove(key: key, hash: key.hashValue)) {
+                if root.remove(key: key, hash: key.hashValue) {
                     self.root = nil
                 }
             } else {
@@ -700,7 +700,7 @@ private func eq<E>(lhs: Node<E>, rhs: Node<E>) -> Bool {
     
     let size = lhs.size
     
-    if (lhs.shift != rhs.shift) {
+    if lhs.shift != rhs.shift {
         fatalError("shift mismatch: \(lhs.shift) / \(rhs.shift)")
     }
     

@@ -21,7 +21,7 @@ func sizeForShift(_ shift: Int) -> Int {
 func maskForShift(_ shift: Int) -> Int {
     var numBits = HASH_BITS - shift
     
-    if (SHIFT_PER_LEVEL < numBits) {
+    if SHIFT_PER_LEVEL < numBits {
         numBits = SHIFT_PER_LEVEL
     }
     

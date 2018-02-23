@@ -209,9 +209,9 @@ class PersistentHashSetTest: XCTestCase {
                     XCTFail("Asymmetric removal behavior - set size: \(set.count), hashset size: \(hashset.count)")
                 }
 
-                if (sizeAfterRemoval == sizeBeforeRemoval - 1) {
+                if sizeAfterRemoval == sizeBeforeRemoval - 1 {
                     removalCount += 1
-                } else if (sizeAfterRemoval != sizeBeforeRemoval) {
+                } else if sizeAfterRemoval != sizeBeforeRemoval {
                     XCTFail("Unexpected removal behavior - set size: \(set.count), hashset size: \(hashset.count)")
                 }
                 
@@ -307,11 +307,11 @@ class PersistentHashSetTest: XCTestCase {
                 
                 hashset.insert(key)
 
-                if (testRemoval) {
+                if testRemoval {
                     let keyToRemove = (randomBool() ? key : source())
 
                     let sizeBeforeRemoval = set.count
-                    if (hashset.count != sizeBeforeRemoval) {
+                    if hashset.count != sizeBeforeRemoval {
                         XCTFail("Asymmetric adding behavior - set size: \(set.count), hashset size: \(hashset.count)")
                     }
                     
@@ -324,13 +324,13 @@ class PersistentHashSetTest: XCTestCase {
                     hashset.remove(keyToRemove)
 
                     let sizeAfterRemoval = set.count
-                    if (hashset.count != sizeAfterRemoval) {
+                    if hashset.count != sizeAfterRemoval {
                         XCTFail("Asymmetric removal behavior - set size: \(set.count), hashset size: \(hashset.count)")
                     }
 
-                    if (sizeAfterRemoval == sizeBeforeRemoval - 1) {
+                    if sizeAfterRemoval == sizeBeforeRemoval - 1 {
                         removalCount += 1
-                    } else if (sizeAfterRemoval != sizeBeforeRemoval) {
+                    } else if sizeAfterRemoval != sizeBeforeRemoval {
                         XCTFail("Unexpected removal behavior - set size: \(set.count), hashset size: \(hashset.count)")
                     }
                 }
@@ -347,7 +347,7 @@ class PersistentHashSetTest: XCTestCase {
 
             print("MAX: \(Max), hashset size: \(hashset.count), set size: \(set.count)")
             
-            if (testRemoval) {
+            if testRemoval {
                 print("Items removed: \(removalCount)")
             }
             
@@ -412,7 +412,7 @@ class PersistentHashSetTest: XCTestCase {
     }
     
     private func equal<E>(_ lhs: Set<E>, _ rhs: PersistentHashSet<E>) -> String? {
-        if (lhs.count != rhs.count) {
+        if lhs.count != rhs.count {
             return "lhs.count: \(lhs.count), rhs.count: \(rhs.count)"
         }
         
@@ -443,7 +443,7 @@ class PersistentHashSetTest: XCTestCase {
     }
     
     private func equal<E>(_ lhs: PersistentHashSet<E>, _ rhs: Set<E>) -> String? {
-        if (lhs.count != rhs.count) {
+        if lhs.count != rhs.count {
             return "lhs.count: \(lhs.count), rhs.count: \(rhs.count)"
         }
         
@@ -599,7 +599,7 @@ func drainPersistently<E>(_ set: PersistentHashSet<E>) {
     
     XCTAssertEqual(set.count, 1)
     
-    if (sizeBefore > 1) {
+    if sizeBefore > 1 {
         print("shuffling first, last")
         
         set = set.plus(lastEntry!)
@@ -653,7 +653,7 @@ func drainInPlace<E>(_ set: PersistentHashSet<E>) {
     
     XCTAssertEqual(set.count, 1)
     
-    if (sizeBefore > 1) {
+    if sizeBefore > 1 {
         print("shuffling first, last")
         
         set.add(lastEntry!)

@@ -243,7 +243,7 @@ for idx in 0 ..< 5 * 1000// * 1000 {
     let n = Int(arc4random())
     pm.put(n, value: n * 3)
     numbers.append(n)
-    if (arc4random() % 17 == 0) {
+    if arc4random() % 17 == 0 {
         maps.append(pm)
     }
 }
@@ -252,7 +252,7 @@ for idx in 0 ..< 5 * 1000// * 1000 {
     let n = numbers[idx]
     let result = pm.get(n)
     print(result as Any, " / n: \(n)")
-    if (result != 3 * n) {
+    if result != 3 * n {
         fatalError()
     }
 }

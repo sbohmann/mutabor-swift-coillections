@@ -161,38 +161,38 @@ public class Serializer {
         
         let negative = (value < 0)
         
-        if (negative) {
+        if negative {
             value = -(value + 1) // e.g. long min value -> long max value, -128
             // -> 127, -1 -> 0
         }
         
         var shift: Int8 = 62
         
-        while (value >> Int64(shift) == 0) {
+        while value >> Int64(shift) == 0 {
             shift -= 7
             
-            if (shift < 0) {
+            if shift < 0 {
                 break
             }
         }
         
         shift += 1
         
-        if (shift < 0) {
+        if shift < 0 {
             throw IoError("shift < 0 after reduction: \(shift)")
         }
         
         var bytesWritten = 0
         
         var first = true
-        while (shift >= 0) {
+        while shift >= 0 {
             let last = (shift == 0)
             
             let lastMarker = UInt8(last ? 0 : 0x80)
             
             let negativeMarker = UInt8(negative ? 0x40 : 0x00)
             
-            if (first) {
+            if first {
                 try writeByte(lastMarker | negativeMarker | UInt8(((value >> Int64(shift)) & 0x3F)), outputStream)
             } else {
                 try writeByte(lastMarker | UInt8((value >> Int64(shift)) & 0x7F), outputStream)
@@ -205,11 +205,11 @@ public class Serializer {
             first = false
         }
         
-        if (shift != -7) {
+        if shift != -7 {
             throw IoError("shift != -7 after output: \(shift)")
         }
         
-        if (bytesWritten > 10) {
+        if bytesWritten > 10 {
             throw IoError("Logical error: \(bytesWritten) bytes written")
         }
     }
@@ -217,21 +217,21 @@ public class Serializer {
     private static func writeCompressedUnsignedInteger(value: UInt64, size: UInt8, outputStream: OutputStream) throws {
         var shift: Int8 = 63
         
-        while (value >> UInt64(shift) == 0) {
+        while value >> UInt64(shift) == 0 {
             shift -= 7
             
-            if (shift == 0) {
+            if shift == 0 {
                 break
             }
         }
         
-        if (shift < 0) {
+        if shift < 0 {
             throw IoError("shift < 0 after reduction: \(shift)")
         }
         
         var bytesWritten = 0
         
-        while (shift >= 0) {
+        while shift >= 0 {
             let last = (shift == 0)
             
             let lastMarker = UInt8(last ? 0 : 0x80)
@@ -243,11 +243,11 @@ public class Serializer {
             shift -= 7
         }
         
-        if (shift != -7) {
+        if shift != -7 {
             throw IoError("shift != -7 after output: \(shift)")
         }
         
-        if (bytesWritten > 10) {
+        if bytesWritten > 10 {
             throw IoError("Logical error: \(bytesWritten) bytes written")
         }
     }
@@ -260,14 +260,14 @@ public class Serializer {
         var bytesRead = 0
         
         var first = true
-        while (true) {
+        while true {
             let b = try readByte(inputStream)
             
             bytesRead += 1
             
             let last = ((b & 0x80) == 0)
             
-            if (first) {
+            if first {
                 negative = ((b & 0x40) != 0)
                 result = (Int64(b) & Int64(0x3F))
             } else {
@@ -276,18 +276,18 @@ public class Serializer {
                 result |= (Int64(b) & Int64(0x7F))
             }
             
-            if (last) {
+            if last {
                 break
             }
             
             first = false
         }
         
-        if (bytesRead > 10) {
+        if bytesRead > 10 {
             throw IoError("Illegal compressed integer - more than 10 bytes read: \(bytesRead)")
         }
         
-        if (negative) {
+        if negative {
             result = -result - 1
         }
         
@@ -301,7 +301,7 @@ public class Serializer {
         
         var bytesRead = 0
         
-        while (true) {
+        while true {
             let b = try readByte(inputStream)
             
             bytesRead += 1
@@ -312,12 +312,12 @@ public class Serializer {
             
             result |= (UInt64(b) & UInt64(0x7F))
             
-            if (last) {
+            if last {
                 break
             }
         }
         
-        if (bytesRead > 10) {
+        if bytesRead > 10 {
             throw IoError("Illegal compressed integer - more than 10 bytes read: \(bytesRead)")
         }
         
@@ -339,13 +339,13 @@ public class Serializer {
     public static func checkTypeId(expectedTypeId: TypeId, inputStream: InputStream) throws {
         let typeIdFromStream = try readTypeId(inputStream: inputStream)
         
-        if (typeIdFromStream != expectedTypeId) {
+        if typeIdFromStream != expectedTypeId {
             throw IoError("Wrong type ID [\(typeIdFromStream)] - expected: \(expectedTypeId)")
         }
     }
 
     public static func writeSubtypeId(value: Int32, outputStream: OutputStream) throws {
-        if (value < 0) {
+        if value < 0 {
             throw IoError("subtype ID < 0: \(value)")
         }
         
@@ -355,7 +355,7 @@ public class Serializer {
     public static func readSubtypeId(inputStream: InputStream) throws -> Int32 {
         let result = try readCompressedInt32(inputStream: inputStream)
         
-        if (result < 0) {
+        if result < 0 {
             throw IoError("subtype ID < 0: \(result)")
         }
         
@@ -365,7 +365,7 @@ public class Serializer {
     public static func checkSubtypeId(expectedSubtypeId: Int32, inputStream: InputStream) throws {
         let subtypeIdFromStream = try readSubtypeId(inputStream: inputStream)
         
-        if (subtypeIdFromStream != expectedSubtypeId) {
+        if subtypeIdFromStream != expectedSubtypeId {
             throw IoError("Wrong subtype ID [\(subtypeIdFromStream)] - expected: \(expectedSubtypeId)")
         }
     }
@@ -424,9 +424,9 @@ public class Serializer {
             while bytesWritten < size {
                 let n = outputStream.write(bytes.advanced(by:bytesWritten), maxLength:size - bytesWritten)
                 
-                if (n == 0) {
+                if n == 0 {
                     throw IoError("Reached EOF while writing")
-                } else if (n < 0) {
+                } else if n < 0 {
                     throw IoError("Error writing data to outputStream: \(outputStream.streamError?.localizedDescription ?? "unknown error")")
                 }
                 
@@ -436,7 +436,7 @@ public class Serializer {
     }
     
     public static func readData(inputStream: InputStream, size: Int32) throws -> Data {
-        if (size < 0) {
+        if size < 0 {
             throw IoError("Illegal size: \(size)")
         }
         
@@ -468,7 +468,7 @@ public class Serializer {
     }
 
     public static func writeSize(size: Int, outputStream: OutputStream) throws {
-        if (size < 0 || size > Int(Int32.max)) {
+        if size < 0 || size > Int(Int32.max) {
             throw IoError("Illegal size: \(size)")
         }
         
@@ -478,7 +478,7 @@ public class Serializer {
     public static func readSize(inputStream: InputStream) throws -> Int32 {
         let size = try readCompressedInt32(inputStream: inputStream)
         
-        if (size < 0) {
+        if size < 0 {
             throw IoError("Illegal size: \(size)")
         }
         
@@ -552,9 +552,9 @@ public class Serializer {
         
         let n = inputStream.read(&byte, maxLength: 1)
         
-        if (n == 0) {
+        if n == 0 {
             throw IoError("Reached EOF whlie reading")
-        } else if (n < 0) {
+        } else if n < 0 {
             if let error = inputStream.streamError {
                 throw error
             } else {
@@ -570,9 +570,9 @@ public class Serializer {
         
         let n = outputStream.write(&byte, maxLength: 1)
         
-        if (n == 0) {
+        if n == 0 {
             throw IoError("Reached EOF whlie writing")
-        } else if (n < 0) {
+        } else if n < 0 {
             if let error = outputStream.streamError {
                 throw error
             } else {

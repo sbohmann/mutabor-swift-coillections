@@ -218,9 +218,9 @@ class PersistentHashMapTest: XCTestCase {
                     XCTFail("Asymmetric removal behavior - map size: \(map.count), hashmap size: \(hashmap.count)")
                 }
 
-                if (sizeAfterRemoval == sizeBeforeRemoval - 1) {
+                if sizeAfterRemoval == sizeBeforeRemoval - 1 {
                     removalCount += 1
-                } else if (sizeAfterRemoval != sizeBeforeRemoval) {
+                } else if sizeAfterRemoval != sizeBeforeRemoval {
                     XCTFail("Unexpected removal behavior - map size: \(map.count), hashmap size: \(hashmap.count)")
                 }
                 
@@ -317,11 +317,11 @@ class PersistentHashMapTest: XCTestCase {
                 
                 hashmap[key] = value
 
-                if (testRemoval) {
+                if testRemoval {
                     let keyToRemove = (randomBool() ? key : keySource())
 
                     let sizeBeforeRemoval = map.count
-                    if (hashmap.count != sizeBeforeRemoval) {
+                    if hashmap.count != sizeBeforeRemoval {
                         XCTFail("Asymmetric adding behavior - map size: \(map.count), hashmap size: \(hashmap.count)")
                     }
                     
@@ -334,13 +334,13 @@ class PersistentHashMapTest: XCTestCase {
                     hashmap.removeValue(forKey: keyToRemove)
 
                     let sizeAfterRemoval = map.count
-                    if (hashmap.count != sizeAfterRemoval) {
+                    if hashmap.count != sizeAfterRemoval {
                         XCTFail("Asymmetric removal behavior - map size: \(map.count), hashmap size: \(hashmap.count)")
                     }
 
-                    if (sizeAfterRemoval == sizeBeforeRemoval - 1) {
+                    if sizeAfterRemoval == sizeBeforeRemoval - 1 {
                         removalCount += 1
-                    } else if (sizeAfterRemoval != sizeBeforeRemoval) {
+                    } else if sizeAfterRemoval != sizeBeforeRemoval {
                         XCTFail("Unexpected removal behavior - map size: \(map.count), hashmap size: \(hashmap.count)")
                     }
                 }
@@ -357,7 +357,7 @@ class PersistentHashMapTest: XCTestCase {
 
             print("MAX: \(Max), hashmap size: \(hashmap.count), map size: \(map.count)")
             
-            if (testRemoval) {
+            if testRemoval {
                 print("Items removed: \(removalCount)")
             }
             
@@ -424,7 +424,7 @@ class PersistentHashMapTest: XCTestCase {
     }
     
     private func equal<K, V: Equatable>(_ lhs: [K: V], _ rhs: PersistentHashMap<K, V>) -> String? {
-        if (lhs.count != rhs.count) {
+        if lhs.count != rhs.count {
             return "lhs.count: \(lhs.count), rhs.count: \(rhs.count)"
         }
         
@@ -461,7 +461,7 @@ class PersistentHashMapTest: XCTestCase {
     }
     
     private func equal<K, V: Equatable>(_ lhs: PersistentHashMap<K, V>, _ rhs: [K: V]) -> String? {
-        if (lhs.count != rhs.count) {
+        if lhs.count != rhs.count {
             return "lhs.count: \(lhs.count), rhs.count: \(rhs.count)"
         }
         
@@ -625,7 +625,7 @@ func drainPersistently<K, V>(_ map: PersistentHashMap<K, V>) {
     
     XCTAssertEqual(map.count, 1)
     
-    if (sizeBefore > 1) {
+    if sizeBefore > 1 {
         print("shuffling first, last")
         
         map = map.with(lastEntry!.0, value: lastEntry!.1)
@@ -679,7 +679,7 @@ func drainInPlace<K, V>(_ map: PersistentHashMap<K, V>) {
     
     XCTAssertEqual(map.count, 1)
     
-    if (sizeBefore > 1) {
+    if sizeBefore > 1 {
         print("shuffling first, last")
         
         map.put(lastEntry!.0, value: lastEntry!.1)
