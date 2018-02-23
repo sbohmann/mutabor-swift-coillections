@@ -1,4 +1,3 @@
-
 import Foundation
 
 public final class ExtendedTypeManager : TypeManager<Float80> {

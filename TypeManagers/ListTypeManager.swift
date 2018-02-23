@@ -1,4 +1,3 @@
-
 import Foundation
 
 public final class ListTypeManager<E> : TypeManager<PersistentVector<E>> where E: Hashable, E: CustomStringConvertible {

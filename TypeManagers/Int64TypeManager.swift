@@ -1,4 +1,3 @@
-
 import Foundation
 
 public final class Int64TypeManager : TypeManager<Int64> {

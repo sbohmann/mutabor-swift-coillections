@@ -1,4 +1,3 @@
-
 import Foundation
 
 public final class Uint8TypeManager : TypeManager<UInt8> {

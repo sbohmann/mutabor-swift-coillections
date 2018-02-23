@@ -1,4 +1,3 @@
-
 import Foundation
 
 public final class Int16TypeManager : TypeManager<Int16> {

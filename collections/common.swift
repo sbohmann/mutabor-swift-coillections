@@ -1,4 +1,3 @@
-
 import Foundation
 
 let ReasonablePrime = 92821

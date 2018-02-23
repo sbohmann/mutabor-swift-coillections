@@ -1,4 +1,3 @@
-
 import Foundation
 
 private class Node<E: Hashable> {

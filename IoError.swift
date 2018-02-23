@@ -1,4 +1,3 @@
-
 public struct IoError : Error {
     public let message: String
     
