@@ -2,7 +2,7 @@ import XCTest
 
 import Mutabor
 
-private let MAX = VECTOR_TEST_MAX
+private let MAX = VectorTestMax
 private let ReplacementRounds = 100 * 1000
 
 class PersistentVectorTest: XCTestCase {
@@ -99,7 +99,7 @@ class PersistentVectorTest: XCTestCase {
             
             var idx3 = 0
             for e in vec {
-                XCTAssert(e == idx3,"e [\(e)] != idx3 [\(idx3)]")
+                XCTAssert(e == idx3, "e [\(e)] != idx3 [\(idx3)]")
                 idx3 += 1
             }
         }
@@ -442,7 +442,7 @@ class PersistentVectorTest: XCTestCase {
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measure() {
+        self.measure {
             // Put the code you want to measure the time of here.
         }
     }

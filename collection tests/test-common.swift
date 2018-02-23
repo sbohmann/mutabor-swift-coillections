@@ -1,7 +1,7 @@
 import Foundation
 import Mutabor
 
-let VECTOR_TEST_MAX = 3500 * 100
+let VectorTestMax = 3500 * 100
 
 let MAP_TEST_MAX = 5000 * 10
 

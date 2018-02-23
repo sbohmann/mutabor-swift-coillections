@@ -496,7 +496,7 @@ class PersistentHashMapTest: XCTestCase {
         XCTAssert(result == nil)
     }
     
-    private func checkEqualityOperator<K, V>(_ map: PersistentHashMap<K, V>, _ hashmap: Dictionary<K, V>) where V: Equatable {
+    private func checkEqualityOperator<K, V>(_ map: PersistentHashMap<K, V>, _ hashmap: [K: V]) where V: Equatable {
         let mapFromHashmap = PersistentHashMap<K, V>(hashmap)
         
         print("Checking mapFromHashmap == map...")
@@ -510,7 +510,7 @@ class PersistentHashMapTest: XCTestCase {
         print("done.")
     }
     
-    private func checkInequalityOperator<K, V>(_ map: PersistentHashMap<K, V>, _ hashmap: Dictionary<K, V>) where V: Equatable {
+    private func checkInequalityOperator<K, V>(_ map: PersistentHashMap<K, V>, _ hashmap: [K: V]) where V: Equatable {
         let mapFromHashmap = PersistentHashMap<K, V>(hashmap)
         
         print("Checking mapFromHashmap != map...")
@@ -525,7 +525,7 @@ class PersistentHashMapTest: XCTestCase {
     }
     
     // TODO fix - broken for small maps!!!
-    private func _checkInequality<K, V>(_ map: PersistentHashMap<K, V>, _ hashmap: Dictionary<K, V>, _ keySource: () -> K, _ valueSource: () -> V) where V: Equatable {
+    private func _checkInequality<K, V>(_ map: PersistentHashMap<K, V>, _ hashmap: [K: V], _ keySource: () -> K, _ valueSource: () -> V) where V: Equatable {
         var mapCopy = map
         var hashmap = hashmap
         

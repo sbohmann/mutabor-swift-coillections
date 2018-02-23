@@ -439,9 +439,7 @@ public class Serializer {
         
         var data = Data(count: Int(size))
         
-        try data.withUnsafeMutableBytes( {
-            (buffer: UnsafeMutablePointer<UInt8>) in
-            
+        try data.withUnsafeMutableBytes({(buffer: UnsafeMutablePointer<UInt8>) in
             var bytesRead: Int = 0
             
             while bytesRead < Int(size) {

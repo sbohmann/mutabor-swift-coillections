@@ -572,7 +572,7 @@ public struct PersistentHashMap<K: Hashable, V> : Sequence, CustomStringConverti
         initImpl(entries: entries)
     }
     
-    public init(_ entries: Dictionary<K, V>) {
+    public init(_ entries: [K: V]) {
         root = nil
         
         for entry in entries {
@@ -614,7 +614,7 @@ public struct PersistentHashMap<K: Hashable, V> : Sequence, CustomStringConverti
         }
     }
     
-    public var description : String {
+    public var description: String {
         get {
             var result: String = "Map ["
             var first = true
@@ -711,7 +711,7 @@ public struct PersistentHashMap<K: Hashable, V> : Sequence, CustomStringConverti
         }
     }
     
-    fileprivate var root : Node<K, V>?
+    fileprivate var root: Node<K, V>?
 }
 
 private func eqo<K, V: Equatable>(lhs: Node<K, V>?, rhs: Node<K, V>?) -> Bool {
