@@ -128,8 +128,7 @@ class PersistentVectorTest: XCTestCase {
                 let deltaT = tsNow - lastTs
                 let deltaTPerElement = deltaT / Double(i - lastTsIndex) * 1000.0 * 1000.0
                 
-                print(NSString(format: "i: %12d, depth: -, deltaT: %f, deltaT / million elements: %f%n",
-                    i,  deltaT, deltaTPerElement))
+                print(NSString(format: "i: %12d, depth: -, deltaT: %f, deltaT / million elements: %f%n", i, deltaT, deltaTPerElement))
                 
                 lastTs = tsNow
                 lastTsIndex = i
@@ -144,8 +143,7 @@ class PersistentVectorTest: XCTestCase {
         
         let deltaT = (CFAbsoluteTimeGetCurrent() - lastTs)
         
-        print(NSString(format: "Vector created from arrayList of size %d - size: %d, depth: %d - deltaT: %f%n",
-            arrayList.count, vector.count, vector.depth, deltaT))
+        print(NSString(format: "Vector created from arrayList of size %d - size: %d, depth: %d - deltaT: %f%n", arrayList.count, vector.count, vector.depth, deltaT))
         
         XCTAssertEqual(vector.count, arrayList.count)
         
@@ -212,8 +210,7 @@ class PersistentVectorTest: XCTestCase {
                 let deltaT = tsNow - lastTs
                 let deltaTPerElement = deltaT / Double(i - lastTsIndex) * 1000.0 * 1000.0
                 
-                print(NSString(format: "i: %12d, depth: %d, hashCode: %08x, deltaT: %f, deltaT / million elements: %f%n",
-                    i, depth, vector.hashValue, deltaT, deltaTPerElement))
+                print(NSString(format: "i: %12d, depth: %d, hashCode: %08x, deltaT: %f, deltaT / million elements: %f%n", i, depth, vector.hashValue, deltaT, deltaTPerElement))
                 
                 lastDepth = depth
                 lastTs = tsNow
@@ -237,8 +234,7 @@ class PersistentVectorTest: XCTestCase {
         
         var deltaT = CFAbsoluteTimeGetCurrent() - lastTs
         
-        print(NSString(format: "ArrayList created from vector - size: %d - deltaT: %f%n",
-            arrayList.count, deltaT))
+        print(NSString(format: "ArrayList created from vector - size: %d - deltaT: %f%n", arrayList.count, deltaT))
         
         XCTAssertEqual(arrayList.count, vector.count)
         
@@ -248,8 +244,7 @@ class PersistentVectorTest: XCTestCase {
         
         deltaT = CFAbsoluteTimeGetCurrent() - lastTs
         
-        print(NSString(format: "Vector created again from arrayList - size: %d, depth: %d - deltaT: %f%n",
-            vector.count, vector.depth, deltaT))
+        print(NSString(format: "Vector created again from arrayList - size: %d, depth: %d - deltaT: %f%n", vector.count, vector.depth, deltaT))
         
         XCTAssertEqual(vector.count, arrayList.count)
         
@@ -293,8 +288,7 @@ class PersistentVectorTest: XCTestCase {
                 let deltaT = tsNow - lastTs
                 let deltaTPerElement = deltaT / Double(i - lastTsIndex) * 1000.0 * 1000.0
                 
-                print(NSString(format: "i: %12d, depth: %d, hashCode: %08x, deltaT: %f, deltaT / million elements: %f%n",
-                               i, depth, vector.hashValue, deltaT, deltaTPerElement))
+                print(NSString(format: "i: %12d, depth: %d, hashCode: %08x, deltaT: %f, deltaT / million elements: %f%n", i, depth, vector.hashValue, deltaT, deltaTPerElement))
                 
                 lastDepth = depth
                 lastTs = tsNow
@@ -314,8 +308,7 @@ class PersistentVectorTest: XCTestCase {
         
         var deltaT = CFAbsoluteTimeGetCurrent() - lastTs
         
-        print(NSString(format: "ArrayList created from vector - size: %d - deltaT: %f%n",
-                       arrayList.count, deltaT))
+        print(NSString(format: "ArrayList created from vector - size: %d - deltaT: %f%n", arrayList.count, deltaT))
         
         XCTAssertEqual(arrayList.count, vector.count)
         
@@ -325,8 +318,7 @@ class PersistentVectorTest: XCTestCase {
         
         deltaT = CFAbsoluteTimeGetCurrent() - lastTs
         
-        print(NSString(format: "Vector created again from arrayList - size: %d, depth: %d - deltaT: %f%n",
-                       vector.count, vector.depth, deltaT))
+        print(NSString(format: "Vector created again from arrayList - size: %d, depth: %d - deltaT: %f%n", vector.count, vector.depth, deltaT))
         
         XCTAssertEqual(vector.count, arrayList.count)
         

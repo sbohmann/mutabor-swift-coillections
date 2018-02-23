@@ -37,9 +37,9 @@ for o in list {
     }
 }
 
-/*var copy: Dictionary<Int,Int>
+/*var copy: Dictionary<Int, Int>
 
-var dict = Dictionary<Int,Int>()
+var dict = Dictionary<Int, Int>()
 
 let n = 5 * 1000// * 1000
 
@@ -236,9 +236,9 @@ if let thec = cs[0] {
 
 print(isKnownUniquelyReferenced(&cs[0]))
 
-var pm = PersistentHashMap<Int,Int>()
+var pm = PersistentHashMap<Int, Int>()
 var numbers = [Int]()
-var maps = [PersistentHashMap<Int,Int>]()
+var maps = [PersistentHashMap<Int, Int>]()
 
 for idx in 0 ..< 5 * 1000// * 1000 {
     let n = Int(arc4random())

@@ -263,30 +263,22 @@ class PersistentHashSetTest: XCTestCase {
     
     func testHighHashCollider() {
         randomObjectsWithRemovalImpl(
-            source: { () -> HighHashCollider in HighHashCollider(randomLong()) },
-            name: "high hash collider",
-            testRemoval: false)
+            source: { () -> HighHashCollider in HighHashCollider(randomLong()) }, name: "high hash collider", testRemoval: false)
     }
 
     func testHighHashColliderWithRemoval() {
         randomObjectsWithRemovalImpl(
-            source: { () -> HighHashCollider in HighHashCollider(randomLong()) },
-            name: "high hash collider",
-            testRemoval: true)
+            source: { () -> HighHashCollider in HighHashCollider(randomLong()) }, name: "high hash collider", testRemoval: true)
     }
 
     func testLowHashCollider() {
         randomObjectsWithRemovalImpl(
-            source: { () -> LowHashCollider in LowHashCollider(randomLong()) },
-            name: "high hash collider",
-            testRemoval: false)
+            source: { () -> LowHashCollider in LowHashCollider(randomLong()) }, name: "high hash collider", testRemoval: false)
     }
 
     func testLowHashColliderWithRemoval() {
         randomObjectsWithRemovalImpl(
-            source: { () -> LowHashCollider in LowHashCollider(randomLong()) },
-            name: "high hash collider",
-            testRemoval: true)
+            source: { () -> LowHashCollider in LowHashCollider(randomLong()) }, name: "high hash collider", testRemoval: true)
     }
     
     private func randomObjectsWithRemovalImpl<E>(source: () -> E, name: String, testRemoval: Bool) where E: Hashable, E: Comparable {
