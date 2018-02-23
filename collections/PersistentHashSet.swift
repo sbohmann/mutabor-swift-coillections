@@ -25,7 +25,7 @@ private class Node<E: Hashable> {
     
     func without(key: E, hash: Int) -> Node? { fatalError() }
     
-    func foreach(f: (E) -> Void) { fatalError() }
+    func foreach(function: (E) -> Void) { fatalError() }
 }
 
 private final class TreeNode<E: Hashable> : Node<E> {
@@ -209,10 +209,10 @@ private final class TreeNode<E: Hashable> : Node<E> {
         return TreeNode(shift: shift, size: newSize, nodes: newChildren)
     }
     
-    override func foreach(f: (E) -> Void) {
+    override func foreach(function: (E) -> Void) {
         for idx in 0 ..< MAX_NODE_CHILDREN {
             if let childNode = nodes[idx] {
-                childNode.foreach(f: f)
+                childNode.foreach(function: function)
             }
         }
     }
@@ -279,8 +279,8 @@ private final class EntryNode<E: Hashable> : Node<E> {
         }
     }
     
-    override func foreach(f: (E) -> Void) {
-        f(entry)
+    override func foreach(function: (E) -> Void) {
+        function(entry)
     }
 }
 
@@ -387,9 +387,9 @@ private final class MultiNode<E: Hashable> : Node<E> {
         return self
     }
     
-    override func foreach(f: (E) -> Void) {
+    override func foreach(function: (E) -> Void) {
         for entry in data {
-            f(entry)
+            function(entry)
         }
     }
 }
@@ -557,7 +557,7 @@ public struct PersistentHashSet<E: Hashable> : Sequence, CustomStringConvertible
     
     public func foreach(_ f: ((E) -> Void)) {
         if let root = root {
-            root.foreach(f: f)
+            root.foreach(function: f)
         } else {
             return
         }

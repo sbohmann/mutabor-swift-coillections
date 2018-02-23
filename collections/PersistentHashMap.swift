@@ -25,7 +25,7 @@ private class Node<K: Hashable, V> {
     
     func without(key: K, hash: Int) -> Node? { fatalError() }
     
-    func foreach(f: ((K, V)) -> Void) { fatalError() }
+    func foreach(function: ((K, V)) -> Void) { fatalError() }
 }
 
 private final class TreeNode<K: Hashable, V> : Node<K, V> {
@@ -209,10 +209,10 @@ private final class TreeNode<K: Hashable, V> : Node<K, V> {
         return TreeNode(shift: shift, size: newSize, nodes: newChildren)
     }
     
-    override func foreach(f: (K, V) -> Void) {
+    override func foreach(function: (K, V) -> Void) {
         for idx in 0 ..< MAX_NODE_CHILDREN {
             if let childNode = nodes[idx] {
-                childNode.foreach(f: f)
+                childNode.foreach(function: function)
             }
         }
     }
@@ -279,8 +279,8 @@ private final class EntryNode<K: Hashable, V> : Node<K, V> {
         }
     }
     
-    override func foreach(f: ((K, V)) -> Void) {
-        f(entry)
+    override func foreach(function: ((K, V)) -> Void) {
+        function(entry)
     }
 }
 
@@ -387,9 +387,9 @@ private final class MultiNode<K: Hashable, V> : Node<K, V> {
         return self
     }
     
-    override func foreach(f: ((K, V)) -> Void) {
+    override func foreach(function: ((K, V)) -> Void) {
         for entry in data {
-            f(entry)
+            function(entry)
         }
     }
 }
@@ -558,7 +558,7 @@ public struct PersistentHashMap<K: Hashable, V> : Sequence, CustomStringConverti
     
     public func foreach(_ f: ((K, V) -> Void)) {
         if let root = root {
-            root.foreach(f: f)
+            root.foreach(function: f)
         } else {
             return
         }
