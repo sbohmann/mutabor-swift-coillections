@@ -388,7 +388,7 @@ public class Serializer {
     }
     
     public static func writeString(value: String, outputStream: OutputStream) throws {
-        guard let data = value.data(using:String.Encoding.utf8) else {
+        guard let data = value.data(using: String.Encoding.utf8) else {
             throw IoError("Unable to encode string as UTF-8")
         }
         
@@ -398,11 +398,11 @@ public class Serializer {
     }
     
     public static func readString(inputStream: InputStream) throws -> String {
-        let size = try readSize(inputStream:inputStream)
+        let size = try readSize(inputStream: inputStream)
         
-        let data = try readData(inputStream:inputStream, size:size)
+        let data = try readData(inputStream: inputStream, size:size)
         
-        guard let result = String(data:data, encoding:String.Encoding.utf8) else {
+        guard let result = String(data: data, encoding: String.Encoding.utf8) else {
             throw IoError("Unable to create string from data")
         }
         
