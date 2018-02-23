@@ -1,15 +1,12 @@
 
 import Foundation
 
-private class Node<K: Hashable, V>
-{
+private class Node<K: Hashable, V> {
     var shift: Int
     var size: Int
     
-    init(shift: Int, size: Int)
-    {
-        if (shift >= HASH_BITS + SHIFT_PER_LEVEL)
-        {
+    init(shift: Int, size: Int) {
+        if (shift >= HASH_BITS + SHIFT_PER_LEVEL) {
             fatalError("Creating node with shift \(shift)")
         }
         
@@ -32,74 +29,60 @@ private class Node<K: Hashable, V>
     func foreach(f: ((K,V)) -> Void) { fatalError() }
 }
 
-private final class TreeNode<K: Hashable, V> : Node<K,V>
-{
+private final class TreeNode<K: Hashable, V> : Node<K,V> {
     var nodes: [Node<K,V>?]
     var mask: Int
     
-    init(shift: Int, size: Int, nodes: [Node<K,V>?])
-    {
+    init(shift: Int, size: Int, nodes: [Node<K,V>?]) {
         self.nodes = nodes
         mask = maskForShift(shift)
         super.init(shift: shift, size: size)
         check()
     }
     
-    func check()
-    {
-        if (shift >= HASH_BITS)
-        {
+    func check() {
+        if (shift >= HASH_BITS) {
             fatalError("Logical error in TreeNode")
         }
     }
     
-    override func get(key: K, hash: Int) -> (K,V)?
-    {
+    override func get(key: K, hash: Int) -> (K,V)? {
         let idx = (hash >> shift) & mask
         
-        if let node = nodes[idx]
-        {
+        if let node = nodes[idx] {
             return node.get(key: key, hash: hash)
         }
-        else
-        {
+        else {
             return nil
         }
     }
     
-    override func get(key: K) -> (K,V)?
-    {
+    override func get(key: K) -> (K,V)? {
         return get(key: key, hash: key.hashValue)
     }
     
-    override func put(entry: (K, V), hash: Int) -> (Bool, Node<K,V>?)
-    {
+    override func put(entry: (K, V), hash: Int) -> (Bool, Node<K,V>?) {
         let idx = (hash >> shift) & mask
         
         let unshared = isKnownUniquelyReferenced(&nodes[idx])
         
-        if let subnode = nodes[idx]
-        {
+        if let subnode = nodes[idx] {
             let oldSize = subnode.size
             
-            if unshared
-            {
+            if unshared {
                 let (replace, replacement) = subnode.put(entry: entry, hash: hash)
                 
-                if (replace)
-                {
+                if (replace) {
                     nodes[idx] = replacement
                 }
             }
-            else
-            {
+            else {
                 nodes[idx] = subnode.with(entry: entry, hash: hash)
             }
             
             size += nodes[idx]!.size - oldSize
         }
-        else
-        {
+        else {
             nodes[idx] = EntryNode(shift: shift + SHIFT_PER_LEVEL, entry: entry, hash: hash)
             
             size += 1
@@ -108,20 +91,17 @@ private final class TreeNode<K: Hashable, V> : Node<K,V>
         return (false, nil)
     }
     
-    override func with(entry: (K,V), hash: Int) -> TreeNode
-    {
+    override func with(entry: (K,V), hash: Int) -> TreeNode {
         let idx = (hash >> shift) & mask
         
         var newChildren: [Node<K,V>?]
         
         let newSize: Int
         
-        if let subnode = nodes[idx]
-        {
+        if let subnode = nodes[idx] {
             let newSubnode = subnode.with(entry: entry, hash: hash)
             
-            if newSubnode === subnode
-            {
+            if newSubnode === subnode {
                 return self
             }
             
@@ -131,8 +111,7 @@ private final class TreeNode<K: Hashable, V> : Node<K,V>
             
             newSize = size + (newSubnode.size - subnode.size)
         }
-        else
-        {
+        else {
             newChildren = nodes
             
             newChildren[idx] = EntryNode(shift: shift + SHIFT_PER_LEVEL, entry: entry, hash: hash)
@@ -143,47 +122,38 @@ private final class TreeNode<K: Hashable, V> : Node<K,V>
         return TreeNode(shift: shift, size: newSize, nodes: newChildren)
     }
     
-    override func remove(key: K, hash: Int) -> Bool
-    {
+    override func remove(key: K, hash: Int) -> Bool {
         let idx = (hash >> shift) & mask
         
         let unshared = isKnownUniquelyReferenced(&nodes[idx])
         
-        if let subnode = nodes[idx]
-        {
+        if let subnode = nodes[idx] {
             let oldSize = subnode.size
             let newSize: Int
             
-            if unshared
-            {
-                if subnode.remove(key: key, hash: hash)
-                {
+            if unshared {
+                if subnode.remove(key: key, hash: hash) {
                     nodes[idx] = nil
                     
                     newSize = 0
                 }
-                else
-                {
+                else {
                     newSize = subnode.size
                 }
             }
-            else
-            {
+            else {
                 let newSubnode = subnode.without(key: key, hash: hash)
                 
-                if newSubnode === subnode
-                {
+                if newSubnode === subnode {
                     return false
                 }
                 
-                if let newSubnode = newSubnode
-                {
+                if let newSubnode = newSubnode {
                     nodes[idx] = newSubnode
                     
                     newSize = newSubnode.size
                 }
-                else
-                {
+                else {
                     nodes[idx] = nil
                     
                     newSize = 0
@@ -192,8 +162,7 @@ private final class TreeNode<K: Hashable, V> : Node<K,V>
             
             size += newSize - oldSize
             
-            if size < 0
-            {
+            if size < 0 {
                 fatalError("remove: size < 0: \(size)")
             }
             
@@ -206,40 +175,33 @@ private final class TreeNode<K: Hashable, V> : Node<K,V>
     // does not compress a tree when a MultiNode becomes an EntryNode,
     // so a chain of size one treeNodes with one EntryNode at the end
     // can be left. Only compresses the tree when the node size goes to 0.
-    override func without(key: K, hash: Int) -> Node<K,V>?
-    {
+    override func without(key: K, hash: Int) -> Node<K,V>? {
         let idx = (hash >> shift) & mask
         
         var newChildren: [Node<K,V>?]
         
         let newSize: Int
         
-        if let subnode = nodes[idx]
-        {
+        if let subnode = nodes[idx] {
             let newSubnode = subnode.without(key: key, hash: hash)
             
-            if newSubnode === subnode
-            {
+            if newSubnode === subnode {
                 return self
             }
             
-            if let newSubnode = newSubnode
-            {
+            if let newSubnode = newSubnode {
                 newChildren = nodes
                 
                 newChildren[idx] = newSubnode
                 
                 newSize = size + (newSubnode.size - subnode.size)
             }
-            else
-            {
-                if (size == 1)
-                {
+            else {
+                if (size == 1) {
                     return nil
                 }
                 
-                if (subnode.size != 1)
-                {
+                if (subnode.size != 1) {
                     fatalError("Logical error: subnode of size \(subnode.size) returned null on without")
                 }
                 
@@ -250,68 +212,54 @@ private final class TreeNode<K: Hashable, V> : Node<K,V>
                 newSize = size - 1
             }
         }
-        else
-        {
+        else {
             return self
         }
         
         return TreeNode(shift: shift, size: newSize, nodes: newChildren)
     }
     
-    override func foreach(f: (K,V) -> Void)
-    {
-        for idx in 0 ..< MAX_NODE_CHILDREN
-        {
-            if let childNode = nodes[idx]
-            {
+    override func foreach(f: (K,V) -> Void) {
+        for idx in 0 ..< MAX_NODE_CHILDREN {
+            if let childNode = nodes[idx] {
                 childNode.foreach(f: f)
             }
         }
     }
 }
 
-private final class EntryNode<K: Hashable,V> : Node<K,V>
-{
+private final class EntryNode<K: Hashable,V> : Node<K,V> {
     var entry: (K,V)
     var hash: Int
     
-    init(shift: Int, entry: (K,V), hash: Int)
-    {
+    init(shift: Int, entry: (K,V), hash: Int) {
         self.entry = entry
         self.hash = hash
         super.init(shift: shift, size: 1)
     }
     
-    override func get(key: K, hash: Int) -> (K,V)?
-    {
+    override func get(key: K, hash: Int) -> (K,V)? {
         return get(key: key)
     }
     
-    override func get(key: K) -> (K,V)?
-    {
-        if key == entry.0
-        {
+    override func get(key: K) -> (K,V)? {
+        if key == entry.0 {
             return entry
         }
-        else
-        {
+        else {
             return nil
         }
     }
     
-    override func put(entry: (K, V), hash: Int) -> (Bool, Node<K,V>?)
-    {
-        if (hash == self.hash && entry.0 == self.entry.0)
-        {
+    override func put(entry: (K, V), hash: Int) -> (Bool, Node<K,V>?) {
+        if (hash == self.hash && entry.0 == self.entry.0) {
             self.entry = entry
             self.hash = hash
         }
-        else if (shift < HASH_BITS)
-        {
+        else if (shift < HASH_BITS) {
             return (true, createTreeNode(shift: shift, firstEntry: self.entry, firstHash: self.hash, secondEntry: entry, secondHash: hash))
         }
-        else
-        {
+        else {
             let data = [self.entry, entry]
             
             return (true, MultiNode(shift: shift, data: data))
@@ -320,43 +268,34 @@ private final class EntryNode<K: Hashable,V> : Node<K,V>
         return (false, nil)
     }
     
-    override func with(entry: (K,V), hash: Int) -> Node<K,V>
-    {
-        if hash == self.hash && entry.0 == self.entry.0
-        {
+    override func with(entry: (K,V), hash: Int) -> Node<K,V> {
+        if hash == self.hash && entry.0 == self.entry.0 {
             return EntryNode(shift: shift, entry: entry, hash: hash)
         }
-        else if (shift < HASH_BITS)
-        {
+        else if (shift < HASH_BITS) {
             return createTreeNode(shift: shift, firstEntry: self.entry, firstHash: self.hash, secondEntry: entry, secondHash: hash)
         }
-        else
-        {
+        else {
             let data = [self.entry, entry]
             
             return MultiNode(shift: shift, data: data)
         }
     }
     
-    override func remove(key: K, hash: Int) -> Bool
-    {
+    override func remove(key: K, hash: Int) -> Bool {
         return hash == self.hash && key == self.entry.0
     }
     
-    override func without(key: K, hash: Int) -> Node<K,V>?
-    {
-        if hash != self.hash || key != entry.0
-        {
+    override func without(key: K, hash: Int) -> Node<K,V>? {
+        if hash != self.hash || key != entry.0 {
             return self
         }
-        else
-        {
+        else {
             return nil
         }
     }
     
-    override func foreach(f: ((K,V)) -> Void)
-    {
+    override func foreach(f: ((K,V)) -> Void) {
         f(entry)
     }
 }
@@ -366,27 +305,21 @@ private final class EntryNode<K: Hashable,V> : Node<K,V>
 // EntryNodes can sit anywhere in the tree above just partial hash absed
 // branching, but only the full hash leads to the tree location of
 // a MultiNode.
-private final class MultiNode<K: Hashable,V> : Node<K,V>
-{
+private final class MultiNode<K: Hashable,V> : Node<K,V> {
     var data: [(K,V)]
     
-    init(shift: Int, data: [(K,V)])
-    {
+    init(shift: Int, data: [(K,V)]) {
         self.data = data
         super.init(shift: shift, size: data.count)
     }
     
-    override func get(key: K, hash: Int) -> (K,V)?
-    {
+    override func get(key: K, hash: Int) -> (K,V)? {
         return get(key: key)
     }
     
-    override func get(key: K) -> (K,V)?
-    {
-        for entry in data
-        {
-            if key == entry.0
-            {
+    override func get(key: K) -> (K,V)? {
+        for entry in data {
+            if key == entry.0 {
                 return entry
             }
         }
@@ -394,14 +327,11 @@ private final class MultiNode<K: Hashable,V> : Node<K,V>
         return nil
     }
     
-    override func put(entry newEntry: (K, V), hash: Int) -> (Bool, Node<K,V>?)
-    {
-        for idx in 0 ..< data.count
-        {
+    override func put(entry newEntry: (K, V), hash: Int) -> (Bool, Node<K,V>?) {
+        for idx in 0 ..< data.count {
             let entry = data[idx]
             
-            if newEntry.0 == entry.0
-            {
+            if newEntry.0 == entry.0 {
                 data[idx] = newEntry
                 
                 return (false, nil)
@@ -414,16 +344,13 @@ private final class MultiNode<K: Hashable,V> : Node<K,V>
         return (false, nil)
     }
     
-    override func with(entry newEntry: (K,V), hash: Int) -> Node<K,V>
-    {
+    override func with(entry newEntry: (K,V), hash: Int) -> Node<K,V> {
         let size = data.count
         
-        for idx in 0 ..< size
-        {
+        for idx in 0 ..< size {
             let entry = data[idx]
             
-            if newEntry.0 == entry.0
-            {
+            if newEntry.0 == entry.0 {
                 var newData = data
                 newData[idx] = newEntry
                 
@@ -436,14 +363,11 @@ private final class MultiNode<K: Hashable,V> : Node<K,V>
         return MultiNode(shift: shift, data: newData)
     }
     
-    fileprivate override func remove(key: K, hash: Int) -> Bool
-    {
-        for idx in 0 ..< data.count
-        {
+    fileprivate override func remove(key: K, hash: Int) -> Bool {
+        for idx in 0 ..< data.count {
             let entry = data[idx]
             
-            if key == entry.0
-            {
+            if key == entry.0 {
                 data.remove(at: idx)
                 size -= 1
                 
@@ -454,28 +378,22 @@ private final class MultiNode<K: Hashable,V> : Node<K,V>
         return false
     }
     
-    override func without(key: K, hash: Int) -> Node<K,V>?
-    {
+    override func without(key: K, hash: Int) -> Node<K,V>? {
         let size = data.count
         
-        for idx in 0 ..< size
-        {
+        for idx in 0 ..< size {
             let entry = data[idx]
             
-            if key == entry.0
-            {
-                if (data.count == 1)
-                {
+            if key == entry.0 {
+                if (data.count == 1) {
                     return nil
                 }
-                else if (data.count == 2)
-                {
+                else if (data.count == 2) {
                     let retainedIndex = (idx + 1) % 2
                     
                     return EntryNode(shift: shift, entry: data[retainedIndex], hash: hash)
                 }
-                else
-                {
+                else {
                     var newData = data
                     newData.remove(at: idx)
                     
@@ -487,17 +405,14 @@ private final class MultiNode<K: Hashable,V> : Node<K,V>
         return self
     }
     
-    override func foreach(f: ((K,V)) -> Void)
-    {
-        for entry in data
-        {
+    override func foreach(f: ((K,V)) -> Void) {
+        for entry in data {
             f(entry)
         }
     }
 }
 
-private func createTreeNode<K: Hashable,V>(shift: Int, firstEntry: (K,V), firstHash: Int, secondEntry: (K,V), secondHash: Int) -> TreeNode<K,V>
-{
+private func createTreeNode<K: Hashable,V>(shift: Int, firstEntry: (K,V), firstHash: Int, secondEntry: (K,V), secondHash: Int) -> TreeNode<K,V> {
     let mask = maskForShift(shift)
     
     var nodes = [Node<K,V>?](repeating: nil, count: sizeForShift(shift))
@@ -509,15 +424,13 @@ private func createTreeNode<K: Hashable,V>(shift: Int, firstEntry: (K,V), firstH
     let size: Int
     
     let secondIdx = (secondHash >> shift) & mask
-    if secondIdx == firstIdx
-    {
+    if secondIdx == firstIdx {
         let combinedNode = firstEntryNode.with(entry: secondEntry, hash: secondHash)
         nodes[secondIdx] = combinedNode
         
         size = combinedNode.size
     }
-    else
-    {
+    else {
         let secondEntryNode = EntryNode(shift: shift + SHIFT_PER_LEVEL, entry: secondEntry, hash: secondHash)
         nodes[secondIdx] = secondEntryNode
         
@@ -527,8 +440,7 @@ private func createTreeNode<K: Hashable,V>(shift: Int, firstEntry: (K,V), firstH
     return TreeNode(shift: shift, size: size, nodes: nodes)
 }
 
-public struct MapIterator<K: Hashable,V> : IteratorProtocol
-{
+public struct MapIterator<K: Hashable,V> : IteratorProtocol {
     private var path = [TreeNode<K,V>?](repeating: nil, count: MAX_DEPTH)
     private var pathIdx = [Int?](repeating: nil, count: MAX_DEPTH)
     private var pathSize = 0
@@ -538,24 +450,19 @@ public struct MapIterator<K: Hashable,V> : IteratorProtocol
     private var valueNode: Node<K,V>?
     private var valueIdx = 0
     
-    fileprivate init(map: PersistentHashMap<K,V>)
-    {
-        if map.root == nil
-        {
+    fileprivate init(map: PersistentHashMap<K,V>) {
+        if map.root == nil {
             finished = true
             return
         }
         
         var node = map.root
         
-        while (true)
-        {
-            if let treeNode = node as? TreeNode
-            {
+        while (true) {
+            if let treeNode = node as? TreeNode {
                 var idx = 0
                 
-                while treeNode.nodes[idx] == nil
-                {
+                while treeNode.nodes[idx] == nil {
                     idx += 1
                 }
                 
@@ -565,18 +472,15 @@ public struct MapIterator<K: Hashable,V> : IteratorProtocol
                 
                 node = treeNode.nodes[idx]
             }
-            else
-            {
+            else {
                 valueNode = node
                 valueIdx = 0
                 break
             }
         }
         
-        if (valueNode == nil || valueNode!.size == 0)
-        {
-            if (pathSize != 0)
-            {
+        if (valueNode == nil || valueNode!.size == 0) {
+            if (pathSize != 0) {
                 fatalError("Logical error: depth > 1 but empty")
             }
             
@@ -584,24 +488,19 @@ public struct MapIterator<K: Hashable,V> : IteratorProtocol
         }
     }
     
-    public mutating func next() -> (K,V)?
-    {
-        if finished
-        {
+    public mutating func next() -> (K,V)? {
+        if finished {
             return nil
         }
-        else
-        {
+        else {
             var result: (K,V)
             var valueNodeLength: Int
             
-            if let entryNode = valueNode as? EntryNode
-            {
+            if let entryNode = valueNode as? EntryNode {
                 result = entryNode.entry
                 valueNodeLength = 1
             }
-            else
-            {
+            else {
                 let multiNode = valueNode as! MultiNode
                 result = multiNode.data[valueIdx]
                 valueNodeLength = multiNode.data.count
@@ -609,37 +508,30 @@ public struct MapIterator<K: Hashable,V> : IteratorProtocol
             
             valueIdx += 1
             
-            if (valueIdx == valueNodeLength)
-            {
-                if (pathSize > 0)
-                {
+            if (valueIdx == valueNodeLength) {
+                if (pathSize > 0) {
                     var idx = pathSize - 1
                     
-                    while (true)
-                    {
+                    while (true) {
                         let currentTreeNode = path[idx]!
                         
                         var nextPathIdx = pathIdx[idx]! + 1
                         
-                        while nextPathIdx < currentTreeNode.nodes.count && currentTreeNode.nodes[nextPathIdx] == nil
-                        {
+                        while nextPathIdx < currentTreeNode.nodes.count && currentTreeNode.nodes[nextPathIdx] == nil {
                             nextPathIdx += 1
                         }
                         
-                        if nextPathIdx < currentTreeNode.nodes.count
-                        {
+                        if nextPathIdx < currentTreeNode.nodes.count {
                             pathIdx[idx] = nextPathIdx
                             
                             var newSubnode = currentTreeNode.nodes[nextPathIdx]
                             
-                            while newSubnode is TreeNode
-                            {
+                            while newSubnode is TreeNode {
                                 let treeNode = newSubnode as! TreeNode
                                 
                                 var nextSubPathIdx = 0
                                 
-                                while treeNode.nodes[nextSubPathIdx] == nil
-                                {
+                                while treeNode.nodes[nextSubPathIdx] == nil {
                                     nextSubPathIdx += 1
                                 }
                                 
@@ -655,17 +547,14 @@ public struct MapIterator<K: Hashable,V> : IteratorProtocol
                             valueIdx = 0
                             break
                         }
-                        else
-                        {
-                            if (idx > 0)
-                            {
+                        else {
+                            if (idx > 0) {
                                 pathSize -= 1
                                 path[idx] = nil
                                 pathIdx[idx] = 0
                                 idx -= 1
                             }
-                            else
-                            {
+                            else {
                                 finished = true
                                 path.removeAll()
                                 pathIdx.removeAll()
@@ -674,8 +563,7 @@ public struct MapIterator<K: Hashable,V> : IteratorProtocol
                         }
                     }
                 }
-                else
-                {
+                else {
                     finished = true
                     path.removeAll()
                     pathIdx.removeAll()
@@ -687,103 +575,79 @@ public struct MapIterator<K: Hashable,V> : IteratorProtocol
     }
 }
 
-public struct PersistentHashMap<K: Hashable,V> : Sequence, CustomStringConvertible, ExpressibleByDictionaryLiteral
-    // : CollectionType, Indexable, SequenceType, DictionaryLiteralConvertible
-{
-    public func makeIterator() -> MapIterator<K,V>
-    {
+// : CollectionType, Indexable, SequenceType, DictionaryLiteralConvertible
+public struct PersistentHashMap<K: Hashable,V> : Sequence, CustomStringConvertible, ExpressibleByDictionaryLiteral {
+    public func makeIterator() -> MapIterator<K,V> {
         return MapIterator<K,V>(map: self)
     }
     
-    public func foreach(_ f: ((K,V) -> Void))
-    {
-        if let root = root
-        {
+    public func foreach(_ f: ((K,V) -> Void)) {
+        if let root = root {
             root.foreach(f: f)
         }
-        else
-        {
+        else {
             return
         }
     }
     
-    public init()
-    {
+    public init() {
         root = nil
     }
     
-    public init(dictionaryLiteral entries: (K, V)...)
-    {
+    public init(dictionaryLiteral entries: (K, V)...) {
         initImpl(entries: entries)
     }
     
-    public init(_ entries: Dictionary<K,V>)
-    {
+    public init(_ entries: Dictionary<K,V>) {
         root = nil
         
-        for entry in entries
-        {
-            if let root = root
-            {
+        for entry in entries {
+            if let root = root {
                 self.root = root.with(entry: entry, hash: entry.0.hashValue)
             }
-            else
-            {
+            else {
                 root = EntryNode(shift: 0, entry: entry, hash: entry.0.hashValue)
             }
         }
     }
     
-    public init<S: Sequence>(_ entries: S) where S.Iterator.Element == (K,V)
-    {
+    public init<S: Sequence>(_ entries: S) where S.Iterator.Element == (K,V) {
         initImpl(entries: entries)
     }
     
-    private mutating func initImpl<S: Sequence>(entries: S) where S.Iterator.Element == (K,V)
-    {
+    private mutating func initImpl<S: Sequence>(entries: S) where S.Iterator.Element == (K,V) {
         root = nil
         
-        for entry in entries
-        {
-            if let root = root
-            {
+        for entry in entries {
+            if let root = root {
                 self.root = root.with(entry: entry, hash: entry.0.hashValue)
             }
-            else
-            {
+            else {
                 root = EntryNode(shift: 0, entry: entry, hash: entry.0.hashValue)
             }
         }
     }
     
-    private init(root: Node<K,V>?)
-    {
+    private init(root: Node<K,V>?) {
         self.root = root
     }
     
-    public var count: Int
-    {
-        get
-        {
-            if let root = root
-            {
+    public var count: Int {
+        get {
+            if let root = root {
                 return root.size
             }
-            else
-            {
+            else {
                 return 0
             }
         }
     }
     
-    public var description : String
-        {
-        get
-        {
+    public var description : String {
+        get {
             var result: String = "Map ["
             var first = true
-            for entry in self
-            {
+            for entry in self {
                 result += (first ? " " : ", ")
                 result += "\(entry.0) -> \(entry.1)"
                 first = false
@@ -794,29 +658,23 @@ public struct PersistentHashMap<K: Hashable,V> : Sequence, CustomStringConvertib
         }
     }
     
-    public func get(_ key: K) -> V?
-    {
+    public func get(_ key: K) -> V? {
         guard let root = root
-        else
-        {
+        else {
             return nil
         }
         
-        if let entry = root.get(key: key)
-        {
+        if let entry = root.get(key: key) {
             return entry.1
         }
-        else
-        {
+        else {
             return nil
         }
     }
     
-    public func containsKey(_ key: K) -> Bool
-    {
+    public func containsKey(_ key: K) -> Bool {
         guard let root = root
-        else
-        {
+        else {
             return false
         }
         
@@ -825,86 +683,66 @@ public struct PersistentHashMap<K: Hashable,V> : Sequence, CustomStringConvertib
         return entry != nil
     }
     
-    public mutating func put(_ key: K, value: V)
-    {
+    public mutating func put(_ key: K, value: V) {
         put((key, value))
     }
     
-    public mutating func put(_ entry: (K,V))
-    {
+    public mutating func put(_ entry: (K,V)) {
         let unshared = isKnownUniquelyReferenced(&root)
         
-        if let root = root
-        {
-            if unshared
-            {
+        if let root = root {
+            if unshared {
                 let (replace, replacement) = root.put(entry: entry, hash: entry.0.hashValue)
                 
-                if replace
-                {
+                if replace {
                     self.root = replacement
                 }
             }
-            else
-            {
+            else {
                 self.root = root.with(entry: entry, hash: entry.0.hashValue)
             }
         }
-        else
-        {
+        else {
             root = EntryNode(shift: 0, entry: entry, hash: entry.0.hashValue)
         }
     }
 
-    public func with(_ key: K, value: V) -> PersistentHashMap
-    {
+    public func with(_ key: K, value: V) -> PersistentHashMap {
         return with((key, value))
     }
     
-    public func with(_ entry: (K,V)) -> PersistentHashMap
-    {
-        if let root = root
-        {
+    public func with(_ entry: (K,V)) -> PersistentHashMap {
+        if let root = root {
             return PersistentHashMap(root: root.with(entry: entry, hash: entry.0.hashValue))
         }
-        else
-        {
+        else {
             return PersistentHashMap(root: EntryNode(shift: 0, entry: entry, hash: entry.0.hashValue))
         }
     }
     
-    public mutating func remove(_ key: K)
-    {
+    public mutating func remove(_ key: K) {
         let unshared = isKnownUniquelyReferenced(&root)
         
-        if let root = root
-        {
-            if unshared
-            {
-                if (root.remove(key: key, hash: key.hashValue))
-                {
+        if let root = root {
+            if unshared {
+                if (root.remove(key: key, hash: key.hashValue)) {
                     self.root = nil
                 }
             }
-            else
-            {
+            else {
                 self.root = root.without(key: key, hash: key.hashValue)
             }
         }
-        else
-        {
+        else {
             return
         }
     }
     
-    public func without(_ key: K) -> PersistentHashMap
-    {
-        if let root = root
-        {
+    public func without(_ key: K) -> PersistentHashMap {
+        if let root = root {
             return PersistentHashMap(root: root.without(key: key, hash: key.hashValue))
         }
-        else
-        {
+        else {
             return self
         }
     }
@@ -912,111 +750,85 @@ public struct PersistentHashMap<K: Hashable,V> : Sequence, CustomStringConvertib
     fileprivate var root : Node<K,V>?
 }
 
-private func eqo<K, V: Equatable>(lhs: Node<K,V>?, rhs: Node<K,V>?) -> Bool
-{
-    if let lhsNode = lhs, let rhsNode = rhs
-    {
+private func eqo<K, V: Equatable>(lhs: Node<K,V>?, rhs: Node<K,V>?) -> Bool {
+    if let lhsNode = lhs, let rhsNode = rhs {
         return eq(lhs: lhsNode, rhs: rhsNode)
     }
-    else
-    {
+    else {
         return lhs == nil && rhs == nil
     }
 }
 
-private func eq<K, V: Equatable>(lhs: Node<K,V>, rhs: Node<K,V>) -> Bool
-{
-    if lhs === rhs
-    {
+private func eq<K, V: Equatable>(lhs: Node<K,V>, rhs: Node<K,V>) -> Bool {
+    if lhs === rhs {
         return true
     }
     
-    if lhs.size != rhs.size
-    {
+    if lhs.size != rhs.size {
         return false
     }
     
     let size = lhs.size
     
-    if (lhs.shift != rhs.shift)
-    {
+    if (lhs.shift != rhs.shift) {
         fatalError("shift mismatch: \(lhs.shift) / \(rhs.shift)")
     }
     
-    if let lhsTreeNode = lhs as? TreeNode<K,V>, let rhsTreeNode = rhs as? TreeNode<K,V>
-    {
-        if lhsTreeNode.nodes.count != rhsTreeNode.nodes.count
-        {
+    if let lhsTreeNode = lhs as? TreeNode<K,V>, let rhsTreeNode = rhs as? TreeNode<K,V> {
+        if lhsTreeNode.nodes.count != rhsTreeNode.nodes.count {
             return false
         }
         
-        for idx in 0 ..< lhsTreeNode.nodes.count
-        {
-            if eqo(lhs: lhsTreeNode.nodes[idx], rhs: rhsTreeNode.nodes[idx]) == false
-            {
+        for idx in 0 ..< lhsTreeNode.nodes.count {
+            if eqo(lhs: lhsTreeNode.nodes[idx], rhs: rhsTreeNode.nodes[idx]) == false {
                 return false
             }
         }
         
         return true
     }
-    else if lhs is TreeNode || rhs is TreeNode
-    {
-        if size != 1
-        {
+    else if lhs is TreeNode || rhs is TreeNode {
+        if size != 1 {
             return false
         }
-        else
-        {
+        else {
             return singleEntry(node: lhs) == singleEntry(node: rhs)
         }
     }
-    else if let lhsMultiNode = lhs as? MultiNode, let rhsMultiNode = rhs as? MultiNode
-    {
-        if lhsMultiNode.data.count != rhsMultiNode.data.count
-        {
+    else if let lhsMultiNode = lhs as? MultiNode, let rhsMultiNode = rhs as? MultiNode {
+        if lhsMultiNode.data.count != rhsMultiNode.data.count {
             return false
         }
         
-        for idx in 0 ..< lhsMultiNode.data.count
-        {
-            if arrayContains(array: rhsMultiNode.data, value: lhsMultiNode.data[idx]) == false
-            {
+        for idx in 0 ..< lhsMultiNode.data.count {
+            if arrayContains(array: rhsMultiNode.data, value: lhsMultiNode.data[idx]) == false {
                 return false
             }
         }
         
         return true
     }
-    else if lhs is MultiNode || rhs is MultiNode
-    {
+    else if lhs is MultiNode || rhs is MultiNode {
         fatalError("Logical error: one of two nodes is a MultiNode - sizes \(lhs.size), \(rhs.size), lhs is \(type(of: lhs)), rhs is \(type(of: rhs))")
     }
-    else if let lhsEntryNode = lhs as? EntryNode, let rhsEntryNode = rhs as? EntryNode
-    {
+    else if let lhsEntryNode = lhs as? EntryNode, let rhsEntryNode = rhs as? EntryNode {
         return lhsEntryNode.entry == rhsEntryNode.entry
     }
-    else
-    {
+    else {
         fatalError("Logical error: unexpected combination of node types - sizes \(lhs.size), \(rhs.size), lhs is \(type(of: lhs)), rhs is \(type(of: rhs))")
     }
 }
 
-private func singleEntry<K,V>(node: Node<K,V>) -> (K,V)
-{
-    if node.size != 1
-    {
+private func singleEntry<K,V>(node: Node<K,V>) -> (K,V) {
+    if node.size != 1 {
         fatalError("node size != 1")
     }
     
-    if let treeNode = node as? TreeNode
-    {
+    if let treeNode = node as? TreeNode {
         var subnode: Node<K,V>? = nil
         
-        for candidate in treeNode.nodes
-        {
-            if candidate != nil
-            {
+        for candidate in treeNode.nodes {
+            if candidate != nil {
                 subnode = candidate
                 
                 break
@@ -1025,12 +837,10 @@ private func singleEntry<K,V>(node: Node<K,V>) -> (K,V)
         
         return singleEntry(node: subnode!)
     }
-    else if let multiNode = node as? MultiNode
-    {
+    else if let multiNode = node as? MultiNode {
         var entry: (K,V)? = nil
         
-        for candidate in multiNode.data
-        {
+        for candidate in multiNode.data {
             entry = candidate
             
             break
@@ -1038,22 +848,17 @@ private func singleEntry<K,V>(node: Node<K,V>) -> (K,V)
         
         return entry!
     }
-    else if let entryNode = node as? EntryNode
-    {
+    else if let entryNode = node as? EntryNode {
         return entryNode.entry
     }
-    else
-    {
+    else {
         fatalError("Unknown node type: \(type(of: node))")
     }
 }
 
-private func arrayContains<K: Equatable, V: Equatable>(array: [(K,V)], value: (K,V)) -> Bool
-{
-    for element in array
-    {
-        if element == value
-        {
+private func arrayContains<K: Equatable, V: Equatable>(array: [(K,V)], value: (K,V)) -> Bool {
+    for element in array {
+        if element == value {
             return true
         }
     }
@@ -1061,12 +866,10 @@ private func arrayContains<K: Equatable, V: Equatable>(array: [(K,V)], value: (K
     return false
 }
 
-public func == <K, V: Equatable>(lhs: PersistentHashMap<K,V>, rhs: PersistentHashMap<K,V>) -> Bool
-{
+public func == <K, V: Equatable>(lhs: PersistentHashMap<K,V>, rhs: PersistentHashMap<K,V>) -> Bool {
     return eqo(lhs: lhs.root, rhs: rhs.root)
 }
 
-public func != <K, V: Equatable>(lhs: PersistentHashMap<K,V>, rhs: PersistentHashMap<K,V>) -> Bool
-{
+public func != <K, V: Equatable>(lhs: PersistentHashMap<K,V>, rhs: PersistentHashMap<K,V>) -> Bool {
     return eqo(lhs: lhs.root, rhs: rhs.root) == false
 }

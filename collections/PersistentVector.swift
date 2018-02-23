@@ -3,12 +3,10 @@ import Foundation
 
 private let DEBUG = false
 
-private class Node<E>
-{
+private class Node<E> {
     let level: Int
     
-    init(level: Int)
-    {
+    init(level: Int) {
         self.level = level
     }
     
@@ -33,22 +31,18 @@ private class Node<E>
     func removeLast() -> Bool { fatalError() }
 }
 
-private func == <E: Equatable>(lhs: Node<E>, rhs: Node<E>) -> Bool
-{
+private func == <E: Equatable>(lhs: Node<E>, rhs: Node<E>) -> Bool {
     return false
 }
 
-private final class TreeNode<E> : Node<E>
-{
+private final class TreeNode<E> : Node<E> {
     var nodes: [Node<E>]
     var size_: Int
     
-    private init(level: Int, nodes: [Node<E>], size: Int)
-    {
+    private init(level: Int, nodes: [Node<E>], size: Int) {
         self.nodes = nodes
         
-        if nodes.count == 0
-        {
+        if nodes.count == 0 {
             fatalError("Attempt to create an empty TreeNode")
         }
         
@@ -57,25 +51,21 @@ private final class TreeNode<E> : Node<E>
         super.init(level: level)
     }
     
-    init(level: Int, subNode: Node<E>)
-    {
+    init(level: Int, subNode: Node<E>) {
         let nodes = [subNode]
         
         self.nodes = nodes
         self.size_ = subNode.size()
         
-        if self.size_ == 0
-        {
+        if self.size_ == 0 {
             fatalError("Attempt to create an empty TreeNode")
         }
         
         super.init(level: level)
     }
     
-    init(lhs: Node<E>, rhs: E)
-    {
-        if lhs.isFull() == false
-        {
+    init(lhs: Node<E>, rhs: E) {
+        if lhs.isFull() == false {
             fatalError("lhs node is not full")
         }
         
@@ -84,18 +74,15 @@ private final class TreeNode<E> : Node<E>
         self.nodes = nodes
         self.size_ = lhs.size() + 1
         
-        if self.size_ == 0
-        {
+        if self.size_ == 0 {
             fatalError("Attempt to create an empty TreeNode")
         }
         
         super.init(level: lhs.level + 1)
     }
     
-    init(lhs: Node<E>, rhs: ValueNode<E>)
-    {
-        if lhs.isFull() == false
-        {
+    init(lhs: Node<E>, rhs: ValueNode<E>) {
+        if lhs.isFull() == false {
             fatalError("lhs node is not full")
         }
         
@@ -104,28 +91,22 @@ private final class TreeNode<E> : Node<E>
         self.nodes = nodes
         self.size_ = lhs.size() + rhs.size()
         
-        if self.size_ == 0
-        {
+        if self.size_ == 0 {
             fatalError("Attempt to create an empty TreeNode")
         }
         
         super.init(level: lhs.level + 1)
     }
     
-    override func get(idx: Int) -> E
-    {
+    override func get(idx: Int) -> E {
         var idx = idx
         
-        if idx >= 0 && idx < size_
-        {
-            for node in nodes
-            {
-                if idx < node.size()
-                {
+        if idx >= 0 && idx < size_ {
+            for node in nodes {
+                if idx < node.size() {
                     return node.get(idx: idx)
                 }
-                else
-                {
+                else {
                     idx -= node.size()
                 }
             }
@@ -134,33 +115,26 @@ private final class TreeNode<E> : Node<E>
         fatalError("Logical error in TreeNode")
     }
     
-    override func with(idx: Int, value: E) -> TreeNode
-    {
+    override func with(idx: Int, value: E) -> TreeNode {
         var idx = idx
         
-        if idx >= 0 && idx < size_
-        {
-            for nodeIdx in 0 ..< nodes.count
-            {
+        if idx >= 0 && idx < size_ {
+            for nodeIdx in 0 ..< nodes.count {
                 let node = nodes[nodeIdx]
                 
-                if idx < node.size()
-                {
+                if idx < node.size() {
                     let newNode = node.with(idx: idx, value: value)
                     
-                    if newNode !== node
-                    {
+                    if newNode !== node {
                         var newNodes = nodes
                         newNodes[nodeIdx] = newNode
                         return TreeNode(level: level, nodes: newNodes, size: size_)
                     }
-                    else
-                    {
+                    else {
                         return self
                     }
                 }
-                else
-                {
+                else {
                     idx -= node.size()
                 }
             }
@@ -169,38 +143,30 @@ private final class TreeNode<E> : Node<E>
         fatalError("Logical error in TreeNode")
     }
     
-    override func set(idx: Int, value: E)
-    {
+    override func set(idx: Int, value: E) {
         var idx = idx
         
-        if idx >= 0 && idx < size_
-        {
-            for nodeIdx in 0 ..< nodes.count
-            {
+        if idx >= 0 && idx < size_ {
+            for nodeIdx in 0 ..< nodes.count {
                 let unshared = isKnownUniquelyReferenced(&nodes[nodeIdx])
                 
                 let node = nodes[nodeIdx]
                 
-                if idx < node.size()
-                {
-                    if unshared
-                    {
+                if idx < node.size() {
+                    if unshared {
                         node.set(idx: idx, value: value)
                     }
-                    else
-                    {
+                    else {
                         let newNode = node.with(idx: idx, value: value)
                         
-                        if newNode !== node
-                        {
+                        if newNode !== node {
                             nodes[nodeIdx] = newNode
                         }
                     }
                     
                     return
                 }
-                else
-                {
+                else {
                     idx -= node.size()
                 }
             }
@@ -209,27 +175,22 @@ private final class TreeNode<E> : Node<E>
         fatalError("Logical error in TreeNode")
     }
     
-    override func size() -> Int
-    {
+    override func size() -> Int {
         return size_
     }
     
-    override func isFull() -> Bool
-    {
+    override func isFull() -> Bool {
         return nodes.count == MAX_NODE_CHILDREN && nodes[nodes.count - 1].isFull()
     }
     
-    override func plus(value: E) -> Node<E>?
-    {
+    override func plus(value: E) -> Node<E>? {
         // attempt to replace the last sub-node
-        if nodes.count > 0
-        {
+        if nodes.count > 0 {
             let lastSubnode = nodes[nodes.count - 1]
             
             let lastSubnodeReplacement = lastSubnode.plus(value: value)
             
-            if let lastSubnodeReplacement = lastSubnodeReplacement
-            {
+            if let lastSubnodeReplacement = lastSubnodeReplacement {
                 var newNodes = nodes
                 newNodes[nodes.count - 1] = lastSubnodeReplacement
                 
@@ -238,8 +199,7 @@ private final class TreeNode<E> : Node<E>
         }
         
         // attempt to add a new sub-node
-        if nodes.count < MAX_NODE_CHILDREN
-        {
+        if nodes.count < MAX_NODE_CHILDREN {
             var newNodes = nodes
             newNodes.append(createNodeForValue(level: level - 1, value: value))
             
@@ -250,30 +210,24 @@ private final class TreeNode<E> : Node<E>
         return nil
     }
     
-    override func add(value: E) -> Bool
-    {
+    override func add(value: E) -> Bool {
         // attempt to replace the last sub-node
-        if nodes.count > 0
-        {
+        if nodes.count > 0 {
             let unshared = isKnownUniquelyReferenced(&nodes[nodes.count - 1])
             
             let lastSubnode = nodes[nodes.count - 1]
             
-            if unshared
-            {
-                if lastSubnode.add(value: value)
-                {
+            if unshared {
+                if lastSubnode.add(value: value) {
                     size_ += 1
                     
                     return true;
                 }
             }
-            else
-            {
+            else {
                 let lastSubnodeReplacement = lastSubnode.plus(value: value)
                 
-                if let lastSubnodeReplacement = lastSubnodeReplacement
-                {
+                if let lastSubnodeReplacement = lastSubnodeReplacement {
                     nodes[nodes.count - 1] = lastSubnodeReplacement
                     
                     return true
@@ -282,8 +236,7 @@ private final class TreeNode<E> : Node<E>
         }
         
         // attempt to add a new sub-node
-        if nodes.count < MAX_NODE_CHILDREN
-        {
+        if nodes.count < MAX_NODE_CHILDREN {
             nodes.append(createNodeForValue(level: level - 1, value: value))
             
             size_ += 1
@@ -295,18 +248,15 @@ private final class TreeNode<E> : Node<E>
         return false
     }
     
-    override func plus(valueNode: ValueNode<E>) -> TreeNode?
-    {
+    override func plus(valueNode: ValueNode<E>) -> TreeNode? {
         // attempt to replace the last sub-node
-        if nodes.count > 0
-        {
+        if nodes.count > 0 {
             let lastSubnode = nodes[nodes.count - 1]
             
             let lastSubnodeReplacement = lastSubnode.plus(valueNode: valueNode)
             
             // if the last sub-node is not full and thus could create a replacement node...
-            if let lastSubnodeReplacement = lastSubnodeReplacement
-            {
+            if let lastSubnodeReplacement = lastSubnodeReplacement {
                 var newNodes = nodes
                 newNodes[nodes.count - 1] = lastSubnodeReplacement
                 
@@ -315,8 +265,7 @@ private final class TreeNode<E> : Node<E>
         }
         
         // attempt to add a new sub-node
-        if nodes.count < MAX_NODE_CHILDREN
-        {
+        if nodes.count < MAX_NODE_CHILDREN {
             var newNodes = nodes
             newNodes.append(createNodeForValueNode(level: level - 1, valueNode: valueNode))
             
@@ -327,37 +276,30 @@ private final class TreeNode<E> : Node<E>
         return nil
     }
     
-    override func withoutLast() -> TreeNode?
-    {
+    override func withoutLast() -> TreeNode? {
         let lastSubnode = nodes[nodes.count - 1]
         
         let lastSubnodeReplacement = lastSubnode.withoutLast()
         
-        if let lastSubnodeReplacement = lastSubnodeReplacement
-        {
+        if let lastSubnodeReplacement = lastSubnodeReplacement {
             var newNodes = nodes
             newNodes[nodes.count - 1] = lastSubnodeReplacement
             
-            if lastSubnodeReplacement.size() != lastSubnode.size() - 1
-            {
+            if lastSubnodeReplacement.size() != lastSubnode.size() - 1 {
                 fatalError("Logical error - subnode of size \(lastSubnode.size()) returned null on withoutLast")
             }
             
             return TreeNode(level: level, nodes: newNodes, size: size_ - 1)
         }
-        else
-        {
-            if nodes.count == 1
-            {
+        else {
+            if nodes.count == 1 {
                 return nil
             }
-            else
-            {
+            else {
                 var newNodes = nodes
                 newNodes.removeLast()
                 
-                if lastSubnode.size() != 1
-                {
+                if lastSubnode.size() != 1 {
                     fatalError("Logical error - subnode of size \(lastSubnode.size()) returned null on withoutLast")
                 }
                 
@@ -366,16 +308,13 @@ private final class TreeNode<E> : Node<E>
         }
     }
     
-    override func removeLast() -> Bool
-    {
+    override func removeLast() -> Bool {
         let unshared = isKnownUniquelyReferenced(&nodes[nodes.count - 1])
         
         let lastSubnode = nodes[nodes.count - 1]
         
-        if unshared
-        {
-            if lastSubnode.removeLast() == false
-            {
+        if unshared {
+            if lastSubnode.removeLast() == false {
                 nodes.removeLast()
             }
             
@@ -383,16 +322,13 @@ private final class TreeNode<E> : Node<E>
             
             return size_ > 0
         }
-        else
-        {
+        else {
             let lastSubnodeReplacement = lastSubnode.withoutLast()
             
-            if let lastSubnodeReplacement = lastSubnodeReplacement
-            {
+            if let lastSubnodeReplacement = lastSubnodeReplacement {
                 nodes[nodes.count - 1] = lastSubnodeReplacement
                 
-                if lastSubnodeReplacement.size() != lastSubnode.size() - 1
-                {
+                if lastSubnodeReplacement.size() != lastSubnode.size() - 1 {
                     fatalError("Logical error - subnode of size \(lastSubnode.size()) returned null on withoutLast")
                 }
                 
@@ -400,18 +336,14 @@ private final class TreeNode<E> : Node<E>
                 
                 return true
             }
-            else
-            {
-                if nodes.count == 1
-                {
+            else {
+                if nodes.count == 1 {
                     return false
                 }
-                else
-                {
+                else {
                     nodes.removeLast()
                     
-                    if lastSubnode.size() != 1
-                    {
+                    if lastSubnode.size() != 1 {
                         fatalError("Logical error - subnode of size \(lastSubnode.size()) returned null on withoutLast")
                     }
                     
@@ -424,14 +356,11 @@ private final class TreeNode<E> : Node<E>
     }
 }
 
-private final class ValueNode<E> : Node<E>
-{
+private final class ValueNode<E> : Node<E> {
     var data: [E]
     
-    init(data: [E])
-    {
-        if data.count > MAX_NODE_CHILDREN
-        {
+    init(data: [E]) {
+        if data.count > MAX_NODE_CHILDREN {
             fatalError("data.length > MAX_NODE_CHILDREN")
         }
         
@@ -440,66 +369,52 @@ private final class ValueNode<E> : Node<E>
         super.init(level: 0)
     }
     
-    init(value: E)
-    {
+    init(value: E) {
         self.data = [value]
         
         super.init(level: 0)
     }
     
-    override func get(idx: Int) -> E
-    {
-        if idx < data.count
-        {
+    override func get(idx: Int) -> E {
+        if idx < data.count {
             return data[idx]
         }
-        else
-        {
+        else {
             fatalError("Logical error in ValueNode")
         }
     }
     
-    override func with(idx: Int, value: E) -> ValueNode
-    {
-        if idx < data.count
-        {
+    override func with(idx: Int, value: E) -> ValueNode {
+        if idx < data.count {
             var newData = data
             newData[idx] = value
             return ValueNode(data: newData)
         }
-        else
-        {
+        else {
             fatalError("Logical error in ValueNode")
         }
     }
     
-    override func set(idx: Int, value: E)
-    {
-        if idx < data.count
-        {
+    override func set(idx: Int, value: E) {
+        if idx < data.count {
             data[idx] = value
         }
-        else
-        {
+        else {
             fatalError("Logical error in ValueNode")
         }
     }
     
-    override func size() -> Int
-    {
+    override func size() -> Int {
         return data.count
     }
     
-    override func isFull() -> Bool
-    {
+    override func isFull() -> Bool {
         return data.count == MAX_NODE_CHILDREN
     }
     
-    override func plus(value: E) -> Node<E>?
-    {
+    override func plus(value: E) -> Node<E>? {
         // attempt to add a new value
-        if data.count <  MAX_NODE_CHILDREN
-        {
+        if data.count <  MAX_NODE_CHILDREN {
             var newData = data
             newData.append(value)
             
@@ -510,11 +425,9 @@ private final class ValueNode<E> : Node<E>
         return nil
     }
     
-    override func add(value: E) -> Bool
-    {
+    override func add(value: E) -> Bool {
         // attempt to add a new value
-        if data.count <  MAX_NODE_CHILDREN
-        {
+        if data.count <  MAX_NODE_CHILDREN {
             data.append(value)
             
             return true
@@ -524,30 +437,23 @@ private final class ValueNode<E> : Node<E>
         return false
     }
     
-    override func plus(valueNode: ValueNode) -> Node<E>?
-    {
-        if data.count == 0
-        {
+    override func plus(valueNode: ValueNode) -> Node<E>? {
+        if data.count == 0 {
             return valueNode
         }
-        else if data.count == MAX_NODE_CHILDREN
-        {
+        else if data.count == MAX_NODE_CHILDREN {
             return nil
         }
-        else
-        {
+        else {
             fatalError("Logical error in ValueNode")
         }
     }
     
-    override func withoutLast() -> Node<E>?
-    {
-        if data.count == 1
-        {
+    override func withoutLast() -> Node<E>? {
+        if data.count == 1 {
             return nil
         }
-        else
-        {
+        else {
             var newData = data
             newData.removeLast()
             
@@ -555,14 +461,11 @@ private final class ValueNode<E> : Node<E>
         }
     }
     
-    override func removeLast() -> Bool
-    {
-        if data.count == 1
-        {
+    override func removeLast() -> Bool {
+        if data.count == 1 {
             return false
         }
-        else
-        {
+        else {
             data.removeLast()
             
             return true
@@ -570,44 +473,34 @@ private final class ValueNode<E> : Node<E>
     }
 }
 
-private func createNodeForValue<E>(level: Int, value: E) -> Node<E>
-{
-    if level > 0
-    {
+private func createNodeForValue<E>(level: Int, value: E) -> Node<E> {
+    if level > 0 {
         return TreeNode(level: level, subNode: createNodeForValue(level: level - 1, value: value))
     }
-    else if level == 0
-    {
+    else if level == 0 {
         return ValueNode(value: value)
     }
-    else
-    {
+    else {
         fatalError("Logical error in createNodeForValue")
     }
 }
 
-private func createNodeForValueNode<E>(level: Int, valueNode: ValueNode<E>) -> Node<E>
-{
-    if level > 1
-    {
+private func createNodeForValueNode<E>(level: Int, valueNode: ValueNode<E>) -> Node<E> {
+    if level > 1 {
         return TreeNode(level: level, subNode: createNodeForValueNode(level: level - 1, valueNode: valueNode))
     }
-    else if level == 1
-    {
+    else if level == 1 {
         return TreeNode(level: level, subNode: valueNode)
     }
-    else if level == 0
-    {
+    else if level == 0 {
         return valueNode
     }
-    else
-    {
+    else {
         fatalError("Logical error in createNodeForValue")
     }
 }
 
-public struct VectorIterator<E> : IteratorProtocol
-{
+public struct VectorIterator<E> : IteratorProtocol {
     private var path = [TreeNode<E>?](repeating: nil, count: 7)
     private var pathIdx = [Int8](repeating: 0, count: 7)
     private var pathSize = 0
@@ -618,41 +511,33 @@ public struct VectorIterator<E> : IteratorProtocol
     
     private var valueIdx = 0
     
-    fileprivate init()
-    {
+    fileprivate init() {
         finished = true;
     }
     
-    fileprivate init(root: Node<E>)
-    {
+    fileprivate init(root: Node<E>) {
         var node = root
         
-        while node.size() != 0
-		{
-            if let treeNode = node as? TreeNode
-            {
+        while node.size() != 0 {
+            if let treeNode = node as? TreeNode {
                 path[pathSize] = treeNode
                 pathIdx[pathSize] = 0
                 pathSize += 1
                 
                 node = treeNode.nodes[0]
             }
-            else if let valueNode = node as? ValueNode
-            {
+            else if let valueNode = node as? ValueNode {
                 self.valueNode = valueNode
                 valueIdx = 0
                 break
             }
-            else
-            {
+            else {
                 fatalError("Unknown node type: \(type(of: node))")
             }
         }
         
-        if valueNode == nil || valueNode?.size() == 0
-        {
-            if pathSize != 0
-            {
+        if valueNode == nil || valueNode?.size() == 0 {
+            if pathSize != 0 {
                 fatalError("Logical error: depth > 1 but empty")
             }
             
@@ -660,10 +545,8 @@ public struct VectorIterator<E> : IteratorProtocol
         }
     }
     
-    public mutating func next() -> E?
-    {
-        if finished
-        {
+    public mutating func next() -> E? {
+        if finished {
             return nil
         }
         
@@ -671,27 +554,21 @@ public struct VectorIterator<E> : IteratorProtocol
         
         valueIdx += 1
         
-        if valueIdx == valueNode!.data.count
-        {
-            if pathSize > 0
-            {
+        if valueIdx == valueNode!.data.count {
+            if pathSize > 0 {
                 var idx = pathSize - 1
                     
-                while true
-                {
-                    if path[idx] == nil
-                    {
+                while true {
+                    if path[idx] == nil {
                         fatalError("path[\(idx)] is nil for pathSize \(pathSize) - path: \(path)")
                     }
                     
-                    if Int(pathIdx[idx]) < path[idx]!.nodes.count - 1
-                    {
+                    if Int(pathIdx[idx]) < path[idx]!.nodes.count - 1 {
                         pathIdx[idx] += 1
                         
                         var newSubnode = path[idx]!.nodes[Int(pathIdx[idx])]
                         
-                        while let treeNode = newSubnode as? TreeNode
-                        {
+                        while let treeNode = newSubnode as? TreeNode {
                             idx += 1
                             path[idx] = treeNode
                             pathIdx[idx] = 0
@@ -703,16 +580,13 @@ public struct VectorIterator<E> : IteratorProtocol
                         valueIdx = 0
                         break
                     }
-                    else
-                    {
-                        if idx > 0
-                        {
+                    else {
+                        if idx > 0 {
                             path[idx] = nil
                             pathIdx[idx] = 0
                             idx -= 1
                         }
-                        else
-                        {
+                        else {
                             finished = true
                             path.removeAll()
                             pathIdx.removeAll()
@@ -721,8 +595,7 @@ public struct VectorIterator<E> : IteratorProtocol
                     }
                 }
             }
-            else
-            {
+            else {
                 finished = true
                 path.removeAll()
                 pathIdx.removeAll()
@@ -733,53 +606,44 @@ public struct VectorIterator<E> : IteratorProtocol
     }
 }
 
-public struct PersistentVector<E>: Sequence, CustomStringConvertible//, Indexable
-{
+//, Indexable
+public struct PersistentVector<E>: Sequence, CustomStringConvertible {
     typealias ElementType = E
     
     fileprivate var root: Node<E>?
     
-    private init(root: Node<E>?)
-    {
+    private init(root: Node<E>?) {
         self.root = root
     }
     
-    public init()
-    {
+    public init() {
         root = nil
     }
     
     // TODO fix once possible
     // TODO replace == E with ": E" if possible
-    public init<S: Sequence>(seq: S) where S.Iterator.Element == E
-    {
+    public init<S: Sequence>(seq: S) where S.Iterator.Element == E {
         root = nil
         
         var buffer = [E]()
         
-        for value in seq
-        {
-            if buffer.count < MAX_NODE_CHILDREN
-            {
+        for value in seq {
+            if buffer.count < MAX_NODE_CHILDREN {
                 buffer.append(value)
             }
-            else
-            {
+            else {
                 let valueNode = ValueNode<E>(data: buffer)
                 
-                if let root = self.root
-                {
+                if let root = self.root {
                     var newRoot = root.plus(valueNode: valueNode)
                     
-                    if newRoot == nil
-                    {
+                    if newRoot == nil {
                         newRoot = TreeNode(lhs: root, rhs: valueNode)
                     }
                     
                     self.root = newRoot
                 }
-                else
-                {
+                else {
                     self.root = valueNode
                 }
                 
@@ -787,27 +651,21 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible//, Indexabl
             }
         }
         
-        if buffer.count > 0
-        {
+        if buffer.count > 0 {
             let valueNode = ValueNode<E>(data: buffer)
             
-            if let root = root
-            {
+            if let root = root {
                 self.root = root.plus(valueNode: valueNode)
             }
-            else
-            {
+            else {
                 self.root = valueNode
             }
         }
     }
     
-    public func get(_ idx: Int) -> E
-    {
-        if let root = root
-        {
-            if idx >= 0 && idx < root.size()
-            {
+    public func get(_ idx: Int) -> E {
+        if let root = root {
+            if idx >= 0 && idx < root.size() {
                 return root.get(idx: idx)
             }
         }
@@ -815,12 +673,9 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible//, Indexabl
         fatalError("Vector access out of range - index: \(idx), size: \(count)")
     }
     
-    public func with(_ idx: Int, value: E) -> PersistentVector
-    {
-        if let root = root
-        {
-            if idx >= 0 && idx < root.size()
-            {
+    public func with(_ idx: Int, value: E) -> PersistentVector {
+        if let root = root {
+            if idx >= 0 && idx < root.size() {
                 return PersistentVector(root: root.with(idx: idx, value: value))
             }
         }
@@ -828,20 +683,15 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible//, Indexabl
         fatalError("Vector access out of range - index: \(idx), size: \(count)")
     }
     
-    public mutating func set(_ idx: Int, value: E)
-    {
+    public mutating func set(_ idx: Int, value: E) {
         let unshared = isKnownUniquelyReferenced(&root)
         
-        if let root = root
-        {
-            if idx >= 0 && idx < root.size()
-            {
-                if unshared
-                {
+        if let root = root {
+            if idx >= 0 && idx < root.size() {
+                if unshared {
                     root.set(idx: idx, value: value)
                 }
-                else
-                {
+                else {
                     self.root = root.with(idx: idx, value: value)
                 }
                 
@@ -852,131 +702,100 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible//, Indexabl
         fatalError("Vector access out of range - index: \(idx), size: \(count)")
     }
     
-    public func plus(_ value: E) -> PersistentVector
-    {
-        if let root = root
-        {
-            if root.size() == Int.max
-            {
+    public func plus(_ value: E) -> PersistentVector {
+        if let root = root {
+            if root.size() == Int.max {
                 fatalError("Size already at Int.max")
             }
             
             let newRoot = root.plus(value: value)
             
-            if let newRoot = newRoot
-            {
+            if let newRoot = newRoot {
                 return PersistentVector(root: newRoot)
             }
-            else
-            {
+            else {
                 return PersistentVector(root: TreeNode(lhs: root, rhs: value))
             }
         }
-        else
-        {
+        else {
             return PersistentVector(root: ValueNode(data: [ value ]))
         }
     }
     
-    public mutating func add(_ value: E)
-    {
+    public mutating func add(_ value: E) {
         let unshared = isKnownUniquelyReferenced(&root)
         
-        if let root = root
-        {
-            if root.size() == Int.max
-            {
+        if let root = root {
+            if root.size() == Int.max {
                 fatalError("Size already at Int.max")
             }
             
-            if unshared
-            {
-                if root.add(value: value) == false
-                {
+            if unshared {
+                if root.add(value: value) == false {
                     self.root = TreeNode(lhs: root, rhs: value)
                 }
             }
-            else
-            {
+            else {
                 let newRoot = root.plus(value: value)
                 
-                if let newRoot = newRoot
-                {
+                if let newRoot = newRoot {
                     self.root = newRoot
                 }
-                else
-                {
+                else {
                     self.root = TreeNode(lhs: root, rhs: value)
                 }
             }
         }
-        else
-        {
+        else {
             root = ValueNode(data: [ value ])
         }
     }
     
-    public func withoutLast() -> PersistentVector
-    {
-        if let root = root
-        {
+    public func withoutLast() -> PersistentVector {
+        if let root = root {
             return PersistentVector(root: root.withoutLast())
         }
-        else
-        {
+        else {
             fatalError("Vector is empty")
         }
     }
 	
-	public mutating func removeLast()
-	{
+	public mutating func removeLast() {
         let unshared = isKnownUniquelyReferenced(&root)
         
-        if let root = root
-        {
-            if unshared
-            {
-                if root.removeLast() == false
-                {
+        if let root = root {
+            if unshared {
+                if root.removeLast() == false {
                     self.root = nil
                     
                     return
                 }
             }
-            else
-            {
+            else {
                 self.root = root.withoutLast()
             }
         }
-		else
-        {
+		else {
             fatalError("Vector is empty")
         }
 	}
 	
-    public var count: Int
-    {
-        get
-        {
-            if let root = root
-            {
+    public var count: Int {
+        get {
+            if let root = root {
                 return root.size()
             }
-            else
-            {
+            else {
                 return 0
             }
         }
     }
     
-    public var description : String
-    {
-        get
-        {
+    public var description : String {
+        get {
             var result: String = "List ["
             var first = true
-            for element in self
-            {
+            for element in self {
                 result += (first ? " " : ", ")
                 result += "\(element)"
                 first = false
@@ -987,46 +806,35 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible//, Indexabl
         }
     }
     
-    public func makeIterator() -> VectorIterator<E>
-    {
-        if let root = root
-        {
+    public func makeIterator() -> VectorIterator<E> {
+        if let root = root {
             return VectorIterator<E>(root: root)
         }
-        else
-        {
+        else {
             return VectorIterator<E>()
         }
     }
     
-    public var depth: Int
-    {
-        get
-        {
-            if let root = root
-            {
+    public var depth: Int {
+        get {
+            if let root = root {
                 return root.level + 1
             }
-            else
-            {
+            else {
                 return 0
             }
         }
     }
 }
 
-extension PersistentVector where E: Hashable
-{
-	public var hashValue: Int
-	{
-		get
-		{
+extension PersistentVector where E: Hashable {
+	public var hashValue: Int {
+		get {
             NSLog("Fetching hashvalue from vector of size \(count)")
             
             var result = count
             
-            for element in self
-            {
+            for element in self {
                 result = result &* ReasonablePrime
                 result = result &+ element.hashValue
             }
@@ -1038,10 +846,8 @@ extension PersistentVector where E: Hashable
 
 extension PersistentVector where E : Equatable {
     
-    public static func == (lhs: PersistentVector, rhs: PersistentVector) -> Bool
-    {
-        if lhs.count != rhs.count
-        {
+    public static func == (lhs: PersistentVector, rhs: PersistentVector) -> Bool {
+        if lhs.count != rhs.count {
             return false
         }
         
@@ -1050,18 +856,15 @@ extension PersistentVector where E : Equatable {
         // once constrained extensions with protocol conformance are possible,
         // i.e. when PersistentVector can conform to Equatable where E: Equatable
         
-        if let lhsRoot = lhs.root, let rhsRoot = rhs.root
-        {
+        if let lhsRoot = lhs.root, let rhsRoot = rhs.root {
             return lhsRoot == rhsRoot
         }
-        else
-        {
+        else {
             return lhs.root == nil && rhs.root == nil
         }
     }
     
-    public static func != (lhs: PersistentVector, rhs: PersistentVector) -> Bool
-    {
+    public static func != (lhs: PersistentVector, rhs: PersistentVector) -> Bool {
         return (lhs == rhs) == false;
     }
 }

@@ -2,25 +2,21 @@
 import XCTest
 import Mutabor
 
-class PersistentHashSetTest: XCTestCase
-{
-    override func setUp()
-    {
+class PersistentHashSetTest: XCTestCase {
+    override func setUp() {
         super.setUp()
         
         super.continueAfterFailure = false
     }
     
-    override func tearDown()
-    {
+    override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
     
     typealias RandomIntSource = () -> Int32
     
-    func testBasicFunctionality()
-    {
+    func testBasicFunctionality() {
         let set = PersistentHashSet<Int>()
         
         XCTAssert(0 == set.count)
@@ -77,10 +73,8 @@ class PersistentHashSetTest: XCTestCase
         XCTAssert(a == b)
     }
     
-    func testRandomData()
-    {
-        for i in 0 ..< 10
-        {
+    func testRandomData() {
+        for i in 0 ..< 10 {
             print(i)
         
             var set = PersistentHashSet<Int32>()
@@ -92,23 +86,19 @@ class PersistentHashSetTest: XCTestCase
             
             var storedMaps = [(PersistentHashSet<Int32>, Int)]()
         
-            for _ in 0 ..< n
-            {
+            for _ in 0 ..< n {
                 let key = randomInt()
                 
-                if randomBool()
-                {
+                if randomBool() {
                     set = set.plus(key)
                 }
-                else
-                {
+                else {
                     set.add(key)
                 }
                 
                 hashset.insert(key)
                 
-                if randomBool(10_000)
-                {
+                if randomBool(10_000) {
                     storedMaps.append((set, set.count))
                 }
         
@@ -129,15 +119,13 @@ class PersistentHashSetTest: XCTestCase
             
             print("Checking stored set sanity...")
             
-            for (set, size) in storedMaps
-            {
+            for (set, size) in storedMaps {
                 print("set of size \(size)")
                 
                 XCTAssert(set.count == size)
                 
                 var n = 0
-                for _ in set
-                {
+                for _ in set {
                     n += 1
                 }
                 
@@ -152,40 +140,32 @@ class PersistentHashSetTest: XCTestCase
         }
     }
 
-    func testLow8BitsRandomDataWithRemoval()
-    {
+    func testLow8BitsRandomDataWithRemoval() {
         randomDataWithRemovalImpl({ () -> Int32 in Int32(randomInt() & 0x000000FF) }, "low 8 bits")
     }
 
-    func testHigh8BitsRandomDataWithRemoval()
-    {
+    func testHigh8BitsRandomDataWithRemoval() {
         randomDataWithRemovalImpl({ () -> Int32 in Int32(bitPattern: UInt32(bitPattern: randomInt()) & 0xFF000000) }, "high 8 bits")
     }
 
-    func testLow16BitsRandomDataWithRemoval()
-    {
+    func testLow16BitsRandomDataWithRemoval() {
     randomDataWithRemovalImpl({ () -> Int32 in Int32(randomInt() & 0x0000FFFF) }, "low 16 bits")
     }
 
-    func testMid16BitsRandomDataWithRemoval()
-    {
+    func testMid16BitsRandomDataWithRemoval() {
     randomDataWithRemovalImpl({ () -> Int32 in Int32(randomInt() & 0x00FFFF00) }, "mid 16 bits")
     }
 
-    func testHigh16BitsRandomDataWithRemoval()
-    {
+    func testHigh16BitsRandomDataWithRemoval() {
         randomDataWithRemovalImpl({ () -> Int32 in Int32(bitPattern: UInt32(bitPattern: randomInt()) & 0xFFFF0000) }, "high 16 bits")
     }
 
-    func testFullRandomDataWithRemoval()
-    {
+    func testFullRandomDataWithRemoval() {
         randomDataWithRemovalImpl({ () -> Int32 in randomInt() }, "full")
     }
 
-    func randomDataWithRemovalImpl(_ source: RandomIntSource, _ name: String)
-    {
-        for i in 0 ..< 10
-        {
+    func randomDataWithRemovalImpl(_ source: RandomIntSource, _ name: String) {
+        for i in 0 ..< 10 {
             print(i)
 
             var set = PersistentHashSet<Int32>()
@@ -199,16 +179,13 @@ class PersistentHashSetTest: XCTestCase
 
             var removalCount = 0
 
-            for _ in 0 ..< n
-            {
+            for _ in 0 ..< n {
                 let key = source()
 
-                if randomBool()
-                {
+                if randomBool() {
                     set = set.plus(key)
                 }
-                else
-                {
+                else {
                     set.add(key)
                 }
                 
@@ -217,39 +194,32 @@ class PersistentHashSetTest: XCTestCase
                 let keyToRemove = (randomBool() ? key : source())
 
                 let sizeBeforeRemoval = set.count
-                if hashset.count != sizeBeforeRemoval
-                {
+                if hashset.count != sizeBeforeRemoval {
                     XCTFail("Asymmetric adding behavior - set size: \(set.count), hashset size: \(hashset.count)")
                 }
 
-                if randomBool()
-                {
+                if randomBool() {
                     set = set.minus(keyToRemove)
                 }
-                else
-                {
+                else {
                     set.remove(keyToRemove)
                 }
                 
                 hashset.remove(keyToRemove)
 
                 let sizeAfterRemoval = set.count
-                if hashset.count != sizeAfterRemoval
-                {
+                if hashset.count != sizeAfterRemoval {
                     XCTFail("Asymmetric removal behavior - set size: \(set.count), hashset size: \(hashset.count)")
                 }
 
-                if (sizeAfterRemoval == sizeBeforeRemoval - 1)
-                {
+                if (sizeAfterRemoval == sizeBeforeRemoval - 1) {
                     removalCount += 1
                 }
-                else if (sizeAfterRemoval != sizeBeforeRemoval)
-                {
+                else if (sizeAfterRemoval != sizeBeforeRemoval) {
                     XCTFail("Unexpected removal behavior - set size: \(set.count), hashset size: \(hashset.count)")
                 }
                 
-                if randomBool(10_000)
-                {
+                if randomBool(10_000) {
                     storedMaps.append((set, set.count))
                 }
 
@@ -272,15 +242,13 @@ class PersistentHashSetTest: XCTestCase
             
             print("Checking stored set sanity...")
             
-            for (set, size) in storedMaps
-            {
+            for (set, size) in storedMaps {
                 print("set of size \(size)")
                 
                 XCTAssert(set.count == size)
                 
                 var n = 0
-                for _ in set
-                {
+                for _ in set {
                     n += 1
                 }
                 
@@ -297,42 +265,36 @@ class PersistentHashSetTest: XCTestCase
         }
     }
     
-    func testHighHashCollider()
-    {
+    func testHighHashCollider() {
         randomObjectsWithRemovalImpl(
             source: { () -> HighHashCollider in HighHashCollider(randomLong()) },
             name: "high hash collider",
             testRemoval: false)
     }
 
-    func testHighHashColliderWithRemoval()
-    {
+    func testHighHashColliderWithRemoval() {
         randomObjectsWithRemovalImpl(
             source: { () -> HighHashCollider in HighHashCollider(randomLong()) },
             name: "high hash collider",
             testRemoval: true)
     }
 
-    func testLowHashCollider()
-    {
+    func testLowHashCollider() {
         randomObjectsWithRemovalImpl(
             source: { () -> LowHashCollider in LowHashCollider(randomLong()) },
             name: "high hash collider",
             testRemoval: false)
     }
 
-    func testLowHashColliderWithRemoval()
-    {
+    func testLowHashColliderWithRemoval() {
         randomObjectsWithRemovalImpl(
             source: { () -> LowHashCollider in LowHashCollider(randomLong()) },
             name: "high hash collider",
             testRemoval: true)
     }
     
-    private func randomObjectsWithRemovalImpl<E>(source: () -> E, name: String, testRemoval: Bool) where E: Hashable, E: Comparable
-    {
-        for i in 0 ..< 10
-        {
+    private func randomObjectsWithRemovalImpl<E>(source: () -> E, name: String, testRemoval: Bool) where E: Hashable, E: Comparable {
+        for i in 0 ..< 10 {
             print(i)
 
             var set = PersistentHashSet<E>()
@@ -346,60 +308,49 @@ class PersistentHashSetTest: XCTestCase
 
             var removalCount = 0
 
-            for _ in 0 ..< n
-            {
+            for _ in 0 ..< n {
                 let key = source()
 
-                if randomBool()
-                {
+                if randomBool() {
                     set = set.plus(key)
                 }
-                else
-                {
+                else {
                     set.add(key)
                 }
                 
                 hashset.insert(key)
 
-                if (testRemoval)
-                {
+                if (testRemoval) {
                     let keyToRemove = (randomBool() ? key : source())
 
                     let sizeBeforeRemoval = set.count
-                    if (hashset.count != sizeBeforeRemoval)
-                    {
+                    if (hashset.count != sizeBeforeRemoval) {
                         XCTFail("Asymmetric adding behavior - set size: \(set.count), hashset size: \(hashset.count)")
                     }
                     
-                    if randomBool()
-                    {
+                    if randomBool() {
                         set = set.minus(keyToRemove)
                     }
-                    else
-                    {
+                    else {
                         set.remove(keyToRemove)
                     }
                     
                     hashset.remove(keyToRemove)
 
                     let sizeAfterRemoval = set.count
-                    if (hashset.count != sizeAfterRemoval)
-                    {
+                    if (hashset.count != sizeAfterRemoval) {
                         XCTFail("Asymmetric removal behavior - set size: \(set.count), hashset size: \(hashset.count)")
                     }
 
-                    if (sizeAfterRemoval == sizeBeforeRemoval - 1)
-                    {
+                    if (sizeAfterRemoval == sizeBeforeRemoval - 1) {
                         removalCount += 1
                     }
-                    else if (sizeAfterRemoval != sizeBeforeRemoval)
-                    {
+                    else if (sizeAfterRemoval != sizeBeforeRemoval) {
                         XCTFail("Unexpected removal behavior - set size: \(set.count), hashset size: \(hashset.count)")
                     }
                 }
                 
-                if randomBool(10_000)
-                {
+                if randomBool(10_000) {
                     storedMaps.append((set, set.count))
                 }
 
@@ -411,8 +362,7 @@ class PersistentHashSetTest: XCTestCase
 
             print("MAX: \(Max), hashset size: \(hashset.count), set size: \(set.count)")
             
-            if (testRemoval)
-            {
+            if (testRemoval) {
                 print("Items removed: \(removalCount)")
             }
             
@@ -425,15 +375,13 @@ class PersistentHashSetTest: XCTestCase
             
             print("Checking stored set sanity...")
             
-            for (set, size) in storedMaps
-            {
+            for (set, size) in storedMaps {
                 print("set of size \(size)")
                 
                 XCTAssert(set.count == size)
                 
                 var n = 0
-                for _ in set
-                {
+                for _ in set {
                     n += 1
                 }
                 
@@ -450,8 +398,7 @@ class PersistentHashSetTest: XCTestCase
         }
     }
 
-    func checkListEquality<E>(_ set: PersistentHashSet<E>, _ hashset: Set<E>) where E: Comparable
-    {
+    func checkListEquality<E>(_ set: PersistentHashSet<E>, _ hashset: Set<E>) where E: Comparable {
         var hashsetList = [E](hashset)
         var setList = [E](set)
         
@@ -461,8 +408,7 @@ class PersistentHashSetTest: XCTestCase
         
         print("Checking list equality of \(set.count) entries...")
         
-        defer
-        {
+        defer {
             print("...finished.")
         }
         
@@ -475,16 +421,13 @@ class PersistentHashSetTest: XCTestCase
 
         let size = setList.count
         XCTAssert(hashsetList.count == size)
-        for idx in 0 ..< size
-        {
+        for idx in 0 ..< size {
             XCTAssert(setList[idx] == hashsetList[idx], "idx: \(idx)")
         }
     }
     
-    private func equal<E>(_ lhs: Set<E>, _ rhs: PersistentHashSet<E>) -> String?
-    {
-        if (lhs.count != rhs.count)
-        {
+    private func equal<E>(_ lhs: Set<E>, _ rhs: PersistentHashSet<E>) -> String? {
+        if (lhs.count != rhs.count) {
             return "lhs.count: \(lhs.count), rhs.count: \(rhs.count)";
         }
         
@@ -492,15 +435,12 @@ class PersistentHashSetTest: XCTestCase
         
         print("Checking equality of \(size) entries...")
         
-        defer
-        {
+        defer {
             print("...finished.")
         }
         
-        for entry in lhs
-        {
-            if rhs.contains(entry) == false
-            {
+        for entry in lhs {
+            if rhs.contains(entry) == false {
                 return "Not contained in rhs: \(entry)"
             }
         }
@@ -508,21 +448,17 @@ class PersistentHashSetTest: XCTestCase
         return nil
     }
     
-    private func checkEqual<E>(_ lhs: Set<E>, _ rhs: PersistentHashSet<E>)
-    {
+    private func checkEqual<E>(_ lhs: Set<E>, _ rhs: PersistentHashSet<E>) {
         let result = equal(lhs, rhs)
-        if let result = result
-        {
+        if let result = result {
             print(result)
             print("hashset size: \(lhs.count), set size: \(rhs.count)")
         }
         XCTAssert(result == nil)
     }
     
-    private func equal<E>(_ lhs: PersistentHashSet<E>, _ rhs: Set<E>) -> String?
-    {
-        if (lhs.count != rhs.count)
-        {
+    private func equal<E>(_ lhs: PersistentHashSet<E>, _ rhs: Set<E>) -> String? {
+        if (lhs.count != rhs.count) {
             return "lhs.count: \(lhs.count), rhs.count: \(rhs.count)";
         }
         
@@ -530,15 +466,12 @@ class PersistentHashSetTest: XCTestCase
         
         print("Checking equality of \(size) entries...")
         
-        defer
-        {
+        defer {
             print("...finished.")
         }
         
-        for entry in lhs
-        {
-            if rhs.contains(entry) == false
-            {
+        for entry in lhs {
+            if rhs.contains(entry) == false {
                 return "Not contained in rhs: \(entry)"
             }
         }
@@ -546,19 +479,16 @@ class PersistentHashSetTest: XCTestCase
         return nil
     }
     
-    private func checkEqual<E>(_ lhs: PersistentHashSet<E>, _ rhs: Set<E>)
-    {
+    private func checkEqual<E>(_ lhs: PersistentHashSet<E>, _ rhs: Set<E>) {
         let result = equal(lhs, rhs)
-        if let result = result
-        {
+        if let result = result {
             print(result)
             print("set size: \(lhs.count), hashset size: \(rhs.count)")
         }
         XCTAssert(result == nil)
     }
     
-    private func checkEqualityOperator<E>(_ set: PersistentHashSet<E>, _ hashset: Set<E>)
-    {
+    private func checkEqualityOperator<E>(_ set: PersistentHashSet<E>, _ hashset: Set<E>) {
         let setFromHashset = PersistentHashSet<E>(hashset)
         
         print("Checking setFromHashset == set...")
@@ -572,8 +502,7 @@ class PersistentHashSetTest: XCTestCase
         print("done.")
     }
     
-    private func checkInequalityOperator<E>(_ set: PersistentHashSet<E>, _ hashset: Set<E>)
-    {
+    private func checkInequalityOperator<E>(_ set: PersistentHashSet<E>, _ hashset: Set<E>) {
         let setFromHashset = PersistentHashSet<E>(hashset)
         
         print("Checking setFromHashset != set...")
@@ -588,19 +517,16 @@ class PersistentHashSetTest: XCTestCase
     }
     
     // TODO fix - broken for small sets!!!
-    private func _checkInequality<E>(_ set: PersistentHashSet<E>, _ hashset: Set<E>, _ source: () -> E)
-    {
+    private func _checkInequality<E>(_ set: PersistentHashSet<E>, _ hashset: Set<E>, _ source: () -> E) {
         var setCopy = set
         var hashset = hashset
         
         var removedValue: E? = nil
         
-        while true
-        {
+        while true {
             let value = source()
             
-            if setCopy.contains(value)
-            {
+            if setCopy.contains(value) {
                 setCopy.remove(value)
                 checkInequalityOperator(setCopy, hashset)
                 removedValue = value
@@ -608,12 +534,10 @@ class PersistentHashSetTest: XCTestCase
             }
         }
         
-        while true
-        {
+        while true {
             let value = source()
             
-            if value != removedValue && set.contains(value) == false
-            {
+            if value != removedValue && set.contains(value) == false {
                 setCopy.add(value)
                 XCTAssert(setCopy.count == hashset.count)
                 checkInequalityOperator(setCopy, hashset)
@@ -621,12 +545,10 @@ class PersistentHashSetTest: XCTestCase
             }
         }
         
-        while true
-        {
+        while true {
             let value = source()
             
-            if hashset.contains(value)
-            {
+            if hashset.contains(value) {
                 hashset.remove(value)
                 checkInequalityOperator(set, hashset)
                 removedValue = value
@@ -634,12 +556,10 @@ class PersistentHashSetTest: XCTestCase
             }
         }
         
-        while true
-        {
+        while true {
             let value = source()
             
-            if value != removedValue && hashset.contains(value) == false
-            {
+            if value != removedValue && hashset.contains(value) == false {
                 hashset.insert(value)
                 XCTAssert(set.count == hashset.count)
                 checkInequalityOperator(set, hashset)
@@ -649,26 +569,21 @@ class PersistentHashSetTest: XCTestCase
     }
 }
 
-func drain<E>(_ set: PersistentHashSet<E>)
-{
-    if randomBool()
-    {
+func drain<E>(_ set: PersistentHashSet<E>) {
+    if randomBool() {
         drainPersistently(set)
         drainInPlace(set)
     }
-    else
-    {
+    else {
         drainInPlace(set)
         drainPersistently(set)
     }
 }
 
-func drainPersistently<E>(_ set: PersistentHashSet<E>)
-{
+func drainPersistently<E>(_ set: PersistentHashSet<E>) {
     var set = set
     
-    if set.count == 0
-    {
+    if set.count == 0 {
         return
     }
     
@@ -680,16 +595,14 @@ func drainPersistently<E>(_ set: PersistentHashSet<E>)
     var firstEntry: E?
     var lastEntry: E?
     
-    for entry in set
-    {
+    for entry in set {
         set = set.minus(entry)
         
         size -= 1
         
         XCTAssertEqual(set.count, size)
         
-        if firstEntry == nil
-        {
+        if firstEntry == nil {
             firstEntry = entry
         }
         
@@ -702,8 +615,7 @@ func drainPersistently<E>(_ set: PersistentHashSet<E>)
     
     XCTAssertEqual(set.count, 1)
     
-    if (sizeBefore > 1)
-    {
+    if (sizeBefore > 1) {
         print("shuffling first, last")
         
         set = set.plus(lastEntry!)
@@ -716,20 +628,17 @@ func drainPersistently<E>(_ set: PersistentHashSet<E>)
         
         set = set.minus(lastEntry!)
     }
-    else
-    {
+    else {
         set = set.minus(firstEntry!)
     }
     
     XCTAssertEqual(set.count, 0)
 }
 
-func drainInPlace<E>(_ set: PersistentHashSet<E>)
-{
+func drainInPlace<E>(_ set: PersistentHashSet<E>) {
     var set = set
     
-    if set.count == 0
-    {
+    if set.count == 0 {
         return
     }
     
@@ -741,16 +650,14 @@ func drainInPlace<E>(_ set: PersistentHashSet<E>)
     var firstEntry: E?
     var lastEntry: E?
     
-    for entry in set
-    {
+    for entry in set {
         set.remove(entry)
         
         size -= 1
         
         XCTAssertEqual(set.count, size)
         
-        if firstEntry == nil
-        {
+        if firstEntry == nil {
             firstEntry = entry
         }
         
@@ -763,8 +670,7 @@ func drainInPlace<E>(_ set: PersistentHashSet<E>)
     
     XCTAssertEqual(set.count, 1)
     
-    if (sizeBefore > 1)
-    {
+    if (sizeBefore > 1) {
         print("shuffling first, last")
         
         set.add(lastEntry!)
@@ -777,8 +683,7 @@ func drainInPlace<E>(_ set: PersistentHashSet<E>)
         
         set.remove(lastEntry!)
     }
-    else
-    {
+    else {
         set.remove(firstEntry!)
     }
     

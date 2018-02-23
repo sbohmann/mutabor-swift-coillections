@@ -2,23 +2,19 @@
 import XCTest
 import Mutabor
 
-class PersistentHashMapTest: XCTestCase
-{
-    override func setUp()
-    {
+class PersistentHashMapTest: XCTestCase {
+    override func setUp() {
         super.setUp()
         
         super.continueAfterFailure = false
     }
     
-    override func tearDown()
-    {
+    override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
     
-    func testBasicAssumptions()
-    {
+    func testBasicAssumptions() {
         XCTAssert(HASH_BITS == 32 || HASH_BITS == 64)
         print("HASH_BITS: \(HASH_BITS)")
         XCTAssert(MemoryLayout<Int>.size == 4 || MemoryLayout<Int>.size == 8)
@@ -28,8 +24,7 @@ class PersistentHashMapTest: XCTestCase
     
     typealias RandomIntSource = () -> Int32
     
-    func testBasicFunctionality()
-    {
+    func testBasicFunctionality() {
         let map = PersistentHashMap<Int,String>()
         
         XCTAssert(0 == map.count)
@@ -85,10 +80,8 @@ class PersistentHashMapTest: XCTestCase
         XCTAssert(a == b)
     }
     
-    func testRandomData()
-    {
-        for i in 0 ..< 10
-        {
+    func testRandomData() {
+        for i in 0 ..< 10 {
             print(i)
         
             var map = PersistentHashMap<Int32,Int32>()
@@ -100,24 +93,20 @@ class PersistentHashMapTest: XCTestCase
             
             var storedMaps = [(PersistentHashMap<Int32,Int32>, Int)]()
         
-            for _ in 0 ..< n
-            {
+            for _ in 0 ..< n {
                 let key = randomInt()
                 let value = randomInt()
                 
-                if randomBool()
-                {
+                if randomBool() {
                     map = map.with(key, value: value)
                 }
-                else
-                {
+                else {
                     map.put(key, value: value)
                 }
                 
                 hashmap[key] = value
                 
-                if randomBool(10_000)
-                {
+                if randomBool(10_000) {
                     storedMaps.append((map, map.count))
                 }
         
@@ -138,15 +127,13 @@ class PersistentHashMapTest: XCTestCase
             
             print("Checking stored map sanity...")
             
-            for (map, size) in storedMaps
-            {
+            for (map, size) in storedMaps {
                 print("map of size \(size)")
                 
                 XCTAssert(map.count == size)
                 
                 var n = 0
-                for _ in map
-                {
+                for _ in map {
                     n += 1
                 }
                 
@@ -161,40 +148,32 @@ class PersistentHashMapTest: XCTestCase
         }
     }
 
-    func testLow8BitsRandomDataWithRemoval()
-    {
+    func testLow8BitsRandomDataWithRemoval() {
         randomDataWithRemovalImpl({ () -> Int32 in Int32(randomInt() & 0x000000FF) }, "low 8 bits")
     }
 
-    func testHigh8BitsRandomDataWithRemoval()
-    {
+    func testHigh8BitsRandomDataWithRemoval() {
         randomDataWithRemovalImpl({ () -> Int32 in Int32(bitPattern: UInt32(bitPattern: randomInt()) & 0xFF000000) }, "high 8 bits")
     }
 
-    func testLow16BitsRandomDataWithRemoval()
-    {
+    func testLow16BitsRandomDataWithRemoval() {
     randomDataWithRemovalImpl({ () -> Int32 in Int32(randomInt() & 0x0000FFFF) }, "low 16 bits")
     }
 
-    func testMid16BitsRandomDataWithRemoval()
-    {
+    func testMid16BitsRandomDataWithRemoval() {
     randomDataWithRemovalImpl({ () -> Int32 in Int32(randomInt() & 0x00FFFF00) }, "mid 16 bits")
     }
 
-    func testHigh16BitsRandomDataWithRemoval()
-    {
+    func testHigh16BitsRandomDataWithRemoval() {
         randomDataWithRemovalImpl({ () -> Int32 in Int32(bitPattern: UInt32(bitPattern: randomInt()) & 0xFFFF0000) }, "high 16 bits")
     }
 
-    func testFullRandomDataWithRemoval()
-    {
+    func testFullRandomDataWithRemoval() {
         randomDataWithRemovalImpl({ () -> Int32 in randomInt() }, "full")
     }
 
-    func randomDataWithRemovalImpl(_ source: RandomIntSource, _ name: String)
-    {
-        for i in 0 ..< 10
-        {
+    func randomDataWithRemovalImpl(_ source: RandomIntSource, _ name: String) {
+        for i in 0 ..< 10 {
             print(i)
 
             var map = PersistentHashMap<Int32,Int32>()
@@ -208,17 +187,14 @@ class PersistentHashMapTest: XCTestCase
 
             var removalCount = 0
 
-            for _ in 0 ..< n
-            {
+            for _ in 0 ..< n {
                 let key = source()
                 let value = randomInt()
 
-                if randomBool()
-                {
+                if randomBool() {
                     map = map.with(key, value: value)
                 }
-                else
-                {
+                else {
                     map.put(key, value: value)
                 }
                 
@@ -227,39 +203,32 @@ class PersistentHashMapTest: XCTestCase
                 let keyToRemove = (randomBool() ? key : source())
 
                 let sizeBeforeRemoval = map.count
-                if hashmap.count != sizeBeforeRemoval
-                {
+                if hashmap.count != sizeBeforeRemoval {
                     XCTFail("Asymmetric adding behavior - map size: \(map.count), hashmap size: \(hashmap.count)")
                 }
 
-                if randomBool()
-                {
+                if randomBool() {
                     map = map.without(keyToRemove)
                 }
-                else
-                {
+                else {
                     map.remove(keyToRemove)
                 }
                 
                 hashmap.removeValue(forKey: keyToRemove)
 
                 let sizeAfterRemoval = map.count
-                if hashmap.count != sizeAfterRemoval
-                {
+                if hashmap.count != sizeAfterRemoval {
                     XCTFail("Asymmetric removal behavior - map size: \(map.count), hashmap size: \(hashmap.count)")
                 }
 
-                if (sizeAfterRemoval == sizeBeforeRemoval - 1)
-                {
+                if (sizeAfterRemoval == sizeBeforeRemoval - 1) {
                     removalCount += 1
                 }
-                else if (sizeAfterRemoval != sizeBeforeRemoval)
-                {
+                else if (sizeAfterRemoval != sizeBeforeRemoval) {
                     XCTFail("Unexpected removal behavior - map size: \(map.count), hashmap size: \(hashmap.count)")
                 }
                 
-                if randomBool(UInt32(n / 10 + 1))
-                {
+                if randomBool(UInt32(n / 10 + 1)) {
                     storedMaps.append((map, map.count))
                 }
 
@@ -282,15 +251,13 @@ class PersistentHashMapTest: XCTestCase
             
             print("Checking stored map sanity...")
             
-            for (map, size) in storedMaps
-            {
+            for (map, size) in storedMaps {
                 print("map of size \(size)")
                 
                 XCTAssert(map.count == size)
                 
                 var n = 0
-                for _ in map
-                {
+                for _ in map {
                     n += 1
                 }
                 
@@ -307,8 +274,7 @@ class PersistentHashMapTest: XCTestCase
         }
     }
     
-    func testHighHashCollider()
-    {
+    func testHighHashCollider() {
         randomObjectsWithRemovalImpl(
             keySource: { () -> HighHashCollider in HighHashCollider(randomLong()) },
             valueSource: { () -> Int32 in randomInt() },
@@ -316,8 +282,7 @@ class PersistentHashMapTest: XCTestCase
             testRemoval: false)
     }
 
-    func testHighHashColliderWithRemoval()
-    {
+    func testHighHashColliderWithRemoval() {
         randomObjectsWithRemovalImpl(
             keySource: { () -> HighHashCollider in HighHashCollider(randomLong()) },
             valueSource: { () -> Int32 in randomInt() },
@@ -325,8 +290,7 @@ class PersistentHashMapTest: XCTestCase
             testRemoval: true)
     }
 
-    func testLowHashCollider()
-    {
+    func testLowHashCollider() {
         randomObjectsWithRemovalImpl(
             keySource: { () -> LowHashCollider in LowHashCollider(randomLong()) },
             valueSource: { () -> Int32 in randomInt() },
@@ -334,8 +298,7 @@ class PersistentHashMapTest: XCTestCase
             testRemoval: false)
     }
 
-    func testLowHashColliderWithRemoval()
-    {
+    func testLowHashColliderWithRemoval() {
         randomObjectsWithRemovalImpl(
             keySource: { () -> LowHashCollider in LowHashCollider(randomLong()) },
             valueSource: { () -> Int32 in randomInt() },
@@ -343,10 +306,8 @@ class PersistentHashMapTest: XCTestCase
             testRemoval: true)
     }
     
-    private func randomObjectsWithRemovalImpl<K,V>(keySource: () -> K, valueSource: () -> V, name: String, testRemoval: Bool) where K: Hashable, K: Comparable, V: Equatable
-    {
-        for i in 0 ..< 10
-        {
+    private func randomObjectsWithRemovalImpl<K,V>(keySource: () -> K, valueSource: () -> V, name: String, testRemoval: Bool) where K: Hashable, K: Comparable, V: Equatable {
+        for i in 0 ..< 10 {
             print(i)
 
             var map = PersistentHashMap<K,V>()
@@ -360,61 +321,50 @@ class PersistentHashMapTest: XCTestCase
 
             var removalCount = 0
 
-            for _ in 0 ..< n
-            {
+            for _ in 0 ..< n {
                 let key = keySource()
                 let value = valueSource()
 
-                if randomBool()
-                {
+                if randomBool() {
                     map = map.with(key, value: value)
                 }
-                else
-                {
+                else {
                     map.put(key, value: value)
                 }
                 
                 hashmap[key] = value
 
-                if (testRemoval)
-                {
+                if (testRemoval) {
                     let keyToRemove = (randomBool() ? key : keySource())
 
                     let sizeBeforeRemoval = map.count
-                    if (hashmap.count != sizeBeforeRemoval)
-                    {
+                    if (hashmap.count != sizeBeforeRemoval) {
                         XCTFail("Asymmetric adding behavior - map size: \(map.count), hashmap size: \(hashmap.count)")
                     }
                     
-                    if randomBool()
-                    {
+                    if randomBool() {
                         map = map.without(keyToRemove)
                     }
-                    else
-                    {
+                    else {
                         map.remove(keyToRemove)
                     }
                     
                     hashmap.removeValue(forKey: keyToRemove)
 
                     let sizeAfterRemoval = map.count
-                    if (hashmap.count != sizeAfterRemoval)
-                    {
+                    if (hashmap.count != sizeAfterRemoval) {
                         XCTFail("Asymmetric removal behavior - map size: \(map.count), hashmap size: \(hashmap.count)")
                     }
 
-                    if (sizeAfterRemoval == sizeBeforeRemoval - 1)
-                    {
+                    if (sizeAfterRemoval == sizeBeforeRemoval - 1) {
                         removalCount += 1
                     }
-                    else if (sizeAfterRemoval != sizeBeforeRemoval)
-                    {
+                    else if (sizeAfterRemoval != sizeBeforeRemoval) {
                         XCTFail("Unexpected removal behavior - map size: \(map.count), hashmap size: \(hashmap.count)")
                     }
                 }
                 
-                if randomBool(UInt32(n / 10 + 1))
-                {
+                if randomBool(UInt32(n / 10 + 1)) {
                     storedMaps.append((map, map.count))
                 }
 
@@ -426,8 +376,7 @@ class PersistentHashMapTest: XCTestCase
 
             print("MAX: \(Max), hashmap size: \(hashmap.count), map size: \(map.count)")
             
-            if (testRemoval)
-            {
+            if (testRemoval) {
                 print("Items removed: \(removalCount)")
             }
             
@@ -440,15 +389,13 @@ class PersistentHashMapTest: XCTestCase
             
             print("Checking stored map sanity...")
             
-            for (map, size) in storedMaps
-            {
+            for (map, size) in storedMaps {
                 print("map of size \(size)")
                 
                 XCTAssert(map.count == size)
                 
                 var n = 0
-                for _ in map
-                {
+                for _ in map {
                     n += 1
                 }
                 
@@ -465,8 +412,7 @@ class PersistentHashMapTest: XCTestCase
         }
     }
 
-    func checkListEquality<K, V: Equatable>(_ map: PersistentHashMap<K,V>, _ hashmap: [K: V]) where K: Comparable
-    {
+    func checkListEquality<K, V: Equatable>(_ map: PersistentHashMap<K,V>, _ hashmap: [K: V]) where K: Comparable {
         var hashmapList = [(key: K, value: V)](hashmap)
         var mapList = [(K,V)](map)
         
@@ -476,8 +422,7 @@ class PersistentHashMapTest: XCTestCase
         
         print("Checking list equality of \(map.count) entries...")
         
-        defer
-        {
+        defer {
             print("...finished.")
         }
         
@@ -492,16 +437,13 @@ class PersistentHashMapTest: XCTestCase
 
         let size = mapList.count
         XCTAssert(hashmapList.count == size)
-        for idx in 0 ..< size
-        {
+        for idx in 0 ..< size {
             XCTAssert(mapList[idx].0 == hashmapList[idx].0 && mapList[idx].1 == hashmapList[idx].1, "idx: \(idx)")
         }
     }
     
-    private func equal<K, V: Equatable>(_ lhs: [K: V], _ rhs: PersistentHashMap<K, V>) -> String?
-    {
-        if (lhs.count != rhs.count)
-        {
+    private func equal<K, V: Equatable>(_ lhs: [K: V], _ rhs: PersistentHashMap<K, V>) -> String? {
+        if (lhs.count != rhs.count) {
             return "lhs.count: \(lhs.count), rhs.count: \(rhs.count)";
         }
         
@@ -509,22 +451,18 @@ class PersistentHashMapTest: XCTestCase
         
         print("Checking equality of \(size) entries...")
         
-        defer
-        {
+        defer {
             print("...finished.")
         }
         
-        for entry in lhs
-        {
+        for entry in lhs {
             let value = rhs.get(entry.0)
             
-            if value == nil
-            {
+            if value == nil {
                 return "No value for key \(entry.0) found in rhs"
             }
             
-            if value != entry.1
-            {
+            if value != entry.1 {
                 return "Value \(value.debugDescription) from rhs is not equal to value \(entry.1) from lhs"
             }
         }
@@ -532,21 +470,17 @@ class PersistentHashMapTest: XCTestCase
         return nil
     }
         
-    private func checkEqual<K, V: Equatable>(_ lhs: [K: V], _ rhs: PersistentHashMap<K,V>)
-    {
+    private func checkEqual<K, V: Equatable>(_ lhs: [K: V], _ rhs: PersistentHashMap<K,V>) {
         let result = equal(lhs, rhs)
-        if let result = result
-        {
+        if let result = result {
             print(result)
             print("hashmap size: \(lhs.count), map size: \(rhs.count)")
         }
         XCTAssert(result == nil)
     }
     
-    private func equal<K, V: Equatable>(_ lhs: PersistentHashMap<K, V>, _ rhs: [K: V]) -> String?
-    {
-        if (lhs.count != rhs.count)
-        {
+    private func equal<K, V: Equatable>(_ lhs: PersistentHashMap<K, V>, _ rhs: [K: V]) -> String? {
+        if (lhs.count != rhs.count) {
             return "lhs.count: \(lhs.count), rhs.count: \(rhs.count)";
         }
         
@@ -554,22 +488,18 @@ class PersistentHashMapTest: XCTestCase
         
         print("Checking equality of \(size) entries...")
         
-        defer
-        {
+        defer {
             print("...finished.")
         }
         
-        for entry in lhs
-        {
+        for entry in lhs {
             let value = rhs[entry.0]
             
-            if value == nil
-            {
+            if value == nil {
                 return "No value for key \(entry.0) found in rhs"
             }
             
-            if value != entry.1
-            {
+            if value != entry.1 {
                 return "Value \(value.debugDescription) from rhs is not equal to value \(entry.1) from lhs"
             }
         }
@@ -577,19 +507,16 @@ class PersistentHashMapTest: XCTestCase
         return nil
     }
     
-    private func checkEqual<K, V: Equatable>(_ lhs: PersistentHashMap<K,V>, _ rhs: [K: V])
-    {
+    private func checkEqual<K, V: Equatable>(_ lhs: PersistentHashMap<K,V>, _ rhs: [K: V]) {
         let result = equal(lhs, rhs)
-        if let result = result
-        {
+        if let result = result {
             print(result)
             print("map size: \(lhs.count), hashmap size: \(rhs.count)")
         }
         XCTAssert(result == nil)
     }
     
-    private func checkEqualityOperator<K,V>(_ map: PersistentHashMap<K,V>, _ hashmap: Dictionary<K,V>) where V: Equatable
-    {
+    private func checkEqualityOperator<K,V>(_ map: PersistentHashMap<K,V>, _ hashmap: Dictionary<K,V>) where V: Equatable {
         let mapFromHashmap = PersistentHashMap<K,V>(hashmap)
         
         print("Checking mapFromHashmap == map...")
@@ -603,8 +530,7 @@ class PersistentHashMapTest: XCTestCase
         print("done.")
     }
     
-    private func checkInequalityOperator<K,V>(_ map: PersistentHashMap<K,V>, _ hashmap: Dictionary<K,V>) where V: Equatable
-    {
+    private func checkInequalityOperator<K,V>(_ map: PersistentHashMap<K,V>, _ hashmap: Dictionary<K,V>) where V: Equatable {
         let mapFromHashmap = PersistentHashMap<K,V>(hashmap)
         
         print("Checking mapFromHashmap != map...")
@@ -620,19 +546,16 @@ class PersistentHashMapTest: XCTestCase
     
     // TODO fix - broken for small maps!!!
     private func _checkInequality<K,V>(_ map: PersistentHashMap<K,V>, _ hashmap: Dictionary<K,V>,
-                                  _ keySource: () -> K, _ valueSource: () -> V) where V: Equatable
-    {
+                                  _ keySource: () -> K, _ valueSource: () -> V) where V: Equatable {
         var mapCopy = map
         var hashmap = hashmap
         
         var removedKey: K? = nil
         
-        while true
-        {
+        while true {
             let key = keySource()
             
-            if mapCopy.containsKey(key)
-            {
+            if mapCopy.containsKey(key) {
                 mapCopy.remove(key)
                 checkInequalityOperator(mapCopy, hashmap)
                 removedKey = key
@@ -640,13 +563,11 @@ class PersistentHashMapTest: XCTestCase
             }
         }
         
-        while true
-        {
+        while true {
             let key = keySource()
             let value = valueSource()
             
-            if key != removedKey && map.containsKey(key) == false
-            {
+            if key != removedKey && map.containsKey(key) == false {
                 mapCopy.put(key, value: value)
                 XCTAssert(mapCopy.count == hashmap.count)
                 checkInequalityOperator(mapCopy, hashmap)
@@ -654,12 +575,10 @@ class PersistentHashMapTest: XCTestCase
             }
         }
         
-        while true
-        {
+        while true {
             let key = keySource()
             
-            if hashmap[key] != nil
-            {
+            if hashmap[key] != nil {
                 hashmap.removeValue(forKey: key)
                 checkInequalityOperator(map, hashmap)
                 removedKey = key
@@ -667,13 +586,11 @@ class PersistentHashMapTest: XCTestCase
             }
         }
         
-        while true
-        {
+        while true {
             let key = keySource()
             let value = valueSource()
             
-            if key != removedKey && hashmap[key] == nil
-            {
+            if key != removedKey && hashmap[key] == nil {
                 hashmap[key] = value
                 XCTAssert(map.count == hashmap.count)
                 checkInequalityOperator(map, hashmap)
@@ -683,26 +600,21 @@ class PersistentHashMapTest: XCTestCase
     }
 }
 
-func drain<K,V>(_ map: PersistentHashMap<K,V>)
-{
-    if randomBool()
-    {
+func drain<K,V>(_ map: PersistentHashMap<K,V>) {
+    if randomBool() {
         drainPersistently(map)
         drainInPlace(map)
     }
-    else
-    {
+    else {
         drainInPlace(map)
         drainPersistently(map)
     }
 }
 
-func drainPersistently<K,V>(_ map: PersistentHashMap<K,V>)
-{
+func drainPersistently<K,V>(_ map: PersistentHashMap<K,V>) {
     var map = map
     
-    if map.count == 0
-    {
+    if map.count == 0 {
         return
     }
     
@@ -714,16 +626,14 @@ func drainPersistently<K,V>(_ map: PersistentHashMap<K,V>)
     var firstEntry: (K,V)?
     var lastEntry: (K,V)?
     
-    for entry in map
-    {
+    for entry in map {
         map = map.without(entry.0)
         
         size -= 1
         
         XCTAssertEqual(map.count, size)
         
-        if firstEntry == nil
-        {
+        if firstEntry == nil {
             firstEntry = entry
         }
         
@@ -736,8 +646,7 @@ func drainPersistently<K,V>(_ map: PersistentHashMap<K,V>)
     
     XCTAssertEqual(map.count, 1)
     
-    if (sizeBefore > 1)
-    {
+    if (sizeBefore > 1) {
         print("shuffling first, last")
         
         map = map.with(lastEntry!.0, value: lastEntry!.1)
@@ -750,20 +659,17 @@ func drainPersistently<K,V>(_ map: PersistentHashMap<K,V>)
         
         map = map.without(lastEntry!.0)
     }
-    else
-    {
+    else {
         map = map.without(firstEntry!.0)
     }
     
     XCTAssertEqual(map.count, 0)
 }
 
-func drainInPlace<K,V>(_ map: PersistentHashMap<K,V>)
-{
+func drainInPlace<K,V>(_ map: PersistentHashMap<K,V>) {
     var map = map
     
-    if map.count == 0
-    {
+    if map.count == 0 {
         return
     }
     
@@ -775,16 +681,14 @@ func drainInPlace<K,V>(_ map: PersistentHashMap<K,V>)
     var firstEntry: (K,V)?
     var lastEntry: (K,V)?
     
-    for entry in map
-    {
+    for entry in map {
         map.remove(entry.0)
         
         size -= 1
         
         XCTAssertEqual(map.count, size)
         
-        if firstEntry == nil
-        {
+        if firstEntry == nil {
             firstEntry = entry
         }
         
@@ -797,8 +701,7 @@ func drainInPlace<K,V>(_ map: PersistentHashMap<K,V>)
     
     XCTAssertEqual(map.count, 1)
     
-    if (sizeBefore > 1)
-    {
+    if (sizeBefore > 1) {
         print("shuffling first, last")
         
         map.put(lastEntry!.0, value: lastEntry!.1)
@@ -811,8 +714,7 @@ func drainInPlace<K,V>(_ map: PersistentHashMap<K,V>)
         
         map.remove(lastEntry!.0)
     }
-    else
-    {
+    else {
         map.remove(firstEntry!.0)
     }
     

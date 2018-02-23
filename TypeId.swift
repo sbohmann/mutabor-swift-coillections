@@ -1,6 +1,5 @@
 
-public enum TypeId : Int8
-{
+public enum TypeId : Int8 {
     case Basic = 0x00
     case Boolean = 0x01
     
@@ -34,14 +33,11 @@ public enum TypeId : Int8
     case Struct = 0x51
     case Enum = 0x52
     
-    static func forOrdinal(_ ordinal: Int8) throws -> TypeId
-    {
-        if let result = TypeId(rawValue: ordinal)
-        {
+    static func forOrdinal(_ ordinal: Int8) throws -> TypeId {
+        if let result = TypeId(rawValue: ordinal) {
             return result;
         }
-        else
-        {
+        else {
             // TODO find a more appropriate error
             throw IoError("Unknown orinal value for TypeId: \(ordinal)")
         }

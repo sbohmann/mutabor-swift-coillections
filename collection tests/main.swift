@@ -3,42 +3,34 @@ import Foundation
 
 //miniTest()
 
-struct Oops : Error
-{
+struct Oops : Error {
     var message: String;
 }
 
-func f() throws
-{
+func f() throws {
     var x = 5
     
     try x += g() + g() + g()
 }
 
-func g() throws -> Int
-{
+func g() throws -> Int {
     throw Oops(message: "hi! :)")
 }
 
-do
-{
+do {
     try f()
 }
-catch let error
-{
+catch let error {
     print("message: \(error)")
 }
 
-struct Notoops : Error
-{
+struct Notoops : Error {
 }
 
 let list = [Error](arrayLiteral: Oops(message: "hi! :)"), Notoops())
 
-for o in list
-{
-    switch(o)
-    {
+for o in list {
+    switch(o) {
     case let x as Oops:
         print("oops " + x.message)
     default:
@@ -52,112 +44,92 @@ var dict = Dictionary<Int,Int>()
 
 let n = 5 * 1000// * 1000
 
-for var idx = 0; idx < n; ++idx
-{
+for var idx = 0; idx < n; ++idx {
     dict[idx] = idx
     
     copy = dict
     
-    if idx % 1000 == 0
-    {
+    if idx % 1000 == 0 {
         print("\(idx) / \(n)")
     }
 }*/
 
-protocol EventVisitor
-{
+protocol EventVisitor {
     func visit(_ event: TimeEvent)
     func visit(_ event: StatusEvent)
 }
 
-protocol Event
-{
+protocol Event {
     var ts: Int64 { get set }
     
     func accept(_ visitor: EventVisitor)
 }
 
-struct TimeEvent : Event
-{
+struct TimeEvent : Event {
     var ts: Int64
     var time: Int64
     
-    func accept(_ visitor: EventVisitor)
-    {
+    func accept(_ visitor: EventVisitor) {
         visitor.visit(self)
     }
 }
 
-protocol StatusEventVisitor
-{
+protocol StatusEventVisitor {
     func visit(_ event: StatusLostStatusEvent)
     func visit(_ event: StatusChangedStatusEvent)
 }
 
-protocol StatusEvent : Event
-{
+protocol StatusEvent : Event {
     var deviceId: Int64 { get set }
     
     func accept(_ visitor: StatusEventVisitor)
 }
 
-struct StatusLostStatusEvent : StatusEvent
-{
+struct StatusLostStatusEvent : StatusEvent {
     var ts: Int64
     var deviceId: Int64
     var reason: String
     
-    func accept(_ visitor: EventVisitor)
-    {
+    func accept(_ visitor: EventVisitor) {
         visitor.visit(self)
     }
     
-    func accept(_ visitor: StatusEventVisitor)
-    {
+    func accept(_ visitor: StatusEventVisitor) {
         visitor.visit(self)
     }
 }
 
-struct StatusChangedStatusEvent : StatusEvent
-{
+struct StatusChangedStatusEvent : StatusEvent {
     var ts: Int64
     var deviceId: Int64
     var newStatus: UInt32
     var oldStatus: UInt32
     
-    func accept(_ visitor: EventVisitor)
-    {
+    func accept(_ visitor: EventVisitor) {
         visitor.visit(self)
     }
     
-    func accept(_ visitor: StatusEventVisitor)
-    {
+    func accept(_ visitor: StatusEventVisitor) {
         visitor.visit(self)
     }
 }
 
-func readEvent(_ fd: Int) -> Event
-{
+func readEvent(_ fd: Int) -> Event {
     return TimeEvent(ts: 123, time: 56789)
 }
 
-func example()
-{
-    class Visitor : EventVisitor
-    {
+func example() {
+    class Visitor : EventVisitor {
         var status: UInt32 = 3;
         
-        func visit(_ event: TimeEvent)
-        {
+        func visit(_ event: TimeEvent) {
             print("A time event: \(event)")
         }
         
-        func visit(_ event: StatusEvent)
-        {
+        func visit(_ event: StatusEvent) {
             print("A status event: \(event)")
             
-            if let change = event as? StatusChangedStatusEvent
-            {
+            if let change = event as? StatusChangedStatusEvent {
                 status = change.newStatus
             }
         }
@@ -172,28 +144,22 @@ func example()
 
 var events = [Event]()
 
-enum E
-{
+enum E {
     case X(value: Int)
     
-    mutating func f()
-    {
-        switch e
-        {
+    mutating func f() {
+        switch e {
         case let .X(value):
             self = .X(value: value + 5)
         }
     }
     
-    var x: Int
-    {
-        get
-        {
+    var x: Int {
+        get {
             return 5
         }
         
-        set(value)
-        {
+        set(value) {
             print(value)
         }
     }
@@ -209,12 +175,10 @@ print(e)
 
 let whatever: Int
 
-if case .X(var x) = e
-{
+if case .X(var x) = e {
     whatever = 5
 }
-else
-{
+else {
     whatever = 7
 }
 
@@ -222,21 +186,17 @@ print(whatever)
 
 print(e)
 
-class Internal
-{
-    func f() -> Bool
-    {
+class Internal {
+    func f() -> Bool {
         unowned var x = self
         return isKnownUniquelyReferenced(&x)
     }
 }
 
-class C
-{
+class C {
     var int = Internal()
     
-    func f() -> Bool
-    {
+    func f() -> Bool {
         unowned var x = self
         return isKnownUniquelyReferenced(&x)
     }
@@ -272,8 +232,7 @@ cs.append(C())
 
 print(isKnownUniquelyReferenced(&cs[0]))
 
-if let thec = cs[0]
-{
+if let thec = cs[0] {
     print(isKnownUniquelyReferenced(&cs[0]))
 }
 
@@ -283,24 +242,20 @@ var pm = PersistentHashMap<Int,Int>()
 var numbers = [Int]()
 var maps = [PersistentHashMap<Int,Int>]()
 
-for idx in 0 ..< 5 * 1000// * 1000
-{
+for idx in 0 ..< 5 * 1000// * 1000 {
     let n = Int(arc4random())
     pm.put(n, value: n * 3)
     numbers.append(n)
-    if (arc4random() % 17 == 0)
-    {
+    if (arc4random() % 17 == 0) {
         maps.append(pm)
     }
 }
 
-for idx in 0 ..< 5 * 1000// * 1000
-{
+for idx in 0 ..< 5 * 1000// * 1000 {
     let n = numbers[idx]
     let result = pm.get(n)
     print(result as Any, " / n: \(n)")
-    if (result != 3 * n)
-    {
+    if (result != 3 * n) {
         fatalError()
     }
 }
@@ -313,8 +268,7 @@ print(i)
 
     let keys = dict.keys.sorted()
 
-    for c in keys
-    {
+    for c in keys {
         print(dict["\(c)"]!, terminator: "")
     }
 

@@ -6,28 +6,23 @@ import Mutabor
 private let MAX = VECTOR_TEST_MAX
 private let ReplacementRounds = 100 * 1000
 
-class PersistentVectorTest: XCTestCase
-{
-    override func setUp()
-    {
+class PersistentVectorTest: XCTestCase {
+    override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
-    override func tearDown()
-    {
+    override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
     
-    func testMiniTest_()
-    {
+    func testMiniTest_() {
         var before = CFAbsoluteTimeGetCurrent()
         
         var arrayList = [Int]()
         
-        for i in 0 ... 350_000
-        {
+        for i in 0 ... 350_000 {
             arrayList.append(i)
         }
         
@@ -44,8 +39,7 @@ class PersistentVectorTest: XCTestCase
         print("finished constructing Vector of size \(vector.count), depth \(vector.depth) from ArrayList in \(after - before) - deltaT per creation: \( (after - before) / Double(vector.count) )")
     }
     
-    func testMiniTest()
-    {
+    func testMiniTest() {
         var vec = PersistentVector<Int>()
         
         print(vec)
@@ -53,8 +47,7 @@ class PersistentVectorTest: XCTestCase
         var n = 0
         var deltaTSum = 0.0
         
-        for idx in 0 ..< 350_001
-        {
+        for idx in 0 ..< 350_001 {
             let before = CFAbsoluteTimeGetCurrent()
             vec.add(idx)
             let after = CFAbsoluteTimeGetCurrent()
@@ -62,22 +55,18 @@ class PersistentVectorTest: XCTestCase
             deltaTSum += after - before
             n += 1
             
-            if (idx % 100000) == 0
-            {
+            if (idx % 100000) == 0 {
                 print("\(idx)")
             }
             
             //println(vec)
             
-            /*if vec.count != idx + 1
-             {
+            /*if vec.count != idx + 1 {
              fatalError("wrong size for idx \(idx): \(vec.count)")
              }
              
-             for idx2 in 0 ... idx
-             {
-             if vec.get(idx2) != idx2
-             {
+             for idx2 in 0 ... idx {
+             if vec.get(idx2) != idx2 {
              fatalError("Mismatch for idx \(idx), idx2 \(idx2)")
              }
              }*/
@@ -88,34 +77,29 @@ class PersistentVectorTest: XCTestCase
         print("size: \(vec.count), depth: \(vec.depth)")
     }
     
-    func testVectorBasics()
-    {
+    func testVectorBasics() {
         print("vectorBasics...")
         
         var vec = PersistentVector<Int>()
         
         print(vec)
         
-        for idx in 0 ..< 300
-        {
+        for idx in 0 ..< 300 {
             vec.add(idx)
             //println(vec)
             
-            if idx % 100 == 0
-            {
+            if idx % 100 == 0 {
                 print("idx: \(idx)")
             }
             
             XCTAssert(vec.count == idx + 1, "vec.count [\(vec.count)] != idx [\(idx)] + 1")
             
-            for idx2 in 0 ... idx
-            {
+            for idx2 in 0 ... idx {
                 XCTAssert(vec.get(idx2) == idx2, "vec.get(idx2) [\(vec.get(idx2))] != idx2 [\(idx2)], with idx \(idx)")
             }
             
             var idx3 = 0
-            for e in vec
-            {
+            for e in vec {
                 XCTAssert(e == idx3,"e [\(e)] != idx3 [\(idx3)]")
                 idx3 += 1
             }
@@ -126,8 +110,7 @@ class PersistentVectorTest: XCTestCase
     
     // ported from Java
     
-    func testArrayListGrowingBehavior()
-    {
+    func testArrayListGrowingBehavior() {
         print("arrayListGrowingBehavior...")
         
         var arrayList = [Int]()
@@ -136,12 +119,10 @@ class PersistentVectorTest: XCTestCase
         
         var lastTsIndex = -1
         
-        for i in 0 ... MAX
-        {
+        for i in 0 ... MAX {
             arrayList.append(i)
             
-            if (i - lastTsIndex >= (1 << 16))
-            {
+            if (i - lastTsIndex >= (1 << 16)) {
                 let tsNow = CFAbsoluteTimeGetCurrent()
                 
                 let deltaT = tsNow - lastTs
@@ -170,15 +151,12 @@ class PersistentVectorTest: XCTestCase
         
         print("Sizes match.")
         
-        for i in 0 ... MAX
-        {
-            if (i % (1 << 16) == 0)
-            {
+        for i in 0 ... MAX {
+            if (i % (1 << 16) == 0) {
                 print(i)
             }
             
-            if i != vector.get(i)
-            {
+            if i != vector.get(i) {
                 fatalError("i != vector.get(i) for i: \(i)")
             }
         }
@@ -188,15 +166,12 @@ class PersistentVectorTest: XCTestCase
         let before = CFAbsoluteTimeGetCurrent()
         
         var i = 0
-        for value in vector
-        {
-            if (i % (1 << 16) == 0)
-            {
+        for value in vector {
+            if (i % (1 << 16) == 0) {
                 print(i)
             }
             
-            if (i != value)
-            {
+            if (i != value) {
                 fatalError("i != value for i: \(i), value: \(value)")
             }
             
@@ -214,8 +189,7 @@ class PersistentVectorTest: XCTestCase
         drain(vector)
     }
     
-    func testGrowingBehavior()
-    {
+    func testGrowingBehavior() {
         print("growingBehavior...")
         
         var vector = PersistentVector<Int>()
@@ -224,21 +198,17 @@ class PersistentVectorTest: XCTestCase
         var lastTs = CFAbsoluteTimeGetCurrent()
         var lastTsIndex = -1
         
-        for i in 0 ... MAX
-        {
-            if (randomBool())
-            {
+        for i in 0 ... MAX {
+            if (randomBool()) {
                 vector.add(i)
             }
-            else
-            {
+            else {
                 vector = vector.plus(i)
             }
             
             let depth = vector.depth
             
-            if (depth != lastDepth || (i - lastTsIndex >= 1024 * 1024))
-            {
+            if (depth != lastDepth || (i - lastTsIndex >= 1024 * 1024)) {
                 let tsNow = CFAbsoluteTimeGetCurrent()
                 let deltaT = tsNow - lastTs
                 let deltaTPerElement = deltaT / Double(i - lastTsIndex) * 1000.0 * 1000.0
@@ -252,15 +222,13 @@ class PersistentVectorTest: XCTestCase
             }
         }
         
-        for i in 0 ... MAX
-        {
+        for i in 0 ... MAX {
             XCTAssertEqual(i, vector.get(i))
         }
         
         XCTAssertEqual(vector.count, MAX + 1)
         
-        if vector.count == MAX + 1
-        {
+        if vector.count == MAX + 1 {
             print("Sizes match - vactor.count: \(vector.count), MAX: \(MAX)")
         }
         
@@ -291,8 +259,7 @@ class PersistentVectorTest: XCTestCase
         drain(vector)
     }
     
-    func testGrowingBehaviorWithRemoval()
-    {
+    func testGrowingBehaviorWithRemoval() {
         print("growingBehaviorWithRemoval...")
         
         var vector = PersistentVector<Int>()
@@ -303,37 +270,29 @@ class PersistentVectorTest: XCTestCase
         
         var list = [Int]()
         
-        for i in 0 ... MAX
-        {
-            if (randomBool())
-            {
+        for i in 0 ... MAX {
+            if (randomBool()) {
                 vector.add(i)
             }
-            else
-            {
+            else {
                 vector = vector.plus(i)
             }
             
-            if (randomBool())
-            {
+            if (randomBool()) {
                 list.append(i);
             }
-            else
-            {
-                if (randomBool())
-                {
+            else {
+                if (randomBool()) {
                     vector.removeLast();
                 }
-                else
-                {
+                else {
                     vector = vector.withoutLast();
                 }
             }
             
             let depth = vector.depth
             
-            if (depth != lastDepth || (i - lastTsIndex >= 1024 * 1024))
-            {
+            if (depth != lastDepth || (i - lastTsIndex >= 1024 * 1024)) {
                 let tsNow = CFAbsoluteTimeGetCurrent()
                 let deltaT = tsNow - lastTs
                 let deltaTPerElement = deltaT / Double(i - lastTsIndex) * 1000.0 * 1000.0
@@ -380,14 +339,12 @@ class PersistentVectorTest: XCTestCase
         drain(vector)
     }
     
-    func testEmptyInstance()
-    {
+    func testEmptyInstance() {
         print("emptyInstance...")
         
         var vector = PersistentVector<String>()
         let emptyVector = vector
-        for i in 0 ..< 1000
-        {
+        for i in 0 ..< 1000 {
             vector.add(i.description)
             XCTAssertEqual(vector.count, i + 1)
             XCTAssertEqual(emptyVector.count, 0)
@@ -396,16 +353,14 @@ class PersistentVectorTest: XCTestCase
         print("")
     }
     
-    func testWith()
-    {
+    func testWith() {
         print("with...")
         
         var before = CFAbsoluteTimeGetCurrent()
         
         var arrayList = [Int]()
         
-        for i in 0 ... MAX
-        {
+        for i in 0 ... MAX {
             arrayList.append(i)
         }
         
@@ -425,8 +380,7 @@ class PersistentVectorTest: XCTestCase
         
         XCTAssertEqual(vector.count, arrayList.count)
         
-        for i in 0 ... MAX
-        {
+        for i in 0 ... MAX {
             XCTAssertEqual(i, vector.get(i))
         }
         
@@ -437,11 +391,9 @@ class PersistentVectorTest: XCTestCase
         before = CFAbsoluteTimeGetCurrent()
         
         // guard block
-        if (true)
-        {
+        if (true) {
             var i = 0
-            for value in vector
-            {
+            for value in vector {
                 XCTAssertEqual(i, value)
                 i += 1
             }
@@ -460,19 +412,16 @@ class PersistentVectorTest: XCTestCase
         
         before = CFAbsoluteTimeGetCurrent()
         
-        for i in 0 ..< ReplacementRounds
-        {
+        for i in 0 ..< ReplacementRounds {
             let newValue = Int(arc4random())
             let idx = boundedRandom(size)
             
             arrayList[idx] = newValue
             
-            if (randomBool())
-            {
+            if (randomBool()) {
                 vector.set(idx, value: newValue)
             }
-            else
-            {
+            else {
                 vector = vector.with(idx, value: newValue)
             }
             
@@ -485,8 +434,7 @@ class PersistentVectorTest: XCTestCase
         
         before = CFAbsoluteTimeGetCurrent()
         
-        if eq(vector, arrayList) == false || eq(arrayList, vector) == false
-        {
+        if eq(vector, arrayList) == false || eq(arrayList, vector) == false {
             fatalError("vector and arrayList do not match.");// - vector: " + vector + ", arrayList: " + arrayList)
         }
         
@@ -496,8 +444,7 @@ class PersistentVectorTest: XCTestCase
         
         before = CFAbsoluteTimeGetCurrent()
         
-        if eq(originalArrayList, originalVector) == false || eq(originalVector, originalArrayList) == false
-        {
+        if eq(originalArrayList, originalVector) == false || eq(originalVector, originalArrayList) == false {
             fatalError("originalArrayList and originalVector do not match.")
         }
         
@@ -519,8 +466,7 @@ class PersistentVectorTest: XCTestCase
 }
 
 // TODO replace with a correct, integer-only implementation
-func boundedRandom(_ bound: UInt32) -> Int
-{
+func boundedRandom(_ bound: UInt32) -> Int {
     precondition(bound > 0, "bound > 0")
     
     // TODO fix
@@ -529,26 +475,21 @@ func boundedRandom(_ bound: UInt32) -> Int
 
 func eq<A: Sequence, B: Sequence>
     (_ a: A, _ b: B) -> Bool
-    where A.Iterator.Element: Equatable, B.Iterator.Element == A.Iterator.Element
-{
+    where A.Iterator.Element: Equatable, B.Iterator.Element == A.Iterator.Element {
     var aGenerator = a.makeIterator()
     var bGenerator = b.makeIterator()
     
-    while true
-    {
+    while true {
         let aOption = aGenerator.next()
         let bOption = bGenerator.next()
         
-        if aOption == nil && bOption == nil
-        {
+        if aOption == nil && bOption == nil {
             return true
         }
-        else if aOption == nil || bOption == nil
-        {
+        else if aOption == nil || bOption == nil {
             return false
         }
-        else if aOption! != bOption!
-        {
+        else if aOption! != bOption! {
             return false
         }
         
@@ -556,26 +497,21 @@ func eq<A: Sequence, B: Sequence>
     }
 }
 
-func drain<E>(_ set: PersistentVector<E>)
-{
-    if randomBool()
-    {
+func drain<E>(_ set: PersistentVector<E>) {
+    if randomBool() {
         drainPersistently(set)
         drainInPlace(set)
     }
-    else
-    {
+    else {
         drainInPlace(set)
         drainPersistently(set)
     }
 }
 
-func drainPersistently<E>(_ vector: PersistentVector<E>)
-{
+func drainPersistently<E>(_ vector: PersistentVector<E>) {
     var vector = vector
     
-    if vector.count == 0
-    {
+    if vector.count == 0 {
         return
     }
     
@@ -587,16 +523,14 @@ func drainPersistently<E>(_ vector: PersistentVector<E>)
     var firstEntry: E?
     var lastEntry: E?
     
-    for entry in vector
-    {
+    for entry in vector {
         vector = vector.withoutLast()
         
         size -= 1
         
         XCTAssertEqual(vector.count, size)
         
-        if firstEntry == nil
-        {
+        if firstEntry == nil {
             firstEntry = entry
         }
         
@@ -609,8 +543,7 @@ func drainPersistently<E>(_ vector: PersistentVector<E>)
     
     XCTAssertEqual(vector.count, 1)
     
-    if (sizeBefore > 1)
-    {
+    if (sizeBefore > 1) {
         print("shuffling first, last")
         
         vector = vector.plus(lastEntry!)
@@ -623,20 +556,17 @@ func drainPersistently<E>(_ vector: PersistentVector<E>)
         
         vector = vector.withoutLast()
     }
-    else
-    {
+    else {
         vector = vector.withoutLast()
     }
     
     XCTAssertEqual(vector.count, 0)
 }
 
-func drainInPlace<E>(_ vector: PersistentVector<E>)
-{
+func drainInPlace<E>(_ vector: PersistentVector<E>) {
     var vector = vector
     
-    if vector.count == 0
-    {
+    if vector.count == 0 {
         return
     }
     
@@ -648,16 +578,14 @@ func drainInPlace<E>(_ vector: PersistentVector<E>)
     var firstEntry: E?
     var lastEntry: E?
     
-    for entry in vector
-    {
+    for entry in vector {
         vector.removeLast()
         
         size -= 1
         
         XCTAssertEqual(vector.count, size)
         
-        if firstEntry == nil
-        {
+        if firstEntry == nil {
             firstEntry = entry
         }
         
@@ -670,8 +598,7 @@ func drainInPlace<E>(_ vector: PersistentVector<E>)
     
     XCTAssertEqual(vector.count, 1)
     
-    if (sizeBefore > 1)
-    {
+    if (sizeBefore > 1) {
         print("shuffling first, last")
         
         vector.add(lastEntry!)
@@ -684,8 +611,7 @@ func drainInPlace<E>(_ vector: PersistentVector<E>)
         
         vector.removeLast()
     }
-    else
-    {
+    else {
         vector.removeLast()
     }
     
