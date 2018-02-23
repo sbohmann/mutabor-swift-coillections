@@ -413,7 +413,7 @@ class PersistentHashSetTest: XCTestCase {
     
     private func equal<E>(_ lhs: Set<E>, _ rhs: PersistentHashSet<E>) -> String? {
         if (lhs.count != rhs.count) {
-            return "lhs.count: \(lhs.count), rhs.count: \(rhs.count)";
+            return "lhs.count: \(lhs.count), rhs.count: \(rhs.count)"
         }
         
         let size = lhs.count
@@ -444,7 +444,7 @@ class PersistentHashSetTest: XCTestCase {
     
     private func equal<E>(_ lhs: PersistentHashSet<E>, _ rhs: Set<E>) -> String? {
         if (lhs.count != rhs.count) {
-            return "lhs.count: \(lhs.count), rhs.count: \(rhs.count)";
+            return "lhs.count: \(lhs.count), rhs.count: \(rhs.count)"
         }
         
         let size = lhs.count

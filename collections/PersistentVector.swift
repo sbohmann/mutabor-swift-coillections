@@ -216,7 +216,7 @@ private final class TreeNode<E> : Node<E> {
                 if lastSubnode.add(value: value) {
                     size_ += 1
                     
-                    return true;
+                    return true
                 }
             } else {
                 let lastSubnodeReplacement = lastSubnode.plus(value: value)
@@ -489,7 +489,7 @@ public struct VectorIterator<E> : IteratorProtocol {
     private var valueIdx = 0
     
     fileprivate init() {
-        finished = true;
+        finished = true
     }
     
     fileprivate init(root: Node<E>) {
@@ -821,6 +821,6 @@ extension PersistentVector where E : Equatable {
     }
     
     public static func != (lhs: PersistentVector, rhs: PersistentVector) -> Bool {
-        return (lhs == rhs) == false;
+        return (lhs == rhs) == false
     }
 }

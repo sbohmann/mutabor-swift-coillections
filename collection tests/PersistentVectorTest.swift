@@ -272,12 +272,12 @@ class PersistentVectorTest: XCTestCase {
             }
             
             if (randomBool()) {
-                list.append(i);
+                list.append(i)
             } else {
                 if (randomBool()) {
-                    vector.removeLast();
+                    vector.removeLast()
                 } else {
-                    vector = vector.withoutLast();
+                    vector = vector.withoutLast()
                 }
             }
             
@@ -296,12 +296,9 @@ class PersistentVectorTest: XCTestCase {
             }
         }
         
-        XCTAssertEqual(list.count, vector.count);
-        
-        XCTAssertTrue(eq(list, vector));
-        
-        XCTAssertTrue(eq(vector, list));
-        
+        XCTAssertEqual(list.count, vector.count)
+        XCTAssertTrue(eq(list, vector))
+        XCTAssertTrue(eq(vector, list))
         lastTs = CFAbsoluteTimeGetCurrent()
         
         let arrayList = [Int](vector)

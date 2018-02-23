@@ -4,7 +4,7 @@ import Foundation
 //miniTest()
 
 struct Oops : Error {
-    var message: String;
+    var message: String
 }
 
 func f() throws {
@@ -33,7 +33,7 @@ for o in list {
     case let x as Oops:
         print("oops " + x.message)
     default:
-        print("not an oops");
+        print("not an oops")
     }
 }
 
@@ -119,8 +119,7 @@ func readEvent(_ fd: Int) -> Event {
 
 func example() {
     class Visitor : EventVisitor {
-        var status: UInt32 = 3;
-        
+        var status: UInt32 = 3
         func visit(_ event: TimeEvent) {
             print("A time event: \(event)")
         }

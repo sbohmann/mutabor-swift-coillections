@@ -7,19 +7,19 @@ public class TypeManager<T> {
     }
     
     public func hashValue(value: T) -> Int {
-        fatalError("Not implemented");
+        fatalError("Not implemented")
     }
     
     public func equal(lhs: T, rhs: T) -> Bool {
-        fatalError("Not implemented");
+        fatalError("Not implemented")
     }
     
     public func writeToStream(value: T, outputStream: OutputStream) throws {
-        fatalError("Not implemented");
+        fatalError("Not implemented")
     }
     
     public func createFromStream(inputStream: InputStream) throws -> T {
-        fatalError("Not implemented");
+        fatalError("Not implemented")
     }
     
     public let typeId: TypeId

@@ -35,7 +35,7 @@ public enum TypeId : Int8 {
     
     static func forOrdinal(_ ordinal: Int8) throws -> TypeId {
         if let result = TypeId(rawValue: ordinal) {
-            return result;
+            return result
         } else {
             // TODO find a more appropriate error
             throw IoError("Unknown orinal value for TypeId: \(ordinal)")

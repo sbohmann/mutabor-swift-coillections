@@ -425,7 +425,7 @@ class PersistentHashMapTest: XCTestCase {
     
     private func equal<K, V: Equatable>(_ lhs: [K: V], _ rhs: PersistentHashMap<K, V>) -> String? {
         if (lhs.count != rhs.count) {
-            return "lhs.count: \(lhs.count), rhs.count: \(rhs.count)";
+            return "lhs.count: \(lhs.count), rhs.count: \(rhs.count)"
         }
         
         let size = lhs.count
@@ -462,7 +462,7 @@ class PersistentHashMapTest: XCTestCase {
     
     private func equal<K, V: Equatable>(_ lhs: PersistentHashMap<K, V>, _ rhs: [K: V]) -> String? {
         if (lhs.count != rhs.count) {
-            return "lhs.count: \(lhs.count), rhs.count: \(rhs.count)";
+            return "lhs.count: \(lhs.count), rhs.count: \(rhs.count)"
         }
         
         let size = lhs.count

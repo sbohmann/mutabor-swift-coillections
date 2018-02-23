@@ -451,7 +451,7 @@ public class Serializer {
                 let n = inputStream.read(buffer.advanced(by: bytesRead), maxLength:Int(size) - bytesRead)
                 
                 if n == 0 {
-                    throw IoError("Reached EOF after \(bytesRead) while reading \(size) bytes of data");
+                    throw IoError("Reached EOF after \(bytesRead) while reading \(size) bytes of data")
                 } else if n < 0 {
                     if let error = inputStream.streamError {
                         throw IoError(error)
@@ -460,7 +460,7 @@ public class Serializer {
                     }
                 }
                 
-                bytesRead += n;
+                bytesRead += n
             }
         })
         
