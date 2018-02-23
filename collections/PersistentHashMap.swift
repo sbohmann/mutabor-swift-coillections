@@ -51,8 +51,7 @@ private final class TreeNode<K: Hashable, V> : Node<K,V> {
         
         if let node = nodes[idx] {
             return node.get(key: key, hash: hash)
-        }
-        else {
+        } else {
             return nil
         }
     }
@@ -75,14 +74,12 @@ private final class TreeNode<K: Hashable, V> : Node<K,V> {
                 if (replace) {
                     nodes[idx] = replacement
                 }
-            }
-            else {
+            } else {
                 nodes[idx] = subnode.with(entry: entry, hash: hash)
             }
             
             size += nodes[idx]!.size - oldSize
-        }
-        else {
+        } else {
             nodes[idx] = EntryNode(shift: shift + SHIFT_PER_LEVEL, entry: entry, hash: hash)
             
             size += 1
@@ -110,8 +107,7 @@ private final class TreeNode<K: Hashable, V> : Node<K,V> {
             newChildren[idx] = newSubnode
             
             newSize = size + (newSubnode.size - subnode.size)
-        }
-        else {
+        } else {
             newChildren = nodes
             
             newChildren[idx] = EntryNode(shift: shift + SHIFT_PER_LEVEL, entry: entry, hash: hash)
@@ -136,12 +132,10 @@ private final class TreeNode<K: Hashable, V> : Node<K,V> {
                     nodes[idx] = nil
                     
                     newSize = 0
-                }
-                else {
+                } else {
                     newSize = subnode.size
                 }
-            }
-            else {
+            } else {
                 let newSubnode = subnode.without(key: key, hash: hash)
                 
                 if newSubnode === subnode {
@@ -152,8 +146,7 @@ private final class TreeNode<K: Hashable, V> : Node<K,V> {
                     nodes[idx] = newSubnode
                     
                     newSize = newSubnode.size
-                }
-                else {
+                } else {
                     nodes[idx] = nil
                     
                     newSize = 0
@@ -195,8 +188,7 @@ private final class TreeNode<K: Hashable, V> : Node<K,V> {
                 newChildren[idx] = newSubnode
                 
                 newSize = size + (newSubnode.size - subnode.size)
-            }
-            else {
+            } else {
                 if (size == 1) {
                     return nil
                 }
@@ -211,8 +203,7 @@ private final class TreeNode<K: Hashable, V> : Node<K,V> {
                 
                 newSize = size - 1
             }
-        }
-        else {
+        } else {
             return self
         }
         
@@ -245,8 +236,7 @@ private final class EntryNode<K: Hashable,V> : Node<K,V> {
     override func get(key: K) -> (K,V)? {
         if key == entry.0 {
             return entry
-        }
-        else {
+        } else {
             return nil
         }
     }
@@ -255,11 +245,9 @@ private final class EntryNode<K: Hashable,V> : Node<K,V> {
         if (hash == self.hash && entry.0 == self.entry.0) {
             self.entry = entry
             self.hash = hash
-        }
-        else if (shift < HASH_BITS) {
+        } else if (shift < HASH_BITS) {
             return (true, createTreeNode(shift: shift, firstEntry: self.entry, firstHash: self.hash, secondEntry: entry, secondHash: hash))
-        }
-        else {
+        } else {
             let data = [self.entry, entry]
             
             return (true, MultiNode(shift: shift, data: data))
@@ -271,11 +259,9 @@ private final class EntryNode<K: Hashable,V> : Node<K,V> {
     override func with(entry: (K,V), hash: Int) -> Node<K,V> {
         if hash == self.hash && entry.0 == self.entry.0 {
             return EntryNode(shift: shift, entry: entry, hash: hash)
-        }
-        else if (shift < HASH_BITS) {
+        } else if (shift < HASH_BITS) {
             return createTreeNode(shift: shift, firstEntry: self.entry, firstHash: self.hash, secondEntry: entry, secondHash: hash)
-        }
-        else {
+        } else {
             let data = [self.entry, entry]
             
             return MultiNode(shift: shift, data: data)
@@ -289,8 +275,7 @@ private final class EntryNode<K: Hashable,V> : Node<K,V> {
     override func without(key: K, hash: Int) -> Node<K,V>? {
         if hash != self.hash || key != entry.0 {
             return self
-        }
-        else {
+        } else {
             return nil
         }
     }
@@ -387,13 +372,11 @@ private final class MultiNode<K: Hashable,V> : Node<K,V> {
             if key == entry.0 {
                 if (data.count == 1) {
                     return nil
-                }
-                else if (data.count == 2) {
+                } else if (data.count == 2) {
                     let retainedIndex = (idx + 1) % 2
                     
                     return EntryNode(shift: shift, entry: data[retainedIndex], hash: hash)
-                }
-                else {
+                } else {
                     var newData = data
                     newData.remove(at: idx)
                     
@@ -429,8 +412,7 @@ private func createTreeNode<K: Hashable,V>(shift: Int, firstEntry: (K,V), firstH
         nodes[secondIdx] = combinedNode
         
         size = combinedNode.size
-    }
-    else {
+    } else {
         let secondEntryNode = EntryNode(shift: shift + SHIFT_PER_LEVEL, entry: secondEntry, hash: secondHash)
         nodes[secondIdx] = secondEntryNode
         
@@ -471,8 +453,7 @@ public struct MapIterator<K: Hashable,V> : IteratorProtocol {
                 pathSize += 1
                 
                 node = treeNode.nodes[idx]
-            }
-            else {
+            } else {
                 valueNode = node
                 valueIdx = 0
                 break
@@ -491,16 +472,14 @@ public struct MapIterator<K: Hashable,V> : IteratorProtocol {
     public mutating func next() -> (K,V)? {
         if finished {
             return nil
-        }
-        else {
+        } else {
             var result: (K,V)
             var valueNodeLength: Int
             
             if let entryNode = valueNode as? EntryNode {
                 result = entryNode.entry
                 valueNodeLength = 1
-            }
-            else {
+            } else {
                 let multiNode = valueNode as! MultiNode
                 result = multiNode.data[valueIdx]
                 valueNodeLength = multiNode.data.count
@@ -546,15 +525,13 @@ public struct MapIterator<K: Hashable,V> : IteratorProtocol {
                             valueNode = newSubnode
                             valueIdx = 0
                             break
-                        }
-                        else {
+                        } else {
                             if (idx > 0) {
                                 pathSize -= 1
                                 path[idx] = nil
                                 pathIdx[idx] = 0
                                 idx -= 1
-                            }
-                            else {
+                            } else {
                                 finished = true
                                 path.removeAll()
                                 pathIdx.removeAll()
@@ -562,8 +539,7 @@ public struct MapIterator<K: Hashable,V> : IteratorProtocol {
                             }
                         }
                     }
-                }
-                else {
+                } else {
                     finished = true
                     path.removeAll()
                     pathIdx.removeAll()
@@ -584,8 +560,7 @@ public struct PersistentHashMap<K: Hashable,V> : Sequence, CustomStringConvertib
     public func foreach(_ f: ((K,V) -> Void)) {
         if let root = root {
             root.foreach(f: f)
-        }
-        else {
+        } else {
             return
         }
     }
@@ -604,8 +579,7 @@ public struct PersistentHashMap<K: Hashable,V> : Sequence, CustomStringConvertib
         for entry in entries {
             if let root = root {
                 self.root = root.with(entry: entry, hash: entry.0.hashValue)
-            }
-            else {
+            } else {
                 root = EntryNode(shift: 0, entry: entry, hash: entry.0.hashValue)
             }
         }
@@ -621,8 +595,7 @@ public struct PersistentHashMap<K: Hashable,V> : Sequence, CustomStringConvertib
         for entry in entries {
             if let root = root {
                 self.root = root.with(entry: entry, hash: entry.0.hashValue)
-            }
-            else {
+            } else {
                 root = EntryNode(shift: 0, entry: entry, hash: entry.0.hashValue)
             }
         }
@@ -636,8 +609,7 @@ public struct PersistentHashMap<K: Hashable,V> : Sequence, CustomStringConvertib
         get {
             if let root = root {
                 return root.size
-            }
-            else {
+            } else {
                 return 0
             }
         }
@@ -666,8 +638,7 @@ public struct PersistentHashMap<K: Hashable,V> : Sequence, CustomStringConvertib
         
         if let entry = root.get(key: key) {
             return entry.1
-        }
-        else {
+        } else {
             return nil
         }
     }
@@ -697,12 +668,10 @@ public struct PersistentHashMap<K: Hashable,V> : Sequence, CustomStringConvertib
                 if replace {
                     self.root = replacement
                 }
-            }
-            else {
+            } else {
                 self.root = root.with(entry: entry, hash: entry.0.hashValue)
             }
-        }
-        else {
+        } else {
             root = EntryNode(shift: 0, entry: entry, hash: entry.0.hashValue)
         }
     }
@@ -714,8 +683,7 @@ public struct PersistentHashMap<K: Hashable,V> : Sequence, CustomStringConvertib
     public func with(_ entry: (K,V)) -> PersistentHashMap {
         if let root = root {
             return PersistentHashMap(root: root.with(entry: entry, hash: entry.0.hashValue))
-        }
-        else {
+        } else {
             return PersistentHashMap(root: EntryNode(shift: 0, entry: entry, hash: entry.0.hashValue))
         }
     }
@@ -728,12 +696,10 @@ public struct PersistentHashMap<K: Hashable,V> : Sequence, CustomStringConvertib
                 if (root.remove(key: key, hash: key.hashValue)) {
                     self.root = nil
                 }
-            }
-            else {
+            } else {
                 self.root = root.without(key: key, hash: key.hashValue)
             }
-        }
-        else {
+        } else {
             return
         }
     }
@@ -741,8 +707,7 @@ public struct PersistentHashMap<K: Hashable,V> : Sequence, CustomStringConvertib
     public func without(_ key: K) -> PersistentHashMap {
         if let root = root {
             return PersistentHashMap(root: root.without(key: key, hash: key.hashValue))
-        }
-        else {
+        } else {
             return self
         }
     }
@@ -753,8 +718,7 @@ public struct PersistentHashMap<K: Hashable,V> : Sequence, CustomStringConvertib
 private func eqo<K, V: Equatable>(lhs: Node<K,V>?, rhs: Node<K,V>?) -> Bool {
     if let lhsNode = lhs, let rhsNode = rhs {
         return eq(lhs: lhsNode, rhs: rhsNode)
-    }
-    else {
+    } else {
         return lhs == nil && rhs == nil
     }
 }
@@ -786,16 +750,13 @@ private func eq<K, V: Equatable>(lhs: Node<K,V>, rhs: Node<K,V>) -> Bool {
         }
         
         return true
-    }
-    else if lhs is TreeNode || rhs is TreeNode {
+    } else if lhs is TreeNode || rhs is TreeNode {
         if size != 1 {
             return false
-        }
-        else {
+        } else {
             return singleEntry(node: lhs) == singleEntry(node: rhs)
         }
-    }
-    else if let lhsMultiNode = lhs as? MultiNode, let rhsMultiNode = rhs as? MultiNode {
+    } else if let lhsMultiNode = lhs as? MultiNode, let rhsMultiNode = rhs as? MultiNode {
         if lhsMultiNode.data.count != rhsMultiNode.data.count {
             return false
         }
@@ -807,14 +768,11 @@ private func eq<K, V: Equatable>(lhs: Node<K,V>, rhs: Node<K,V>) -> Bool {
         }
         
         return true
-    }
-    else if lhs is MultiNode || rhs is MultiNode {
+    } else if lhs is MultiNode || rhs is MultiNode {
         fatalError("Logical error: one of two nodes is a MultiNode - sizes \(lhs.size), \(rhs.size), lhs is \(type(of: lhs)), rhs is \(type(of: rhs))")
-    }
-    else if let lhsEntryNode = lhs as? EntryNode, let rhsEntryNode = rhs as? EntryNode {
+    } else if let lhsEntryNode = lhs as? EntryNode, let rhsEntryNode = rhs as? EntryNode {
         return lhsEntryNode.entry == rhsEntryNode.entry
-    }
-    else {
+    } else {
         fatalError("Logical error: unexpected combination of node types - sizes \(lhs.size), \(rhs.size), lhs is \(type(of: lhs)), rhs is \(type(of: rhs))")
     }
 }
@@ -836,8 +794,7 @@ private func singleEntry<K,V>(node: Node<K,V>) -> (K,V) {
         }
         
         return singleEntry(node: subnode!)
-    }
-    else if let multiNode = node as? MultiNode {
+    } else if let multiNode = node as? MultiNode {
         var entry: (K,V)? = nil
         
         for candidate in multiNode.data {
@@ -847,11 +804,9 @@ private func singleEntry<K,V>(node: Node<K,V>) -> (K,V) {
         }
         
         return entry!
-    }
-    else if let entryNode = node as? EntryNode {
+    } else if let entryNode = node as? EntryNode {
         return entryNode.entry
-    }
-    else {
+    } else {
         fatalError("Unknown node type: \(type(of: node))")
     }
 }

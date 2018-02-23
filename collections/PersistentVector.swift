@@ -105,8 +105,7 @@ private final class TreeNode<E> : Node<E> {
             for node in nodes {
                 if idx < node.size() {
                     return node.get(idx: idx)
-                }
-                else {
+                } else {
                     idx -= node.size()
                 }
             }
@@ -129,12 +128,10 @@ private final class TreeNode<E> : Node<E> {
                         var newNodes = nodes
                         newNodes[nodeIdx] = newNode
                         return TreeNode(level: level, nodes: newNodes, size: size_)
-                    }
-                    else {
+                    } else {
                         return self
                     }
-                }
-                else {
+                } else {
                     idx -= node.size()
                 }
             }
@@ -155,8 +152,7 @@ private final class TreeNode<E> : Node<E> {
                 if idx < node.size() {
                     if unshared {
                         node.set(idx: idx, value: value)
-                    }
-                    else {
+                    } else {
                         let newNode = node.with(idx: idx, value: value)
                         
                         if newNode !== node {
@@ -165,8 +161,7 @@ private final class TreeNode<E> : Node<E> {
                     }
                     
                     return
-                }
-                else {
+                } else {
                     idx -= node.size()
                 }
             }
@@ -223,8 +218,7 @@ private final class TreeNode<E> : Node<E> {
                     
                     return true;
                 }
-            }
-            else {
+            } else {
                 let lastSubnodeReplacement = lastSubnode.plus(value: value)
                 
                 if let lastSubnodeReplacement = lastSubnodeReplacement {
@@ -290,12 +284,10 @@ private final class TreeNode<E> : Node<E> {
             }
             
             return TreeNode(level: level, nodes: newNodes, size: size_ - 1)
-        }
-        else {
+        } else {
             if nodes.count == 1 {
                 return nil
-            }
-            else {
+            } else {
                 var newNodes = nodes
                 newNodes.removeLast()
                 
@@ -321,8 +313,7 @@ private final class TreeNode<E> : Node<E> {
             size_ -= 1
             
             return size_ > 0
-        }
-        else {
+        } else {
             let lastSubnodeReplacement = lastSubnode.withoutLast()
             
             if let lastSubnodeReplacement = lastSubnodeReplacement {
@@ -335,12 +326,10 @@ private final class TreeNode<E> : Node<E> {
                 size_ -= 1
                 
                 return true
-            }
-            else {
+            } else {
                 if nodes.count == 1 {
                     return false
-                }
-                else {
+                } else {
                     nodes.removeLast()
                     
                     if lastSubnode.size() != 1 {
@@ -378,8 +367,7 @@ private final class ValueNode<E> : Node<E> {
     override func get(idx: Int) -> E {
         if idx < data.count {
             return data[idx]
-        }
-        else {
+        } else {
             fatalError("Logical error in ValueNode")
         }
     }
@@ -389,8 +377,7 @@ private final class ValueNode<E> : Node<E> {
             var newData = data
             newData[idx] = value
             return ValueNode(data: newData)
-        }
-        else {
+        } else {
             fatalError("Logical error in ValueNode")
         }
     }
@@ -398,8 +385,7 @@ private final class ValueNode<E> : Node<E> {
     override func set(idx: Int, value: E) {
         if idx < data.count {
             data[idx] = value
-        }
-        else {
+        } else {
             fatalError("Logical error in ValueNode")
         }
     }
@@ -440,11 +426,9 @@ private final class ValueNode<E> : Node<E> {
     override func plus(valueNode: ValueNode) -> Node<E>? {
         if data.count == 0 {
             return valueNode
-        }
-        else if data.count == MAX_NODE_CHILDREN {
+        } else if data.count == MAX_NODE_CHILDREN {
             return nil
-        }
-        else {
+        } else {
             fatalError("Logical error in ValueNode")
         }
     }
@@ -452,8 +436,7 @@ private final class ValueNode<E> : Node<E> {
     override func withoutLast() -> Node<E>? {
         if data.count == 1 {
             return nil
-        }
-        else {
+        } else {
             var newData = data
             newData.removeLast()
             
@@ -464,8 +447,7 @@ private final class ValueNode<E> : Node<E> {
     override func removeLast() -> Bool {
         if data.count == 1 {
             return false
-        }
-        else {
+        } else {
             data.removeLast()
             
             return true
@@ -476,11 +458,9 @@ private final class ValueNode<E> : Node<E> {
 private func createNodeForValue<E>(level: Int, value: E) -> Node<E> {
     if level > 0 {
         return TreeNode(level: level, subNode: createNodeForValue(level: level - 1, value: value))
-    }
-    else if level == 0 {
+    } else if level == 0 {
         return ValueNode(value: value)
-    }
-    else {
+    } else {
         fatalError("Logical error in createNodeForValue")
     }
 }
@@ -488,14 +468,11 @@ private func createNodeForValue<E>(level: Int, value: E) -> Node<E> {
 private func createNodeForValueNode<E>(level: Int, valueNode: ValueNode<E>) -> Node<E> {
     if level > 1 {
         return TreeNode(level: level, subNode: createNodeForValueNode(level: level - 1, valueNode: valueNode))
-    }
-    else if level == 1 {
+    } else if level == 1 {
         return TreeNode(level: level, subNode: valueNode)
-    }
-    else if level == 0 {
+    } else if level == 0 {
         return valueNode
-    }
-    else {
+    } else {
         fatalError("Logical error in createNodeForValue")
     }
 }
@@ -525,13 +502,11 @@ public struct VectorIterator<E> : IteratorProtocol {
                 pathSize += 1
                 
                 node = treeNode.nodes[0]
-            }
-            else if let valueNode = node as? ValueNode {
+            } else if let valueNode = node as? ValueNode {
                 self.valueNode = valueNode
                 valueIdx = 0
                 break
-            }
-            else {
+            } else {
                 fatalError("Unknown node type: \(type(of: node))")
             }
         }
@@ -579,14 +554,12 @@ public struct VectorIterator<E> : IteratorProtocol {
                         valueNode = (newSubnode as! ValueNode)
                         valueIdx = 0
                         break
-                    }
-                    else {
+                    } else {
                         if idx > 0 {
                             path[idx] = nil
                             pathIdx[idx] = 0
                             idx -= 1
-                        }
-                        else {
+                        } else {
                             finished = true
                             path.removeAll()
                             pathIdx.removeAll()
@@ -594,8 +567,7 @@ public struct VectorIterator<E> : IteratorProtocol {
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 finished = true
                 path.removeAll()
                 pathIdx.removeAll()
@@ -630,8 +602,7 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
         for value in seq {
             if buffer.count < MAX_NODE_CHILDREN {
                 buffer.append(value)
-            }
-            else {
+            } else {
                 let valueNode = ValueNode<E>(data: buffer)
                 
                 if let root = self.root {
@@ -642,8 +613,7 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
                     }
                     
                     self.root = newRoot
-                }
-                else {
+                } else {
                     self.root = valueNode
                 }
                 
@@ -656,8 +626,7 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
             
             if let root = root {
                 self.root = root.plus(valueNode: valueNode)
-            }
-            else {
+            } else {
                 self.root = valueNode
             }
         }
@@ -690,8 +659,7 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
             if idx >= 0 && idx < root.size() {
                 if unshared {
                     root.set(idx: idx, value: value)
-                }
-                else {
+                } else {
                     self.root = root.with(idx: idx, value: value)
                 }
                 
@@ -712,12 +680,10 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
             
             if let newRoot = newRoot {
                 return PersistentVector(root: newRoot)
-            }
-            else {
+            } else {
                 return PersistentVector(root: TreeNode(lhs: root, rhs: value))
             }
-        }
-        else {
+        } else {
             return PersistentVector(root: ValueNode(data: [ value ]))
         }
     }
@@ -734,19 +700,16 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
                 if root.add(value: value) == false {
                     self.root = TreeNode(lhs: root, rhs: value)
                 }
-            }
-            else {
+            } else {
                 let newRoot = root.plus(value: value)
                 
                 if let newRoot = newRoot {
                     self.root = newRoot
-                }
-                else {
+                } else {
                     self.root = TreeNode(lhs: root, rhs: value)
                 }
             }
-        }
-        else {
+        } else {
             root = ValueNode(data: [ value ])
         }
     }
@@ -754,8 +717,7 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
     public func withoutLast() -> PersistentVector {
         if let root = root {
             return PersistentVector(root: root.withoutLast())
-        }
-        else {
+        } else {
             fatalError("Vector is empty")
         }
     }
@@ -770,12 +732,10 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
                     
                     return
                 }
-            }
-            else {
+            } else {
                 self.root = root.withoutLast()
             }
-        }
-		else {
+        } else {
             fatalError("Vector is empty")
         }
 	}
@@ -784,8 +744,7 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
         get {
             if let root = root {
                 return root.size()
-            }
-            else {
+            } else {
                 return 0
             }
         }
@@ -809,8 +768,7 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
     public func makeIterator() -> VectorIterator<E> {
         if let root = root {
             return VectorIterator<E>(root: root)
-        }
-        else {
+        } else {
             return VectorIterator<E>()
         }
     }
@@ -819,8 +777,7 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
         get {
             if let root = root {
                 return root.level + 1
-            }
-            else {
+            } else {
                 return 0
             }
         }
@@ -858,8 +815,7 @@ extension PersistentVector where E : Equatable {
         
         if let lhsRoot = lhs.root, let rhsRoot = rhs.root {
             return lhsRoot == rhsRoot
-        }
-        else {
+        } else {
             return lhs.root == nil && rhs.root == nil
         }
     }

@@ -99,8 +99,7 @@ class PersistentHashMapTest: XCTestCase {
                 
                 if randomBool() {
                     map = map.with(key, value: value)
-                }
-                else {
+                } else {
                     map.put(key, value: value)
                 }
                 
@@ -193,8 +192,7 @@ class PersistentHashMapTest: XCTestCase {
 
                 if randomBool() {
                     map = map.with(key, value: value)
-                }
-                else {
+                } else {
                     map.put(key, value: value)
                 }
                 
@@ -209,8 +207,7 @@ class PersistentHashMapTest: XCTestCase {
 
                 if randomBool() {
                     map = map.without(keyToRemove)
-                }
-                else {
+                } else {
                     map.remove(keyToRemove)
                 }
                 
@@ -223,8 +220,7 @@ class PersistentHashMapTest: XCTestCase {
 
                 if (sizeAfterRemoval == sizeBeforeRemoval - 1) {
                     removalCount += 1
-                }
-                else if (sizeAfterRemoval != sizeBeforeRemoval) {
+                } else if (sizeAfterRemoval != sizeBeforeRemoval) {
                     XCTFail("Unexpected removal behavior - map size: \(map.count), hashmap size: \(hashmap.count)")
                 }
                 
@@ -327,8 +323,7 @@ class PersistentHashMapTest: XCTestCase {
 
                 if randomBool() {
                     map = map.with(key, value: value)
-                }
-                else {
+                } else {
                     map.put(key, value: value)
                 }
                 
@@ -344,8 +339,7 @@ class PersistentHashMapTest: XCTestCase {
                     
                     if randomBool() {
                         map = map.without(keyToRemove)
-                    }
-                    else {
+                    } else {
                         map.remove(keyToRemove)
                     }
                     
@@ -358,8 +352,7 @@ class PersistentHashMapTest: XCTestCase {
 
                     if (sizeAfterRemoval == sizeBeforeRemoval - 1) {
                         removalCount += 1
-                    }
-                    else if (sizeAfterRemoval != sizeBeforeRemoval) {
+                    } else if (sizeAfterRemoval != sizeBeforeRemoval) {
                         XCTFail("Unexpected removal behavior - map size: \(map.count), hashmap size: \(hashmap.count)")
                     }
                 }
@@ -604,8 +597,7 @@ func drain<K,V>(_ map: PersistentHashMap<K,V>) {
     if randomBool() {
         drainPersistently(map)
         drainInPlace(map)
-    }
-    else {
+    } else {
         drainInPlace(map)
         drainPersistently(map)
     }
@@ -658,8 +650,7 @@ func drainPersistently<K,V>(_ map: PersistentHashMap<K,V>) {
         XCTAssertEqual(map.count, 1)
         
         map = map.without(lastEntry!.0)
-    }
-    else {
+    } else {
         map = map.without(firstEntry!.0)
     }
     
@@ -713,8 +704,7 @@ func drainInPlace<K,V>(_ map: PersistentHashMap<K,V>) {
         XCTAssertEqual(map.count, 1)
         
         map.remove(lastEntry!.0)
-    }
-    else {
+    } else {
         map.remove(firstEntry!.0)
     }
     

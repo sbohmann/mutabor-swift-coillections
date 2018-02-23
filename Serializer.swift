@@ -194,8 +194,7 @@ public class Serializer {
             
             if (first) {
                 try writeByte(lastMarker | negativeMarker | UInt8(((value >> Int64(shift)) & 0x3F)), outputStream)
-            }
-            else {
+            } else {
                 try writeByte(lastMarker | UInt8((value >> Int64(shift)) & 0x7F), outputStream)
             }
             
@@ -271,8 +270,7 @@ public class Serializer {
             if (first) {
                 negative = ((b & 0x40) != 0)
                 result = (Int64(b) & Int64(0x3F))
-            }
-            else {
+            } else {
                 result <<= 7
                 
                 result |= (Int64(b) & Int64(0x7F))
@@ -428,8 +426,7 @@ public class Serializer {
                 
                 if (n == 0) {
                     throw IoError("Reached EOF while writing")
-                }
-                else if (n < 0) {
+                } else if (n < 0) {
                     throw IoError("Error writing data to outputStream: \(outputStream.streamError?.localizedDescription ?? "unknown error")")
                 }
                 
@@ -455,12 +452,10 @@ public class Serializer {
                 
                 if n == 0 {
                     throw IoError("Reached EOF after \(bytesRead) while reading \(size) bytes of data");
-                }
-                else if n < 0 {
+                } else if n < 0 {
                     if let error = inputStream.streamError {
                         throw IoError(error)
-                    }
-                    else {
+                    } else {
                         throw IoError("Unknown stream error")
                     }
                 }
@@ -559,12 +554,10 @@ public class Serializer {
         
         if (n == 0) {
             throw IoError("Reached EOF whlie reading")
-        }
-        else if (n < 0) {
+        } else if (n < 0) {
             if let error = inputStream.streamError {
                 throw error
-            }
-            else {
+            } else {
                 throw IoError("Unknown stream error while reading")
             }
         }
@@ -579,12 +572,10 @@ public class Serializer {
         
         if (n == 0) {
             throw IoError("Reached EOF whlie writing")
-        }
-        else if (n < 0) {
+        } else if (n < 0) {
             if let error = outputStream.streamError {
                 throw error
-            }
-            else {
+            } else {
                 throw IoError("Unknown stream error while writing")
             }
         }

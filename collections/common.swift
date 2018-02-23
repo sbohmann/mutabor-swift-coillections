@@ -13,8 +13,7 @@ let MAX_DEPTH = (HASH_BITS + SHIFT_PER_LEVEL - 1) / SHIFT_PER_LEVEL
 func sizeForShift(_ shift: Int) -> Int {
     if shift + SHIFT_PER_LEVEL <= HASH_BITS {
         return MAX_NODE_CHILDREN
-    }
-    else {
+    } else {
         return 1 << (HASH_BITS - shift)
     }
 }

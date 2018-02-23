@@ -201,8 +201,7 @@ class PersistentVectorTest: XCTestCase {
         for i in 0 ... MAX {
             if (randomBool()) {
                 vector.add(i)
-            }
-            else {
+            } else {
                 vector = vector.plus(i)
             }
             
@@ -273,19 +272,16 @@ class PersistentVectorTest: XCTestCase {
         for i in 0 ... MAX {
             if (randomBool()) {
                 vector.add(i)
-            }
-            else {
+            } else {
                 vector = vector.plus(i)
             }
             
             if (randomBool()) {
                 list.append(i);
-            }
-            else {
+            } else {
                 if (randomBool()) {
                     vector.removeLast();
-                }
-                else {
+                } else {
                     vector = vector.withoutLast();
                 }
             }
@@ -420,8 +416,7 @@ class PersistentVectorTest: XCTestCase {
             
             if (randomBool()) {
                 vector.set(idx, value: newValue)
-            }
-            else {
+            } else {
                 vector = vector.with(idx, value: newValue)
             }
             
@@ -485,11 +480,9 @@ func eq<A: Sequence, B: Sequence>
         
         if aOption == nil && bOption == nil {
             return true
-        }
-        else if aOption == nil || bOption == nil {
+        } else if aOption == nil || bOption == nil {
             return false
-        }
-        else if aOption! != bOption! {
+        } else if aOption! != bOption! {
             return false
         }
         
@@ -501,8 +494,7 @@ func drain<E>(_ set: PersistentVector<E>) {
     if randomBool() {
         drainPersistently(set)
         drainInPlace(set)
-    }
-    else {
+    } else {
         drainInPlace(set)
         drainPersistently(set)
     }
@@ -555,8 +547,7 @@ func drainPersistently<E>(_ vector: PersistentVector<E>) {
         XCTAssertEqual(vector.count, 1)
         
         vector = vector.withoutLast()
-    }
-    else {
+    } else {
         vector = vector.withoutLast()
     }
     
@@ -610,8 +601,7 @@ func drainInPlace<E>(_ vector: PersistentVector<E>) {
         XCTAssertEqual(vector.count, 1)
         
         vector.removeLast()
-    }
-    else {
+    } else {
         vector.removeLast()
     }
     

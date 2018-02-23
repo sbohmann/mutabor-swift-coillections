@@ -19,8 +19,7 @@ func g() throws -> Int {
 
 do {
     try f()
-}
-catch let error {
+} catch let error {
     print("message: \(error)")
 }
 
@@ -177,8 +176,7 @@ let whatever: Int
 
 if case .X(var x) = e {
     whatever = 5
-}
-else {
+} else {
     whatever = 7
 }
 

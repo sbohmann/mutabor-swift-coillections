@@ -91,8 +91,7 @@ class PersistentHashSetTest: XCTestCase {
                 
                 if randomBool() {
                     set = set.plus(key)
-                }
-                else {
+                } else {
                     set.add(key)
                 }
                 
@@ -184,8 +183,7 @@ class PersistentHashSetTest: XCTestCase {
 
                 if randomBool() {
                     set = set.plus(key)
-                }
-                else {
+                } else {
                     set.add(key)
                 }
                 
@@ -200,8 +198,7 @@ class PersistentHashSetTest: XCTestCase {
 
                 if randomBool() {
                     set = set.minus(keyToRemove)
-                }
-                else {
+                } else {
                     set.remove(keyToRemove)
                 }
                 
@@ -214,8 +211,7 @@ class PersistentHashSetTest: XCTestCase {
 
                 if (sizeAfterRemoval == sizeBeforeRemoval - 1) {
                     removalCount += 1
-                }
-                else if (sizeAfterRemoval != sizeBeforeRemoval) {
+                } else if (sizeAfterRemoval != sizeBeforeRemoval) {
                     XCTFail("Unexpected removal behavior - set size: \(set.count), hashset size: \(hashset.count)")
                 }
                 
@@ -313,8 +309,7 @@ class PersistentHashSetTest: XCTestCase {
 
                 if randomBool() {
                     set = set.plus(key)
-                }
-                else {
+                } else {
                     set.add(key)
                 }
                 
@@ -330,8 +325,7 @@ class PersistentHashSetTest: XCTestCase {
                     
                     if randomBool() {
                         set = set.minus(keyToRemove)
-                    }
-                    else {
+                    } else {
                         set.remove(keyToRemove)
                     }
                     
@@ -344,8 +338,7 @@ class PersistentHashSetTest: XCTestCase {
 
                     if (sizeAfterRemoval == sizeBeforeRemoval - 1) {
                         removalCount += 1
-                    }
-                    else if (sizeAfterRemoval != sizeBeforeRemoval) {
+                    } else if (sizeAfterRemoval != sizeBeforeRemoval) {
                         XCTFail("Unexpected removal behavior - set size: \(set.count), hashset size: \(hashset.count)")
                     }
                 }
@@ -573,8 +566,7 @@ func drain<E>(_ set: PersistentHashSet<E>) {
     if randomBool() {
         drainPersistently(set)
         drainInPlace(set)
-    }
-    else {
+    } else {
         drainInPlace(set)
         drainPersistently(set)
     }
@@ -627,8 +619,7 @@ func drainPersistently<E>(_ set: PersistentHashSet<E>) {
         XCTAssertEqual(set.count, 1)
         
         set = set.minus(lastEntry!)
-    }
-    else {
+    } else {
         set = set.minus(firstEntry!)
     }
     
@@ -682,8 +673,7 @@ func drainInPlace<E>(_ set: PersistentHashSet<E>) {
         XCTAssertEqual(set.count, 1)
         
         set.remove(lastEntry!)
-    }
-    else {
+    } else {
         set.remove(firstEntry!)
     }
     
