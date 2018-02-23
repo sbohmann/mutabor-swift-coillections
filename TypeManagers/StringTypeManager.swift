@@ -1,6 +1,6 @@
 import Foundation
 
-public final class StringTypeManager : TypeManager<String> {
+public final class StringTypeManager: TypeManager<String> {
     public override func hashValue(value: String) -> Int {
         return value.hashValue
     }

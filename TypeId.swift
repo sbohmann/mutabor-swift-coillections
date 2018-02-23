@@ -1,4 +1,4 @@
-public enum TypeId : Int8 {
+public enum TypeId: Int8 {
     case Basic = 0x00
     case Boolean = 0x01
     

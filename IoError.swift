@@ -1,4 +1,4 @@
-public struct IoError : Error {
+public struct IoError: Error {
     public let message: String
     
     public init(_ message: String) {

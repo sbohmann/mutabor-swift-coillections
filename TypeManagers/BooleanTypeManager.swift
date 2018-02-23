@@ -1,6 +1,6 @@
 import Foundation
 
-public final class BooleanTypeManager : TypeManager<Bool> {
+public final class BooleanTypeManager: TypeManager<Bool> {
     public override func hashValue(value: Bool) -> Int {
         return value.hashValue
     }

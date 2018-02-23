@@ -376,7 +376,7 @@ public class Serializer {
     public static func readBoolean(inputStream: InputStream) throws -> Bool {
         let value = try readInt8(inputStream: inputStream)
         
-        switch (value) {
+        switch value {
         case 0:
             return false
         case 1:
@@ -391,15 +391,15 @@ public class Serializer {
             throw IoError("Unable to encode string as UTF-8")
         }
         
-        try writeSize(size: data.count, outputStream:outputStream)
+        try writeSize(size: data.count, outputStream: outputStream)
         
-        try writeData(data:data, outputStream:outputStream)
+        try writeData(data: data, outputStream: outputStream)
     }
     
     public static func readString(inputStream: InputStream) throws -> String {
         let size = try readSize(inputStream: inputStream)
         
-        let data = try readData(inputStream: inputStream, size:size)
+        let data = try readData(inputStream: inputStream, size: size)
         
         guard let result = String(data: data, encoding: String.Encoding.utf8) else {
             throw IoError("Unable to create string from data")
@@ -415,13 +415,11 @@ public class Serializer {
             throw IoError("bufferData length out of range: \(size)")
         }
         
-        try data.withUnsafeBytes( {
-            (bytes: UnsafePointer<UInt8>) in
-            
+        try data.withUnsafeBytes({(bytes: UnsafePointer<UInt8>) in
             var bytesWritten = 0
             
             while bytesWritten < size {
-                let n = outputStream.write(bytes.advanced(by:bytesWritten), maxLength:size - bytesWritten)
+                let n = outputStream.write(bytes.advanced(by: bytesWritten), maxLength: size - bytesWritten)
                 
                 if n == 0 {
                     throw IoError("Reached EOF while writing")
@@ -447,7 +445,7 @@ public class Serializer {
             var bytesRead: Int = 0
             
             while bytesRead < Int(size) {
-                let n = inputStream.read(buffer.advanced(by: bytesRead), maxLength:Int(size) - bytesRead)
+                let n = inputStream.read(buffer.advanced(by: bytesRead), maxLength: Int(size) - bytesRead)
                 
                 if n == 0 {
                     throw IoError("Reached EOF after \(bytesRead) while reading \(size) bytes of data")

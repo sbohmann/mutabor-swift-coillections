@@ -1,6 +1,6 @@
 import Foundation
 
-public final class ExtendedTypeManager : TypeManager<Float80> {
+public final class ExtendedTypeManager: TypeManager<Float80> {
     public override func hashValue(value: Float80) -> Int {
         return value.hashValue
     }

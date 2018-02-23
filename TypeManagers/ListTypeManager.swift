@@ -1,7 +1,7 @@
 import Foundation
 
-public final class ListTypeManager<E> : TypeManager<PersistentVector<E>> where E: Hashable, E: CustomStringConvertible {
-    public typealias T = PersistentVector<E>
+public final class ListTypeManager<E>: TypeManager<PersistentVector<E>> where E: Hashable, E: CustomStringConvertible {
+    public typealias ListType = PersistentVector<E>
     
     private let elementTypeManager: TypeManager<E>
     
@@ -11,15 +11,15 @@ public final class ListTypeManager<E> : TypeManager<PersistentVector<E>> where E
         super.init(TypeId.List)
     }
     
-    public override func hashValue(value: T) -> Int {
+    public override func hashValue(value: ListType) -> Int {
         return value.hashValue
     }
     
-    public override func equal(lhs: T, rhs: T) -> Bool {
+    public override func equal(lhs: ListType, rhs: ListType) -> Bool {
         return lhs == rhs
     }
     
-    public override func writeToStream(value: T, outputStream: OutputStream) throws {
+    public override func writeToStream(value: ListType, outputStream: OutputStream) throws {
         try Serializer.writeTypeId(value: TypeId.List, outputStream: outputStream)
         
         try Serializer.writeTypeId(value: elementTypeManager.typeId, outputStream: outputStream)
@@ -31,7 +31,7 @@ public final class ListTypeManager<E> : TypeManager<PersistentVector<E>> where E
         }
     }
     
-    public override func createFromStream(inputStream: InputStream) throws -> T {
+    public override func createFromStream(inputStream: InputStream) throws -> ListType {
         try Serializer.checkTypeId(expectedTypeId: TypeId.List, inputStream: inputStream)
         
         try Serializer.checkTypeId(expectedTypeId: elementTypeManager.typeId, inputStream: inputStream)

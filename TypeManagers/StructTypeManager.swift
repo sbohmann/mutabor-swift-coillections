@@ -1,6 +1,6 @@
 import Foundation
 
-public final class StructTypeManager<T : Struct> : TypeManager<T> {
+public final class StructTypeManager<T: Struct>: TypeManager<T> {
     private let deserializer: (InputStream) throws -> T
     
     public init(_ deserializer: @escaping (InputStream) throws -> T) {

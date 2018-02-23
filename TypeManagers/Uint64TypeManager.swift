@@ -1,6 +1,6 @@
 import Foundation
 
-public final class Uint64TypeManager : TypeManager<UInt64> {
+public final class Uint64TypeManager: TypeManager<UInt64> {
     public override func hashValue(value: UInt64) -> Int {
         return value.hashValue
     }

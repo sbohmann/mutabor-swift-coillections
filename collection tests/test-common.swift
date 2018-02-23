@@ -30,14 +30,14 @@ func randomSize() -> Int32 {
     return randomInt(CubicRoot) * randomInt(CubicRoot) * randomInt(CubicRoot) + randomInt(1024)
 }
 
-struct HighHashCollider : Hashable, Equatable, Comparable {
+struct HighHashCollider: Hashable, Equatable, Comparable {
     let value: Int64
     
     init(_ value: Int64) {
         self.value = value
     }
     
-    var hashValue : Int {
+    var hashValue: Int {
         get {
             return value.hashValue & 0xFFFF0000
         }
@@ -52,14 +52,14 @@ func < (lhs: HighHashCollider, rhs: HighHashCollider) -> Bool {
     return lhs.value < rhs.value
 }
 
-struct LowHashCollider : Hashable, Equatable, Comparable {
+struct LowHashCollider: Hashable, Equatable, Comparable {
     let value: Int64
     
     init(_ value: Int64) {
         self.value = value
     }
     
-    var hashValue : Int {
+    var hashValue: Int {
         get {
             return value.hashValue & 0x0000FFFF
         }

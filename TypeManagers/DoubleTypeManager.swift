@@ -1,6 +1,6 @@
 import Foundation
 
-public final class DoubleTypeManager : TypeManager<Double> {
+public final class DoubleTypeManager: TypeManager<Double> {
     public override func hashValue(value: Double) -> Int {
         return value.hashValue
     }

@@ -1,6 +1,6 @@
 import Foundation
 
-public final class Int8TypeManager : TypeManager<Int8> {
+public final class Int8TypeManager: TypeManager<Int8> {
     public override func hashValue(value: Int8) -> Int {
         return value.hashValue
     }

@@ -1,6 +1,6 @@
 import Foundation
 
-public final class Int32TypeManager : TypeManager<Int32> {
+public final class Int32TypeManager: TypeManager<Int32> {
     public override func hashValue(value: Int32) -> Int {
         return value.hashValue
     }
