@@ -165,28 +165,24 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
 	}
 	
     public var count: Int {
-        get {
-            if let root = root {
-                return root.size()
-            } else {
-                return 0
-            }
+        if let root = root {
+            return root.size()
+        } else {
+            return 0
         }
     }
     
-    public var description : String {
-        get {
-            var result: String = "List ["
-            var first = true
-            for element in self {
-                result += (first ? " " : ", ")
-                result += "\(element)"
-                first = false
-            }
-            result += " ]"
-            
-            return result
+    public var description: String {
+        var result: String = "List ["
+        var first = true
+        for element in self {
+            result += (first ? " " : ", ")
+            result += "\(element)"
+            first = false
         }
+        result += " ]"
+        
+        return result
     }
     
     public func makeIterator() -> VectorIterator<E> {
@@ -198,30 +194,26 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
     }
     
     public var depth: Int {
-        get {
-            if let root = root {
-                return root.level + 1
-            } else {
-                return 0
-            }
+        if let root = root {
+            return root.level + 1
+        } else {
+            return 0
         }
     }
 }
 
 extension PersistentVector where E: Hashable {
 	public var hashValue: Int {
-		get {
-            NSLog("Fetching hashvalue from vector of size \(count)")
-            
-            var result = count
-            
-            for element in self {
-                result = result &* reasonablePrime
-                result = result &+ element.hashValue
-            }
-            
-            return result
-		}
+        NSLog("Fetching hashvalue from vector of size \(count)")
+        
+        var result = count
+        
+        for element in self {
+            result = result &* reasonablePrime
+            result = result &+ element.hashValue
+        }
+        
+        return result
 	}
 }
 

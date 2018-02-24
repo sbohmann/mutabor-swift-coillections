@@ -21,11 +21,11 @@ public struct PersistentHashSet<E: Hashable> : Sequence, CustomStringConvertible
         initImpl(entries: entries)
     }
     
-    public init<S : Sequence>(_ entries: S) where S.Iterator.Element == E {
+    public init<S: Sequence>(_ entries: S) where S.Iterator.Element == E {
         initImpl(entries: entries)
     }
     
-    private mutating func initImpl<S : Sequence>(entries: S) where S.Iterator.Element == E {
+    private mutating func initImpl<S: Sequence>(entries: S) where S.Iterator.Element == E {
         root = nil
         
         for entry in entries {
@@ -42,28 +42,24 @@ public struct PersistentHashSet<E: Hashable> : Sequence, CustomStringConvertible
     }
     
     public var count: Int {
-        get {
-            if let root = root {
-                return root.size
-            } else {
-                return 0
-            }
+        if let root = root {
+            return root.size
+        } else {
+            return 0
         }
     }
     
-    public var description : String {
-        get {
-            var result: String = "Set ["
-            var first = true
-            for element in self {
-                result += (first ? " " : ", ")
-                result += "\(element)"
-                first = false
-            }
-            result += " ]"
-            
-            return result
+    public var description: String {
+        var result: String = "Set ["
+        var first = true
+        for element in self {
+            result += (first ? " " : ", ")
+            result += "\(element)"
+            first = false
         }
+        result += " ]"
+        
+        return result
     }
     
     public func contains(_ key: E) -> Bool {
@@ -127,7 +123,7 @@ public struct PersistentHashSet<E: Hashable> : Sequence, CustomStringConvertible
         }
     }
     
-    var root : PHSNode<E>?
+    var root: PHSNode<E>?
 }
 
 private func eqo<E>(lhs: PHSNode<E>?, rhs: PHSNode<E>?) -> Bool {

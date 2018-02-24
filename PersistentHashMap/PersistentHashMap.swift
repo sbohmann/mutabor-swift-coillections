@@ -55,28 +55,24 @@ public struct PersistentHashMap<K: Hashable, V> : Sequence, CustomStringConverti
     }
     
     public var count: Int {
-        get {
-            if let root = root {
-                return root.size
-            } else {
-                return 0
-            }
+        if let root = root {
+            return root.size
+        } else {
+            return 0
         }
     }
     
     public var description: String {
-        get {
-            var result: String = "Map ["
-            var first = true
-            for entry in self {
-                result += (first ? " " : ", ")
-                result += "\(entry.0) -> \(entry.1)"
-                first = false
-            }
-            result += " ]"
-            
-            return result
+        var result: String = "Map ["
+        var first = true
+        for entry in self {
+            result += (first ? " " : ", ")
+            result += "\(entry.0) -> \(entry.1)"
+            first = false
         }
+        result += " ]"
+        
+        return result
     }
     
     public func get(_ key: K) -> V? {
