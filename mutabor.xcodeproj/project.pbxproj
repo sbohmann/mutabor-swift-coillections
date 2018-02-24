@@ -29,29 +29,8 @@
 		964C17AB204158AB00FA8A9D /* PersistentHashMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964C177720414C6800FA8A9D /* PersistentHashMap.swift */; };
 		964C17AE204159A900FA8A9D /* SetIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964C17AC204159A400FA8A9D /* SetIterator.swift */; };
 		964C17B1204159B700FA8A9D /* MapIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964C17AF204159B100FA8A9D /* MapIterator.swift */; };
-		964C17B5204170CC00FA8A9D /* IntegerSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964C17B320416FF700FA8A9D /* IntegerSerialization.swift */; };
-		96A204F91E02E281005480FC /* IoError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A204F81E02E281005480FC /* IoError.swift */; };
-		96A204FC1E02E437005480FC /* StructTypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A204FB1E02E437005480FC /* StructTypeManager.swift */; };
-		96A204FE1E02E475005480FC /* Struct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A204FD1E02E475005480FC /* Struct.swift */; };
-		96A205001E02E4D7005480FC /* TypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A204FF1E02E4D7005480FC /* TypeManager.swift */; };
 		96A205061E02F14E005480FC /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A205021E02F14E005480FC /* Common.swift */; };
 		96A2051C1E02F2F1005480FC /* libMutabor.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 96F8EA1E1DFBFEEA0055BDB2 /* libMutabor.dylib */; };
-		96B1AC981E1D1E93000A95C2 /* ListTypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B1AC971E1D1E93000A95C2 /* ListTypeManager.swift */; };
-		96B1ACA61E1D26DD000A95C2 /* BooleanTypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B1AC991E1D26DD000A95C2 /* BooleanTypeManager.swift */; };
-		96B1ACA71E1D26DD000A95C2 /* DoubleTypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B1AC9A1E1D26DD000A95C2 /* DoubleTypeManager.swift */; };
-		96B1ACA81E1D26DD000A95C2 /* ExtendedTypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B1AC9B1E1D26DD000A95C2 /* ExtendedTypeManager.swift */; };
-		96B1ACA91E1D26DD000A95C2 /* FloatTypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B1AC9C1E1D26DD000A95C2 /* FloatTypeManager.swift */; };
-		96B1ACAA1E1D26DD000A95C2 /* Int8TypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B1AC9D1E1D26DD000A95C2 /* Int8TypeManager.swift */; };
-		96B1ACAB1E1D26DD000A95C2 /* Int16TypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B1AC9E1E1D26DD000A95C2 /* Int16TypeManager.swift */; };
-		96B1ACAC1E1D26DD000A95C2 /* Int32TypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B1AC9F1E1D26DD000A95C2 /* Int32TypeManager.swift */; };
-		96B1ACAD1E1D26DD000A95C2 /* Int64TypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B1ACA01E1D26DD000A95C2 /* Int64TypeManager.swift */; };
-		96B1ACAE1E1D26DD000A95C2 /* StringTypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B1ACA11E1D26DD000A95C2 /* StringTypeManager.swift */; };
-		96B1ACAF1E1D26DD000A95C2 /* Uint8TypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B1ACA21E1D26DD000A95C2 /* Uint8TypeManager.swift */; };
-		96B1ACB01E1D26DD000A95C2 /* Uint16TypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B1ACA31E1D26DD000A95C2 /* Uint16TypeManager.swift */; };
-		96B1ACB11E1D26DD000A95C2 /* Uint32TypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B1ACA41E1D26DD000A95C2 /* Uint32TypeManager.swift */; };
-		96B1ACB21E1D26DD000A95C2 /* Uint64TypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B1ACA51E1D26DD000A95C2 /* Uint64TypeManager.swift */; };
-		96F8EA281DFBFF0E0055BDB2 /* Serializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F8EA191DFBF7730055BDB2 /* Serializer.swift */; };
-		96F8EA2A1DFC240C0055BDB2 /* TypeId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F8EA291DFC240C0055BDB2 /* TypeId.swift */; };
 		96F8EA341DFD41340055BDB2 /* libMutabor.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 96F8EA1E1DFBFEEA0055BDB2 /* libMutabor.dylib */; };
 /* End PBXBuildFile section */
 
@@ -94,31 +73,10 @@
 		964C179D204158A200FA8A9D /* PHMNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PHMNode.swift; sourceTree = "<group>"; };
 		964C17AC204159A400FA8A9D /* SetIterator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetIterator.swift; sourceTree = "<group>"; };
 		964C17AF204159B100FA8A9D /* MapIterator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapIterator.swift; sourceTree = "<group>"; };
-		964C17B320416FF700FA8A9D /* IntegerSerialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegerSerialization.swift; sourceTree = "<group>"; };
-		96A204F81E02E281005480FC /* IoError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoError.swift; sourceTree = "<group>"; };
-		96A204FB1E02E437005480FC /* StructTypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructTypeManager.swift; sourceTree = "<group>"; };
-		96A204FD1E02E475005480FC /* Struct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Struct.swift; sourceTree = "<group>"; };
-		96A204FF1E02E4D7005480FC /* TypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeManager.swift; sourceTree = "<group>"; };
 		96A205021E02F14E005480FC /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		96A205171E02F2F1005480FC /* CollectionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CollectionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		96A2052D1E02F8E7005480FC /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		96B1AC971E1D1E93000A95C2 /* ListTypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTypeManager.swift; sourceTree = "<group>"; };
-		96B1AC991E1D26DD000A95C2 /* BooleanTypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BooleanTypeManager.swift; sourceTree = "<group>"; };
-		96B1AC9A1E1D26DD000A95C2 /* DoubleTypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleTypeManager.swift; sourceTree = "<group>"; };
-		96B1AC9B1E1D26DD000A95C2 /* ExtendedTypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedTypeManager.swift; sourceTree = "<group>"; };
-		96B1AC9C1E1D26DD000A95C2 /* FloatTypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatTypeManager.swift; sourceTree = "<group>"; };
-		96B1AC9D1E1D26DD000A95C2 /* Int8TypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int8TypeManager.swift; sourceTree = "<group>"; };
-		96B1AC9E1E1D26DD000A95C2 /* Int16TypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int16TypeManager.swift; sourceTree = "<group>"; };
-		96B1AC9F1E1D26DD000A95C2 /* Int32TypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int32TypeManager.swift; sourceTree = "<group>"; };
-		96B1ACA01E1D26DD000A95C2 /* Int64TypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int64TypeManager.swift; sourceTree = "<group>"; };
-		96B1ACA11E1D26DD000A95C2 /* StringTypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringTypeManager.swift; sourceTree = "<group>"; };
-		96B1ACA21E1D26DD000A95C2 /* Uint8TypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Uint8TypeManager.swift; sourceTree = "<group>"; };
-		96B1ACA31E1D26DD000A95C2 /* Uint16TypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Uint16TypeManager.swift; sourceTree = "<group>"; };
-		96B1ACA41E1D26DD000A95C2 /* Uint32TypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Uint32TypeManager.swift; sourceTree = "<group>"; };
-		96B1ACA51E1D26DD000A95C2 /* Uint64TypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Uint64TypeManager.swift; sourceTree = "<group>"; };
-		96F8EA191DFBF7730055BDB2 /* Serializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Serializer.swift; sourceTree = "<group>"; };
 		96F8EA1E1DFBFEEA0055BDB2 /* libMutabor.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libMutabor.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		96F8EA291DFC240C0055BDB2 /* TypeId.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeId.swift; sourceTree = "<group>"; };
 		96F8EA2F1DFD41340055BDB2 /* MutaborGeneratorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MutaborGeneratorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -187,36 +145,6 @@
 			path = PersistentVector;
 			sourceTree = "<group>";
 		};
-		964C17B220416FCC00FA8A9D /* Serializer */ = {
-			isa = PBXGroup;
-			children = (
-				964C17B320416FF700FA8A9D /* IntegerSerialization.swift */,
-			);
-			path = Serializer;
-			sourceTree = "<group>";
-		};
-		96A204FA1E02E40D005480FC /* TypeManagers */ = {
-			isa = PBXGroup;
-			children = (
-				96B1AC991E1D26DD000A95C2 /* BooleanTypeManager.swift */,
-				96B1AC9A1E1D26DD000A95C2 /* DoubleTypeManager.swift */,
-				96B1AC9B1E1D26DD000A95C2 /* ExtendedTypeManager.swift */,
-				96B1AC9C1E1D26DD000A95C2 /* FloatTypeManager.swift */,
-				96B1AC9D1E1D26DD000A95C2 /* Int8TypeManager.swift */,
-				96B1AC9E1E1D26DD000A95C2 /* Int16TypeManager.swift */,
-				96B1AC9F1E1D26DD000A95C2 /* Int32TypeManager.swift */,
-				96B1ACA01E1D26DD000A95C2 /* Int64TypeManager.swift */,
-				96B1ACA11E1D26DD000A95C2 /* StringTypeManager.swift */,
-				96B1ACA21E1D26DD000A95C2 /* Uint8TypeManager.swift */,
-				96B1ACA31E1D26DD000A95C2 /* Uint16TypeManager.swift */,
-				96B1ACA41E1D26DD000A95C2 /* Uint32TypeManager.swift */,
-				96B1ACA51E1D26DD000A95C2 /* Uint64TypeManager.swift */,
-				96A204FB1E02E437005480FC /* StructTypeManager.swift */,
-				96B1AC971E1D1E93000A95C2 /* ListTypeManager.swift */,
-			);
-			path = TypeManagers;
-			sourceTree = "<group>";
-		};
 		96A205011E02F137005480FC /* Collections */ = {
 			isa = PBXGroup;
 			children = (
@@ -240,16 +168,9 @@
 		96F8EA121DFBF74A0055BDB2 = {
 			isa = PBXGroup;
 			children = (
-				964C17B220416FCC00FA8A9D /* Serializer */,
 				964C177220414BBC00FA8A9D /* PersistentVector */,
 				964C177120414BB200FA8A9D /* PersistentHashSet */,
 				964C177020414B9700FA8A9D /* PersistentHashMap */,
-				96A204FF1E02E4D7005480FC /* TypeManager.swift */,
-				96A204FD1E02E475005480FC /* Struct.swift */,
-				96A204F81E02E281005480FC /* IoError.swift */,
-				96F8EA291DFC240C0055BDB2 /* TypeId.swift */,
-				96F8EA191DFBF7730055BDB2 /* Serializer.swift */,
-				96A204FA1E02E40D005480FC /* TypeManagers */,
 				96A205011E02F137005480FC /* Collections */,
 				96A2052C1E02F8D3005480FC /* CollectionTests */,
 				96F8EA1F1DFBFEEA0055BDB2 /* Products */,
@@ -411,45 +332,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96B1ACAA1E1D26DD000A95C2 /* Int8TypeManager.swift in Sources */,
-				96B1ACA61E1D26DD000A95C2 /* BooleanTypeManager.swift in Sources */,
-				96B1ACAC1E1D26DD000A95C2 /* Int32TypeManager.swift in Sources */,
-				96B1ACB11E1D26DD000A95C2 /* Uint32TypeManager.swift in Sources */,
 				964C17952041589400FA8A9D /* PHSEntryNode.swift in Sources */,
 				96A205061E02F14E005480FC /* Common.swift in Sources */,
 				964C1780204153C400FA8A9D /* PVValueNode.swift in Sources */,
 				964C17982041589400FA8A9D /* PHSTreeNode.swift in Sources */,
-				96B1ACA71E1D26DD000A95C2 /* DoubleTypeManager.swift in Sources */,
-				96B1AC981E1D1E93000A95C2 /* ListTypeManager.swift in Sources */,
 				964C17AE204159A900FA8A9D /* SetIterator.swift in Sources */,
 				964C17972041589400FA8A9D /* PHSNode.swift in Sources */,
 				964C17B1204159B700FA8A9D /* MapIterator.swift in Sources */,
-				96B1ACAE1E1D26DD000A95C2 /* StringTypeManager.swift in Sources */,
-				96A204FC1E02E437005480FC /* StructTypeManager.swift in Sources */,
 				964C1782204153CC00FA8A9D /* PVNode.swift in Sources */,
-				96B1ACB21E1D26DD000A95C2 /* Uint64TypeManager.swift in Sources */,
-				964C17B5204170CC00FA8A9D /* IntegerSerialization.swift in Sources */,
 				964C17A8204158AB00FA8A9D /* PHMMultiNode.swift in Sources */,
 				964C17962041589400FA8A9D /* PHSMultiNode.swift in Sources */,
-				96B1ACB01E1D26DD000A95C2 /* Uint16TypeManager.swift in Sources */,
 				964C177F204153C100FA8A9D /* PersistentVector.swift in Sources */,
-				96F8EA2A1DFC240C0055BDB2 /* TypeId.swift in Sources */,
 				964C17992041589400FA8A9D /* PersistentHashSet.swift in Sources */,
 				964C17AB204158AB00FA8A9D /* PersistentHashMap.swift in Sources */,
 				964C1787204156AB00FA8A9D /* VectorIterator.swift in Sources */,
-				96A204F91E02E281005480FC /* IoError.swift in Sources */,
 				964C1781204153C800FA8A9D /* PVTreeNode.swift in Sources */,
-				96A204FE1E02E475005480FC /* Struct.swift in Sources */,
-				96B1ACAD1E1D26DD000A95C2 /* Int64TypeManager.swift in Sources */,
-				96F8EA281DFBFF0E0055BDB2 /* Serializer.swift in Sources */,
-				96B1ACA81E1D26DD000A95C2 /* ExtendedTypeManager.swift in Sources */,
 				964C17AA204158AB00FA8A9D /* PHMTreeNode.swift in Sources */,
 				964C17A7204158AB00FA8A9D /* PHMEntryNode.swift in Sources */,
 				964C17A9204158AB00FA8A9D /* PHMNode.swift in Sources */,
-				96B1ACAF1E1D26DD000A95C2 /* Uint8TypeManager.swift in Sources */,
-				96B1ACAB1E1D26DD000A95C2 /* Int16TypeManager.swift in Sources */,
-				96A205001E02E4D7005480FC /* TypeManager.swift in Sources */,
-				96B1ACA91E1D26DD000A95C2 /* FloatTypeManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
