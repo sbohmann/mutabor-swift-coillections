@@ -11,7 +11,7 @@ class PVNode<E> {
     
     func set(idx: Int, value: E) { fatalError() }
     
-    func size() -> Int { fatalError() }
+    func getSize() -> Int { fatalError() }
     
     func isFull() -> Bool { fatalError() }
     

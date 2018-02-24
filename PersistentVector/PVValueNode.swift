@@ -43,7 +43,7 @@ final class PVValueNode<E> : PVNode<E> {
         }
     }
     
-    override func size() -> Int {
+    override func getSize() -> Int {
         return data.count
     }
     

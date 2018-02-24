@@ -16,7 +16,7 @@ public struct VectorIterator<E> : IteratorProtocol {
     init(root: PVNode<E>) {
         var node = root
         
-        while node.size() != 0 {
+        while node.getSize() != 0 {
             if let treeNode = node as? PVTreeNode {
                 path[pathSize] = treeNode
                 pathIdx[pathSize] = 0
@@ -32,7 +32,7 @@ public struct VectorIterator<E> : IteratorProtocol {
             }
         }
         
-        if valueNode == nil || valueNode?.size() == 0 {
+        if valueNode == nil || valueNode?.getSize() == 0 {
             if pathSize != 0 {
                 fatalError("Logical error: depth > 1 but empty")
             }

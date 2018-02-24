@@ -58,7 +58,7 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
     
     public func get(_ idx: Int) -> E {
         if let root = root {
-            if idx >= 0 && idx < root.size() {
+            if idx >= 0 && idx < root.getSize() {
                 return root.get(idx: idx)
             }
         }
@@ -68,7 +68,7 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
     
     public func with(_ idx: Int, value: E) -> PersistentVector {
         if let root = root {
-            if idx >= 0 && idx < root.size() {
+            if idx >= 0 && idx < root.getSize() {
                 return PersistentVector(root: root.with(idx: idx, value: value))
             }
         }
@@ -80,7 +80,7 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
         let unshared = isKnownUniquelyReferenced(&root)
         
         if let root = root {
-            if idx >= 0 && idx < root.size() {
+            if idx >= 0 && idx < root.getSize() {
                 if unshared {
                     root.set(idx: idx, value: value)
                 } else {
@@ -96,7 +96,7 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
     
     public func plus(_ value: E) -> PersistentVector {
         if let root = root {
-            if root.size() == Int.max {
+            if root.getSize() == Int.max {
                 fatalError("Size already at Int.max")
             }
             
@@ -116,7 +116,7 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
         let unshared = isKnownUniquelyReferenced(&root)
         
         if let root = root {
-            if root.size() == Int.max {
+            if root.getSize() == Int.max {
                 fatalError("Size already at Int.max")
             }
             
@@ -166,7 +166,7 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
 	
     public var count: Int {
         if let root = root {
-            return root.size()
+            return root.getSize()
         } else {
             return 0
         }

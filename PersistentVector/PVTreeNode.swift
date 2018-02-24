@@ -1,6 +1,6 @@
 final class PVTreeNode<E> : PVNode<E> {
     var nodes: [PVNode<E>]
-    var size_: Int
+    var size: Int
     
     private init(level: Int, nodes: [PVNode<E>], size: Int) {
         self.nodes = nodes
@@ -9,7 +9,7 @@ final class PVTreeNode<E> : PVNode<E> {
             fatalError("Attempt to create an empty TreeNode")
         }
         
-        self.size_ = size
+        self.size = size
         
         super.init(level: level)
     }
@@ -18,9 +18,9 @@ final class PVTreeNode<E> : PVNode<E> {
         let nodes = [subNode]
         
         self.nodes = nodes
-        self.size_ = subNode.size()
+        self.size = subNode.getSize()
         
-        if self.size_ == 0 {
+        if self.size == 0 {
             fatalError("Attempt to create an empty TreeNode")
         }
         
@@ -35,9 +35,9 @@ final class PVTreeNode<E> : PVNode<E> {
         let nodes = [lhs, createNodeForValue(level: lhs.level, value: rhs)]
         
         self.nodes = nodes
-        self.size_ = lhs.size() + 1
+        self.size = lhs.getSize() + 1
         
-        if self.size_ == 0 {
+        if self.size == 0 {
             fatalError("Attempt to create an empty TreeNode")
         }
         
@@ -52,9 +52,9 @@ final class PVTreeNode<E> : PVNode<E> {
         let nodes = [lhs, createNodeForValueNode(level: lhs.level, valueNode: rhs)]
         
         self.nodes = nodes
-        self.size_ = lhs.size() + rhs.size()
+        self.size = lhs.getSize() + rhs.getSize()
         
-        if self.size_ == 0 {
+        if self.size == 0 {
             fatalError("Attempt to create an empty TreeNode")
         }
         
@@ -64,12 +64,12 @@ final class PVTreeNode<E> : PVNode<E> {
     override func get(idx: Int) -> E {
         var idx = idx
         
-        if idx >= 0 && idx < size_ {
+        if idx >= 0 && idx < size {
             for node in nodes {
-                if idx < node.size() {
+                if idx < node.getSize() {
                     return node.get(idx: idx)
                 } else {
-                    idx -= node.size()
+                    idx -= node.getSize()
                 }
             }
         }
@@ -80,22 +80,22 @@ final class PVTreeNode<E> : PVNode<E> {
     override func with(idx: Int, value: E) -> PVTreeNode {
         var idx = idx
         
-        if idx >= 0 && idx < size_ {
+        if idx >= 0 && idx < size {
             for nodeIdx in 0 ..< nodes.count {
                 let node = nodes[nodeIdx]
                 
-                if idx < node.size() {
+                if idx < node.getSize() {
                     let newNode = node.with(idx: idx, value: value)
                     
                     if newNode !== node {
                         var newNodes = nodes
                         newNodes[nodeIdx] = newNode
-                        return PVTreeNode(level: level, nodes: newNodes, size: size_)
+                        return PVTreeNode(level: level, nodes: newNodes, size: size)
                     } else {
                         return self
                     }
                 } else {
-                    idx -= node.size()
+                    idx -= node.getSize()
                 }
             }
         }
@@ -106,13 +106,13 @@ final class PVTreeNode<E> : PVNode<E> {
     override func set(idx: Int, value: E) {
         var idx = idx
         
-        if idx >= 0 && idx < size_ {
+        if idx >= 0 && idx < size {
             for nodeIdx in 0 ..< nodes.count {
                 let unshared = isKnownUniquelyReferenced(&nodes[nodeIdx])
                 
                 let node = nodes[nodeIdx]
                 
-                if idx < node.size() {
+                if idx < node.getSize() {
                     if unshared {
                         node.set(idx: idx, value: value)
                     } else {
@@ -125,7 +125,7 @@ final class PVTreeNode<E> : PVNode<E> {
                     
                     return
                 } else {
-                    idx -= node.size()
+                    idx -= node.getSize()
                 }
             }
         }
@@ -133,8 +133,8 @@ final class PVTreeNode<E> : PVNode<E> {
         fatalError("Logical error in TreeNode")
     }
     
-    override func size() -> Int {
-        return size_
+    override func getSize() -> Int {
+        return size
     }
     
     override func isFull() -> Bool {
@@ -152,7 +152,7 @@ final class PVTreeNode<E> : PVNode<E> {
                 var newNodes = nodes
                 newNodes[nodes.count - 1] = lastSubnodeReplacement
                 
-                return PVTreeNode(level: level, nodes: newNodes, size: size_ + 1)
+                return PVTreeNode(level: level, nodes: newNodes, size: size + 1)
             }
         }
         
@@ -161,7 +161,7 @@ final class PVTreeNode<E> : PVNode<E> {
             var newNodes = nodes
             newNodes.append(createNodeForValue(level: level - 1, value: value))
             
-            return PVTreeNode(level: level, nodes: newNodes, size: size_ + 1)
+            return PVTreeNode(level: level, nodes: newNodes, size: size + 1)
         }
         
         // this node is full
@@ -177,7 +177,7 @@ final class PVTreeNode<E> : PVNode<E> {
             
             if unshared {
                 if lastSubnode.add(value: value) {
-                    size_ += 1
+                    size += 1
                     
                     return true
                 }
@@ -196,7 +196,7 @@ final class PVTreeNode<E> : PVNode<E> {
         if nodes.count < maximumSubNodes {
             nodes.append(createNodeForValue(level: level - 1, value: value))
             
-            size_ += 1
+            size += 1
             
             return true
         }
@@ -217,7 +217,7 @@ final class PVTreeNode<E> : PVNode<E> {
                 var newNodes = nodes
                 newNodes[nodes.count - 1] = lastSubnodeReplacement
                 
-                return PVTreeNode(level: level, nodes: newNodes, size: size_ + valueNode.size())
+                return PVTreeNode(level: level, nodes: newNodes, size: size + valueNode.getSize())
             }
         }
         
@@ -226,7 +226,7 @@ final class PVTreeNode<E> : PVNode<E> {
             var newNodes = nodes
             newNodes.append(createNodeForValueNode(level: level - 1, valueNode: valueNode))
             
-            return PVTreeNode(level: level, nodes: newNodes, size: size_ + valueNode.size())
+            return PVTreeNode(level: level, nodes: newNodes, size: size + valueNode.getSize())
         }
         
         // this node is full
@@ -242,11 +242,11 @@ final class PVTreeNode<E> : PVNode<E> {
             var newNodes = nodes
             newNodes[nodes.count - 1] = lastSubnodeReplacement
             
-            if lastSubnodeReplacement.size() != lastSubnode.size() - 1 {
-                fatalError("Logical error - subnode of size \(lastSubnode.size()) returned null on withoutLast")
+            if lastSubnodeReplacement.getSize() != lastSubnode.getSize() - 1 {
+                fatalError("Logical error - subnode of size \(lastSubnode.getSize()) returned null on withoutLast")
             }
             
-            return PVTreeNode(level: level, nodes: newNodes, size: size_ - 1)
+            return PVTreeNode(level: level, nodes: newNodes, size: size - 1)
         } else {
             if nodes.count == 1 {
                 return nil
@@ -254,11 +254,11 @@ final class PVTreeNode<E> : PVNode<E> {
                 var newNodes = nodes
                 newNodes.removeLast()
                 
-                if lastSubnode.size() != 1 {
-                    fatalError("Logical error - subnode of size \(lastSubnode.size()) returned null on withoutLast")
+                if lastSubnode.getSize() != 1 {
+                    fatalError("Logical error - subnode of size \(lastSubnode.getSize()) returned null on withoutLast")
                 }
                 
-                return PVTreeNode(level: level, nodes: newNodes, size: size_ - 1)
+                return PVTreeNode(level: level, nodes: newNodes, size: size - 1)
             }
         }
     }
@@ -273,20 +273,20 @@ final class PVTreeNode<E> : PVNode<E> {
                 nodes.removeLast()
             }
             
-            size_ -= 1
+            size -= 1
             
-            return size_ > 0
+            return size > 0
         } else {
             let lastSubnodeReplacement = lastSubnode.withoutLast()
             
             if let lastSubnodeReplacement = lastSubnodeReplacement {
                 nodes[nodes.count - 1] = lastSubnodeReplacement
                 
-                if lastSubnodeReplacement.size() != lastSubnode.size() - 1 {
-                    fatalError("Logical error - subnode of size \(lastSubnode.size()) returned null on withoutLast")
+                if lastSubnodeReplacement.getSize() != lastSubnode.getSize() - 1 {
+                    fatalError("Logical error - subnode of size \(lastSubnode.getSize()) returned null on withoutLast")
                 }
                 
-                size_ -= 1
+                size -= 1
                 
                 return true
             } else {
@@ -295,11 +295,11 @@ final class PVTreeNode<E> : PVNode<E> {
                 } else {
                     nodes.removeLast()
                     
-                    if lastSubnode.size() != 1 {
-                        fatalError("Logical error - subnode of size \(lastSubnode.size()) returned null on withoutLast")
+                    if lastSubnode.getSize() != 1 {
+                        fatalError("Logical error - subnode of size \(lastSubnode.getSize()) returned null on withoutLast")
                     }
                     
-                    size_ -= 1
+                    size -= 1
                     
                     return true
                 }
