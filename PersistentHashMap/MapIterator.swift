@@ -55,10 +55,11 @@ public struct MapIterator<K: Hashable, V> : IteratorProtocol {
             if let entryNode = valueNode as? PHMEntryNode {
                 result = entryNode.entry
                 valueNodeLength = 1
-            } else {
-                let multiNode = valueNode as! PHMMultiNode
+            } else if let multiNode = valueNode as? PHMMultiNode {
                 result = multiNode.data[valueIdx]
                 valueNodeLength = multiNode.data.count
+            } else {
+                fatalError("Logical error detected")
             }
             
             valueIdx += 1
@@ -82,20 +83,22 @@ public struct MapIterator<K: Hashable, V> : IteratorProtocol {
                             var newSubnode = currentTreeNode.nodes[nextPathIdx]
                             
                             while newSubnode is PHMTreeNode {
-                                let treeNode = newSubnode as! PHMTreeNode
-                                
-                                var nextSubPathIdx = 0
-                                
-                                while treeNode.nodes[nextSubPathIdx] == nil {
-                                    nextSubPathIdx += 1
+                                if let treeNode = newSubnode as? PHMTreeNode {
+                                    var nextSubPathIdx = 0
+                                    
+                                    while treeNode.nodes[nextSubPathIdx] == nil {
+                                        nextSubPathIdx += 1
+                                    }
+                                    
+                                    idx += 1
+                                    path[idx] = treeNode
+                                    pathIdx[idx] = nextSubPathIdx
+                                    pathSize += 1
+                                    
+                                    newSubnode = treeNode.nodes[nextSubPathIdx]!
+                                } else {
+                                    fatalError("Logical error detected")
                                 }
-                                
-                                idx += 1
-                                path[idx] = treeNode
-                                pathIdx[idx] = nextSubPathIdx
-                                pathSize += 1
-                                
-                                newSubnode = treeNode.nodes[nextSubPathIdx]!
                             }
                             
                             valueNode = newSubnode

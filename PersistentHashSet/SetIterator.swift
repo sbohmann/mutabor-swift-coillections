@@ -55,10 +55,11 @@ public struct SetIterator<E: Hashable> : IteratorProtocol {
             if let entryNode = valueNode as? PHSEntryNode {
                 result = entryNode.entry
                 valueNodeLength = 1
-            } else {
-                let multiNode = valueNode as! PHSMultiNode
+            } else if let multiNode = valueNode as? PHSMultiNode {
                 result = multiNode.data[valueIdx]
                 valueNodeLength = multiNode.data.count
+            } else {
+                fatalError("Logical error detected")
             }
             
             valueIdx += 1
@@ -82,20 +83,20 @@ public struct SetIterator<E: Hashable> : IteratorProtocol {
                             var newSubnode = currentTreeNode.nodes[nextPathIdx]
                             
                             while newSubnode is PHSTreeNode {
-                                let treeNode = newSubnode as! PHSTreeNode
-                                
-                                var nextSubPathIdx = 0
-                                
-                                while treeNode.nodes[nextSubPathIdx] == nil {
-                                    nextSubPathIdx += 1
+                                if let treeNode = newSubnode as? PHSTreeNode {
+                                    var nextSubPathIdx = 0
+                                    
+                                    while treeNode.nodes[nextSubPathIdx] == nil {
+                                        nextSubPathIdx += 1
+                                    }
+                                    
+                                    idx += 1
+                                    path[idx] = treeNode
+                                    pathIdx[idx] = nextSubPathIdx
+                                    pathSize += 1
+                                    
+                                    newSubnode = treeNode.nodes[nextSubPathIdx]!
                                 }
-                                
-                                idx += 1
-                                path[idx] = treeNode
-                                pathIdx[idx] = nextSubPathIdx
-                                pathSize += 1
-                                
-                                newSubnode = treeNode.nodes[nextSubPathIdx]!
                             }
                             
                             valueNode = newSubnode

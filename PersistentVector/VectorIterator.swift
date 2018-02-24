@@ -72,7 +72,12 @@ public struct VectorIterator<E> : IteratorProtocol {
                             newSubnode = treeNode.nodes[0]
                         }
                         
-                        valueNode = (newSubnode as! PVValueNode)
+                        if  let newSubnode = newSubnode as? PVValueNode {
+                            valueNode = newSubnode
+                        } else {
+                            fatalError("Logical error detected")
+                        }
+                        
                         valueIdx = 0
                         break
                     } else {
