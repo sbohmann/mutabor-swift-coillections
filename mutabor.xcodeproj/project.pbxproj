@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		963E8A492040164E00F2FA94 /* common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A205021E02F14E005480FC /* common.swift */; };
+		963E8A492040164E00F2FA94 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A205021E02F14E005480FC /* Common.swift */; };
 		964C176C2040AB1200FA8A9D /* PersistentVectorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964C17682040AB1100FA8A9D /* PersistentVectorTest.swift */; };
 		964C176D2040AB1200FA8A9D /* PersistentHashSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964C17692040AB1100FA8A9D /* PersistentHashSetTest.swift */; };
-		964C176E2040AB1200FA8A9D /* test-common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964C176A2040AB1100FA8A9D /* test-common.swift */; };
+		964C176E2040AB1200FA8A9D /* TestCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964C176A2040AB1100FA8A9D /* TestCommon.swift */; };
 		964C176F2040AB1200FA8A9D /* PersistentHashMapTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964C176B2040AB1100FA8A9D /* PersistentHashMapTest.swift */; };
 		964C177F204153C100FA8A9D /* PersistentVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964C177320414C5C00FA8A9D /* PersistentVector.swift */; };
 		964C1780204153C400FA8A9D /* PVValueNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964C177A20414CEE00FA8A9D /* PVValueNode.swift */; };
@@ -33,7 +33,7 @@
 		96A204FC1E02E437005480FC /* StructTypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A204FB1E02E437005480FC /* StructTypeManager.swift */; };
 		96A204FE1E02E475005480FC /* Struct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A204FD1E02E475005480FC /* Struct.swift */; };
 		96A205001E02E4D7005480FC /* TypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A204FF1E02E4D7005480FC /* TypeManager.swift */; };
-		96A205061E02F14E005480FC /* common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A205021E02F14E005480FC /* common.swift */; };
+		96A205061E02F14E005480FC /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A205021E02F14E005480FC /* Common.swift */; };
 		96A2051C1E02F2F1005480FC /* libMutabor.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 96F8EA1E1DFBFEEA0055BDB2 /* libMutabor.dylib */; };
 		96B1AC981E1D1E93000A95C2 /* ListTypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B1AC971E1D1E93000A95C2 /* ListTypeManager.swift */; };
 		96B1ACA61E1D26DD000A95C2 /* BooleanTypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B1AC991E1D26DD000A95C2 /* BooleanTypeManager.swift */; };
@@ -74,7 +74,7 @@
 /* Begin PBXFileReference section */
 		964C17682040AB1100FA8A9D /* PersistentVectorTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentVectorTest.swift; sourceTree = "<group>"; };
 		964C17692040AB1100FA8A9D /* PersistentHashSetTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentHashSetTest.swift; sourceTree = "<group>"; };
-		964C176A2040AB1100FA8A9D /* test-common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "test-common.swift"; sourceTree = "<group>"; };
+		964C176A2040AB1100FA8A9D /* TestCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCommon.swift; sourceTree = "<group>"; };
 		964C176B2040AB1100FA8A9D /* PersistentHashMapTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentHashMapTest.swift; sourceTree = "<group>"; };
 		964C177320414C5C00FA8A9D /* PersistentVector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentVector.swift; sourceTree = "<group>"; };
 		964C177520414C6200FA8A9D /* PersistentHashSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentHashSet.swift; sourceTree = "<group>"; };
@@ -97,7 +97,7 @@
 		96A204FB1E02E437005480FC /* StructTypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructTypeManager.swift; sourceTree = "<group>"; };
 		96A204FD1E02E475005480FC /* Struct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Struct.swift; sourceTree = "<group>"; };
 		96A204FF1E02E4D7005480FC /* TypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeManager.swift; sourceTree = "<group>"; };
-		96A205021E02F14E005480FC /* common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = common.swift; sourceTree = "<group>"; };
+		96A205021E02F14E005480FC /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		96A205171E02F2F1005480FC /* CollectionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CollectionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		96A2052D1E02F8E7005480FC /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96B1AC971E1D1E93000A95C2 /* ListTypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTypeManager.swift; sourceTree = "<group>"; };
@@ -207,12 +207,12 @@
 			path = TypeManagers;
 			sourceTree = "<group>";
 		};
-		96A205011E02F137005480FC /* collections */ = {
+		96A205011E02F137005480FC /* Collections */ = {
 			isa = PBXGroup;
 			children = (
-				96A205021E02F14E005480FC /* common.swift */,
+				96A205021E02F14E005480FC /* Common.swift */,
 			);
-			path = collections;
+			path = Collections;
 			sourceTree = "<group>";
 		};
 		96A2052C1E02F8D3005480FC /* CollectionTests */ = {
@@ -221,7 +221,7 @@
 				964C176B2040AB1100FA8A9D /* PersistentHashMapTest.swift */,
 				964C17692040AB1100FA8A9D /* PersistentHashSetTest.swift */,
 				964C17682040AB1100FA8A9D /* PersistentVectorTest.swift */,
-				964C176A2040AB1100FA8A9D /* test-common.swift */,
+				964C176A2040AB1100FA8A9D /* TestCommon.swift */,
 				96A2052D1E02F8E7005480FC /* Info.plist */,
 			);
 			path = CollectionTests;
@@ -239,7 +239,7 @@
 				96F8EA291DFC240C0055BDB2 /* TypeId.swift */,
 				96F8EA191DFBF7730055BDB2 /* Serializer.swift */,
 				96A204FA1E02E40D005480FC /* TypeManagers */,
-				96A205011E02F137005480FC /* collections */,
+				96A205011E02F137005480FC /* Collections */,
 				96A2052C1E02F8D3005480FC /* CollectionTests */,
 				96F8EA1F1DFBFEEA0055BDB2 /* Products */,
 			);
@@ -388,9 +388,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				963E8A492040164E00F2FA94 /* common.swift in Sources */,
+				963E8A492040164E00F2FA94 /* Common.swift in Sources */,
 				964C176D2040AB1200FA8A9D /* PersistentHashSetTest.swift in Sources */,
-				964C176E2040AB1200FA8A9D /* test-common.swift in Sources */,
+				964C176E2040AB1200FA8A9D /* TestCommon.swift in Sources */,
 				964C176F2040AB1200FA8A9D /* PersistentHashMapTest.swift in Sources */,
 				964C176C2040AB1200FA8A9D /* PersistentVectorTest.swift in Sources */,
 			);
@@ -405,7 +405,7 @@
 				96B1ACAC1E1D26DD000A95C2 /* Int32TypeManager.swift in Sources */,
 				96B1ACB11E1D26DD000A95C2 /* Uint32TypeManager.swift in Sources */,
 				964C17952041589400FA8A9D /* PHSEntryNode.swift in Sources */,
-				96A205061E02F14E005480FC /* common.swift in Sources */,
+				96A205061E02F14E005480FC /* Common.swift in Sources */,
 				964C1780204153C400FA8A9D /* PVValueNode.swift in Sources */,
 				964C17982041589400FA8A9D /* PHSTreeNode.swift in Sources */,
 				96B1ACA71E1D26DD000A95C2 /* DoubleTypeManager.swift in Sources */,
