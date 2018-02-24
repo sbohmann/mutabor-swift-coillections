@@ -29,6 +29,7 @@
 		964C17AB204158AB00FA8A9D /* PersistentHashMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964C177720414C6800FA8A9D /* PersistentHashMap.swift */; };
 		964C17AE204159A900FA8A9D /* SetIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964C17AC204159A400FA8A9D /* SetIterator.swift */; };
 		964C17B1204159B700FA8A9D /* MapIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964C17AF204159B100FA8A9D /* MapIterator.swift */; };
+		964C17B5204170CC00FA8A9D /* IntegerSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964C17B320416FF700FA8A9D /* IntegerSerialization.swift */; };
 		96A204F91E02E281005480FC /* IoError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A204F81E02E281005480FC /* IoError.swift */; };
 		96A204FC1E02E437005480FC /* StructTypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A204FB1E02E437005480FC /* StructTypeManager.swift */; };
 		96A204FE1E02E475005480FC /* Struct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A204FD1E02E475005480FC /* Struct.swift */; };
@@ -93,6 +94,7 @@
 		964C179D204158A200FA8A9D /* PHMNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PHMNode.swift; sourceTree = "<group>"; };
 		964C17AC204159A400FA8A9D /* SetIterator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetIterator.swift; sourceTree = "<group>"; };
 		964C17AF204159B100FA8A9D /* MapIterator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapIterator.swift; sourceTree = "<group>"; };
+		964C17B320416FF700FA8A9D /* IntegerSerialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegerSerialization.swift; sourceTree = "<group>"; };
 		96A204F81E02E281005480FC /* IoError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoError.swift; sourceTree = "<group>"; };
 		96A204FB1E02E437005480FC /* StructTypeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructTypeManager.swift; sourceTree = "<group>"; };
 		96A204FD1E02E475005480FC /* Struct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Struct.swift; sourceTree = "<group>"; };
@@ -185,6 +187,14 @@
 			path = PersistentVector;
 			sourceTree = "<group>";
 		};
+		964C17B220416FCC00FA8A9D /* Serializer */ = {
+			isa = PBXGroup;
+			children = (
+				964C17B320416FF700FA8A9D /* IntegerSerialization.swift */,
+			);
+			path = Serializer;
+			sourceTree = "<group>";
+		};
 		96A204FA1E02E40D005480FC /* TypeManagers */ = {
 			isa = PBXGroup;
 			children = (
@@ -230,6 +240,7 @@
 		96F8EA121DFBF74A0055BDB2 = {
 			isa = PBXGroup;
 			children = (
+				964C17B220416FCC00FA8A9D /* Serializer */,
 				964C177220414BBC00FA8A9D /* PersistentVector */,
 				964C177120414BB200FA8A9D /* PersistentHashSet */,
 				964C177020414B9700FA8A9D /* PersistentHashMap */,
@@ -417,6 +428,7 @@
 				96A204FC1E02E437005480FC /* StructTypeManager.swift in Sources */,
 				964C1782204153CC00FA8A9D /* PVNode.swift in Sources */,
 				96B1ACB21E1D26DD000A95C2 /* Uint64TypeManager.swift in Sources */,
+				964C17B5204170CC00FA8A9D /* IntegerSerialization.swift in Sources */,
 				964C17A8204158AB00FA8A9D /* PHMMultiNode.swift in Sources */,
 				964C17962041589400FA8A9D /* PHSMultiNode.swift in Sources */,
 				96B1ACB01E1D26DD000A95C2 /* Uint16TypeManager.swift in Sources */,

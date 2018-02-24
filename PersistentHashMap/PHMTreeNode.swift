@@ -193,9 +193,8 @@ func createPHMTreeNode<K: Hashable, V>(
         firstEntry: (K, V),
         firstHash: Int,
         secondEntry: (K, V),
-        secondHash: Int)
-        -> PHMTreeNode<K, V> {
-            
+        secondHash: Int) -> PHMTreeNode<K, V> {
+    
     let mask = maskForShift(shift)
     
     var nodes = [PHMNode<K, V>?](repeating: nil, count: sizeForShift(shift))

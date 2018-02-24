@@ -184,11 +184,13 @@ private func eq<E>(lhs: PHSNode<E>, rhs: PHSNode<E>) -> Bool {
         
         return true
     } else if lhs is PHSMultiNode || rhs is PHSMultiNode {
-        fatalError("Logical error: one of two nodes is a MultiNode - sizes \(size), lhs is \(type(of: lhs)), rhs is \(type(of: rhs))")
+        fatalError("Logical error: one of two nodes is a MultiNode - " +
+            "sizes \(size), lhs is \(type(of: lhs)), rhs is \(type(of: rhs))")
     } else if let lhsEntryNode = lhs as? PHSEntryNode, let rhsEntryNode = rhs as? PHSEntryNode {
         return lhsEntryNode.entry == rhsEntryNode.entry
     } else {
-        fatalError("Logical error: unexpected combination of node types - size \(size), lhs is \(type(of: lhs)), rhs is \(type(of: rhs))")
+        fatalError("Logical error: unexpected combination of node types - " +
+            "size \(size), lhs is \(type(of: lhs)), rhs is \(type(of: rhs))")
     }
 }
 

@@ -188,7 +188,13 @@ final class PHSTreeNode<E: Hashable> : PHSNode<E> {
     }
 }
 
-func createTreeNode<E: Hashable>(shift: Int, firstEntry: E, firstHash: Int, secondEntry: E, secondHash: Int) -> PHSTreeNode<E> {
+func createTreeNode<E: Hashable>(
+        shift: Int,
+        firstEntry: E,
+        firstHash: Int,
+        secondEntry: E,
+        secondHash: Int) -> PHSTreeNode<E> {
+            
     let mask = maskForShift(shift)
     
     var nodes = [PHSNode<E>?](repeating: nil, count: sizeForShift(shift))
