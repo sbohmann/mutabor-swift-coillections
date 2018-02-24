@@ -296,7 +296,8 @@ final class PVTreeNode<E> : PVNode<E> {
                     nodes.removeLast()
                     
                     if lastSubnode.getSize() != 1 {
-                        fatalError("Logical error - subnode of size \(lastSubnode.getSize()) returned null on withoutLast")
+                        fatalError("Logical error - subnode of size " +
+                            "\(lastSubnode.getSize()) returned null on withoutLast")
                     }
                     
                     size -= 1
