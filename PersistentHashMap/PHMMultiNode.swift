@@ -16,10 +16,8 @@ final class PHMMultiNode<K: Hashable, V> : PHMNode<K, V> {
     }
     
     override func get(key: K) -> (K, V)? {
-        for entry in data {
-            if key == entry.0 {
-                return entry
-            }
+        for entry in data where key == entry.0 {
+            return entry
         }
         
         return nil

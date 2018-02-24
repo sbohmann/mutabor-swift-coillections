@@ -232,12 +232,9 @@ private func singleEntry<K, V>(node: PHMNode<K, V>) -> (K, V) {
     if let treeNode = node as? PHMTreeNode {
         var subnode: PHMNode<K, V>? = nil
         
-        for candidate in treeNode.nodes {
-            if candidate != nil {
-                subnode = candidate
-                
-                break
-            }
+        for candidate in treeNode.nodes where candidate != nil {
+            subnode = candidate
+            break
         }
         
         return singleEntry(node: subnode!)
@@ -259,10 +256,8 @@ private func singleEntry<K, V>(node: PHMNode<K, V>) -> (K, V) {
 }
 
 private func arrayContains<K: Equatable, V: Equatable>(array: [(K, V)], value: (K, V)) -> Bool {
-    for element in array {
-        if element == value {
-            return true
-        }
+    for element in array where element == value {
+        return true
     }
     
     return false

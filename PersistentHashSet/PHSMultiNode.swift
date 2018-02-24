@@ -16,10 +16,8 @@ final class PHSMultiNode<E: Hashable> : PHSNode<E> {
     }
     
     override func get(key: E) -> E? {
-        for entry in data {
-            if key == entry {
-                return entry
-            }
+        for entry in data where key == entry {
+            return entry
         }
         
         return nil

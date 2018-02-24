@@ -198,12 +198,9 @@ private func singleEntry<E>(node: PHSNode<E>) -> E {
     if let treeNode = node as? PHSTreeNode {
         var subnode: PHSNode<E>? = nil
         
-        for candidate in treeNode.nodes {
-            if candidate != nil {
-                subnode = candidate
-                
-                break
-            }
+        for candidate in treeNode.nodes where candidate != nil {
+            subnode = candidate
+            break
         }
         
         return singleEntry(node: subnode!)
