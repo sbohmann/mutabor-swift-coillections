@@ -6,7 +6,7 @@ private let DEBUG = false
 public struct PersistentVector<E>: Sequence, CustomStringConvertible {
     typealias ElementType = E
     
-    fileprivate var root: PVNode<E>?
+    var root: PVNode<E>?
     
     private init(root: PVNode<E>?) {
         self.root = root
