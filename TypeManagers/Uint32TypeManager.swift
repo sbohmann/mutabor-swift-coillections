@@ -18,7 +18,7 @@ public final class Uint32TypeManager: TypeManager<UInt32> {
     }
     
     private init() {
-        super.init(TypeId.Uint32)
+        super.init(TypeId.uint32)
     }
     
     public static let instance = Uint32TypeManager()

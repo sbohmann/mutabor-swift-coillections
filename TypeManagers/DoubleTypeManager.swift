@@ -18,7 +18,7 @@ public final class DoubleTypeManager: TypeManager<Double> {
     }
     
     private init() {
-        super.init(TypeId.Double)
+        super.init(TypeId.double)
     }
     
     public static let instance = DoubleTypeManager()

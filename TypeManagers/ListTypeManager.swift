@@ -8,7 +8,7 @@ public final class ListTypeManager<E>: TypeManager<PersistentVector<E>> where E:
     public init(_ elementTypeManager: TypeManager<E>) {
         self.elementTypeManager = elementTypeManager
         
-        super.init(TypeId.List)
+        super.init(TypeId.list)
     }
     
     public override func hashValue(value: ListType) -> Int {
@@ -20,7 +20,7 @@ public final class ListTypeManager<E>: TypeManager<PersistentVector<E>> where E:
     }
     
     public override func writeToStream(value: ListType, outputStream: OutputStream) throws {
-        try Serializer.writeTypeId(value: TypeId.List, outputStream: outputStream)
+        try Serializer.writeTypeId(value: TypeId.list, outputStream: outputStream)
         
         try Serializer.writeTypeId(value: elementTypeManager.typeId, outputStream: outputStream)
         
@@ -32,7 +32,7 @@ public final class ListTypeManager<E>: TypeManager<PersistentVector<E>> where E:
     }
     
     public override func createFromStream(inputStream: InputStream) throws -> ListType {
-        try Serializer.checkTypeId(expectedTypeId: TypeId.List, inputStream: inputStream)
+        try Serializer.checkTypeId(expectedTypeId: TypeId.list, inputStream: inputStream)
         
         try Serializer.checkTypeId(expectedTypeId: elementTypeManager.typeId, inputStream: inputStream)
         

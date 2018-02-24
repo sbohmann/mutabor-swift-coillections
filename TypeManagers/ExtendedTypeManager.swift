@@ -18,7 +18,7 @@ public final class ExtendedTypeManager: TypeManager<Float80> {
     }
     
     private init() {
-        super.init(TypeId.Extended)
+        super.init(TypeId.extended)
     }
     
     public static let instance = ExtendedTypeManager()

@@ -18,7 +18,7 @@ public final class Uint8TypeManager: TypeManager<UInt8> {
     }
     
     private init() {
-        super.init(TypeId.Uint8)
+        super.init(TypeId.uint8)
     }
     
     public static let instance = Uint8TypeManager()

@@ -18,7 +18,7 @@ public final class Int64TypeManager: TypeManager<Int64> {
     }
     
     private init() {
-        super.init(TypeId.Int64)
+        super.init(TypeId.int64)
     }
     
     public static let instance = Int64TypeManager()

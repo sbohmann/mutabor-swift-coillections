@@ -18,7 +18,7 @@ public final class BooleanTypeManager: TypeManager<Bool> {
     }
     
     private init() {
-        super.init(TypeId.Boolean)
+        super.init(TypeId.boolean)
     }
     
     public static let instance = BooleanTypeManager()

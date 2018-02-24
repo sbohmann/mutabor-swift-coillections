@@ -18,7 +18,7 @@ public final class FloatTypeManager: TypeManager<Float> {
     }
     
     private init() {
-        super.init(TypeId.Float)
+        super.init(TypeId.float)
     }
     
     public static let instance = FloatTypeManager()

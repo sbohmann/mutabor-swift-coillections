@@ -18,7 +18,7 @@ public final class Int32TypeManager: TypeManager<Int32> {
     }
     
     private init() {
-        super.init(TypeId.Int32)
+        super.init(TypeId.int32)
     }
     
     public static let instance = Int32TypeManager()

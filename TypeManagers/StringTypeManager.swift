@@ -18,7 +18,7 @@ public final class StringTypeManager: TypeManager<String> {
     }
     
     private init() {
-        super.init(TypeId.String)
+        super.init(TypeId.string)
     }
     
     public static let instance = StringTypeManager()

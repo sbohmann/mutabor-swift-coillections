@@ -6,7 +6,7 @@ public final class StructTypeManager<T: Struct>: TypeManager<T> {
     public init(_ deserializer: @escaping (InputStream) throws -> T) {
         self.deserializer = deserializer
         
-        super.init(TypeId.Struct)
+        super.init(TypeId.structType)
     }
     
     public override func hashValue(value: T) -> Int {

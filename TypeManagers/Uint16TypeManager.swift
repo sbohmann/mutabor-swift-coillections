@@ -18,7 +18,7 @@ public final class Uint16TypeManager: TypeManager<UInt16> {
     }
     
     private init() {
-        super.init(TypeId.Uint16)
+        super.init(TypeId.uint16)
     }
     
     public static let instance = Uint16TypeManager()

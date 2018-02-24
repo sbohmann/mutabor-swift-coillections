@@ -1,6 +1,6 @@
 import Foundation
 
-public final class Int16TypeManager: TypeManager<Int16> {
+public final class Int16TypeManager : TypeManager<Int16> {
     public override func hashValue(value: Int16) -> Int {
         return value.hashValue
     }
@@ -18,7 +18,7 @@ public final class Int16TypeManager: TypeManager<Int16> {
     }
     
     private init() {
-        super.init(TypeId.Int16)
+        super.init(TypeId.int16)
     }
     
     public static let instance = Int16TypeManager()
