@@ -10,7 +10,7 @@ final class PHMTreeNode<K: Hashable, V> : PHMNode<K, V> {
     }
     
     func check() {
-        if shift >= HASH_BITS {
+        if shift >= hashBits {
             fatalError("Logical error in TreeNode")
         }
     }
@@ -49,7 +49,7 @@ final class PHMTreeNode<K: Hashable, V> : PHMNode<K, V> {
             
             size += nodes[idx]!.size - oldSize
         } else {
-            nodes[idx] = PHMEntryNode(shift: shift + SHIFT_PER_LEVEL, entry: entry, hash: hash)
+            nodes[idx] = PHMEntryNode(shift: shift + shiftPerLevel, entry: entry, hash: hash)
             
             size += 1
         }
@@ -79,7 +79,7 @@ final class PHMTreeNode<K: Hashable, V> : PHMNode<K, V> {
         } else {
             newChildren = nodes
             
-            newChildren[idx] = PHMEntryNode(shift: shift + SHIFT_PER_LEVEL, entry: entry, hash: hash)
+            newChildren[idx] = PHMEntryNode(shift: shift + shiftPerLevel, entry: entry, hash: hash)
             
             newSize = size + 1
         }
@@ -180,7 +180,7 @@ final class PHMTreeNode<K: Hashable, V> : PHMNode<K, V> {
     }
     
     override func foreach(function: (K, V) -> Void) {
-        for idx in 0 ..< MAX_NODE_CHILDREN {
+        for idx in 0 ..< maximumSubNodes {
             if let childNode = nodes[idx] {
                 childNode.foreach(function: function)
             }
@@ -194,7 +194,7 @@ func createPHMTreeNode<K: Hashable, V>(shift: Int, firstEntry: (K, V), firstHash
     var nodes = [PHMNode<K, V>?](repeating: nil, count: sizeForShift(shift))
     
     let firstIdx = (firstHash >> shift) & mask
-    let firstEntryNode = PHMEntryNode(shift: shift + SHIFT_PER_LEVEL, entry: firstEntry, hash: firstHash)
+    let firstEntryNode = PHMEntryNode(shift: shift + shiftPerLevel, entry: firstEntry, hash: firstHash)
     nodes[firstIdx] = firstEntryNode
     
     let size: Int
@@ -206,7 +206,7 @@ func createPHMTreeNode<K: Hashable, V>(shift: Int, firstEntry: (K, V), firstHash
         
         size = combinedNode.size
     } else {
-        let secondEntryNode = PHMEntryNode(shift: shift + SHIFT_PER_LEVEL, entry: secondEntry, hash: secondHash)
+        let secondEntryNode = PHMEntryNode(shift: shift + shiftPerLevel, entry: secondEntry, hash: secondHash)
         nodes[secondIdx] = secondEntryNode
         
         size = 2

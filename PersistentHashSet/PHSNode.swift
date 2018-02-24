@@ -3,7 +3,7 @@ class PHSNode<E: Hashable> {
     var size: Int
     
     init(shift: Int, size: Int) {
-        if shift >= HASH_BITS + SHIFT_PER_LEVEL {
+        if shift >= hashBits + shiftPerLevel {
             fatalError("Creating node with shift \(shift)")
         }
         

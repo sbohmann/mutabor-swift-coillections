@@ -1,6 +1,6 @@
 public struct SetIterator<E: Hashable> : IteratorProtocol {
-    private var path = [PHSTreeNode<E>?](repeating: nil, count: MAX_DEPTH)
-    private var pathIdx = [Int?](repeating: nil, count: MAX_DEPTH)
+    private var path = [PHSTreeNode<E>?](repeating: nil, count: maximumDepth)
+    private var pathIdx = [Int?](repeating: nil, count: maximumDepth)
     private var pathSize = 0
     
     private var finished = false

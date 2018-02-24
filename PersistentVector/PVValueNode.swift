@@ -2,7 +2,7 @@ final class PVValueNode<E> : PVNode<E> {
     var data: [E]
     
     init(data: [E]) {
-        if data.count > MAX_NODE_CHILDREN {
+        if data.count > maximumSubNodes {
             fatalError("data.length > MAX_NODE_CHILDREN")
         }
         
@@ -48,12 +48,12 @@ final class PVValueNode<E> : PVNode<E> {
     }
     
     override func isFull() -> Bool {
-        return data.count == MAX_NODE_CHILDREN
+        return data.count == maximumSubNodes
     }
     
     override func plus(value: E) -> PVNode<E>? {
         // attempt to add a new value
-        if data.count <  MAX_NODE_CHILDREN {
+        if data.count <  maximumSubNodes {
             var newData = data
             newData.append(value)
             
@@ -66,7 +66,7 @@ final class PVValueNode<E> : PVNode<E> {
     
     override func add(value: E) -> Bool {
         // attempt to add a new value
-        if data.count <  MAX_NODE_CHILDREN {
+        if data.count <  maximumSubNodes {
             data.append(value)
             
             return true
@@ -79,7 +79,7 @@ final class PVValueNode<E> : PVNode<E> {
     override func plus(valueNode: PVValueNode) -> PVNode<E>? {
         if data.count == 0 {
             return valueNode
-        } else if data.count == MAX_NODE_CHILDREN {
+        } else if data.count == maximumSubNodes {
             return nil
         } else {
             fatalError("Logical error in ValueNode")

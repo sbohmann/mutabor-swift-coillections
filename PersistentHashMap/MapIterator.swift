@@ -1,6 +1,6 @@
 public struct MapIterator<K: Hashable, V> : IteratorProtocol {
-    private var path = [PHMTreeNode<K, V>?](repeating: nil, count: MAX_DEPTH)
-    private var pathIdx = [Int?](repeating: nil, count: MAX_DEPTH)
+    private var path = [PHMTreeNode<K, V>?](repeating: nil, count: maximumDepth)
+    private var pathIdx = [Int?](repeating: nil, count: maximumDepth)
     private var pathSize = 0
     
     private var finished = false

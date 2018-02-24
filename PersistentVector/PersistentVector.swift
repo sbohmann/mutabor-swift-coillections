@@ -24,7 +24,7 @@ public struct PersistentVector<E>: Sequence, CustomStringConvertible {
         var buffer = [E]()
         
         for value in seq {
-            if buffer.count < MAX_NODE_CHILDREN {
+            if buffer.count < maximumSubNodes {
                 buffer.append(value)
             } else {
                 let valueNode = PVValueNode<E>(data: buffer)
@@ -216,7 +216,7 @@ extension PersistentVector where E: Hashable {
             var result = count
             
             for element in self {
-                result = result &* ReasonablePrime
+                result = result &* reasonablePrime
                 result = result &+ element.hashValue
             }
             

@@ -138,7 +138,7 @@ final class PVTreeNode<E> : PVNode<E> {
     }
     
     override func isFull() -> Bool {
-        return nodes.count == MAX_NODE_CHILDREN && nodes[nodes.count - 1].isFull()
+        return nodes.count == maximumSubNodes && nodes[nodes.count - 1].isFull()
     }
     
     override func plus(value: E) -> PVNode<E>? {
@@ -157,7 +157,7 @@ final class PVTreeNode<E> : PVNode<E> {
         }
         
         // attempt to add a new sub-node
-        if nodes.count < MAX_NODE_CHILDREN {
+        if nodes.count < maximumSubNodes {
             var newNodes = nodes
             newNodes.append(createNodeForValue(level: level - 1, value: value))
             
@@ -193,7 +193,7 @@ final class PVTreeNode<E> : PVNode<E> {
         }
         
         // attempt to add a new sub-node
-        if nodes.count < MAX_NODE_CHILDREN {
+        if nodes.count < maximumSubNodes {
             nodes.append(createNodeForValue(level: level - 1, value: value))
             
             size_ += 1
@@ -222,7 +222,7 @@ final class PVTreeNode<E> : PVNode<E> {
         }
         
         // attempt to add a new sub-node
-        if nodes.count < MAX_NODE_CHILDREN {
+        if nodes.count < maximumSubNodes {
             var newNodes = nodes
             newNodes.append(createNodeForValueNode(level: level - 1, valueNode: valueNode))
             
