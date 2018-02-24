@@ -188,7 +188,14 @@ final class PHMTreeNode<K: Hashable, V> : PHMNode<K, V> {
     }
 }
 
-func createPHMTreeNode<K: Hashable, V>(shift: Int, firstEntry: (K, V), firstHash: Int, secondEntry: (K, V), secondHash: Int) -> PHMTreeNode<K, V> {
+func createPHMTreeNode<K: Hashable, V>(
+        shift: Int,
+        firstEntry: (K, V),
+        firstHash: Int,
+        secondEntry: (K, V),
+        secondHash: Int)
+        -> PHMTreeNode<K, V> {
+            
     let mask = maskForShift(shift)
     
     var nodes = [PHMNode<K, V>?](repeating: nil, count: sizeForShift(shift))
@@ -214,4 +221,3 @@ func createPHMTreeNode<K: Hashable, V>(shift: Int, firstEntry: (K, V), firstHash
     
     return PHMTreeNode(shift: shift, size: size, nodes: nodes)
 }
-

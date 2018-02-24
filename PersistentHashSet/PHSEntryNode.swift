@@ -25,7 +25,12 @@ final class PHSEntryNode<E: Hashable> : PHSNode<E> {
             self.entry = entry
             self.hash = hash
         } else if shift < hashBits {
-            return (true, createTreeNode(shift: shift, firstEntry: self.entry, firstHash: self.hash, secondEntry: entry, secondHash: hash))
+            return (true, createTreeNode(
+                shift: shift,
+                firstEntry: self.entry,
+                firstHash: self.hash,
+                secondEntry: entry,
+                secondHash: hash))
         } else {
             let data = [self.entry, entry]
             
@@ -39,7 +44,12 @@ final class PHSEntryNode<E: Hashable> : PHSNode<E> {
         if hash == self.hash && entry == self.entry {
             return PHSEntryNode(shift: shift, entry: entry, hash: hash)
         } else if shift < hashBits {
-            return createTreeNode(shift: shift, firstEntry: self.entry, firstHash: self.hash, secondEntry: entry, secondHash: hash)
+            return createTreeNode(
+                shift: shift,
+                firstEntry: self.entry,
+                firstHash: self.hash,
+                secondEntry: entry,
+                secondHash: hash)
         } else {
             let data = [self.entry, entry]
             

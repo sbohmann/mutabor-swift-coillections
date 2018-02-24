@@ -218,11 +218,13 @@ private func eq<K, V: Equatable>(lhs: PHMNode<K, V>, rhs: PHMNode<K, V>) -> Bool
         
         return true
     } else if lhs is PHMMultiNode || rhs is PHMMultiNode {
-        fatalError("Logical error: one of two nodes is a MultiNode - sizes \(lhs.size), \(rhs.size), lhs is \(type(of: lhs)), rhs is \(type(of: rhs))")
+        fatalError("Logical error: one of two nodes is a MultiNode - " +
+            "sizes \(lhs.size), \(rhs.size), lhs is \(type(of: lhs)), rhs is \(type(of: rhs))")
     } else if let lhsEntryNode = lhs as? PHMEntryNode, let rhsEntryNode = rhs as? PHMEntryNode {
         return lhsEntryNode.entry == rhsEntryNode.entry
     } else {
-        fatalError("Logical error: unexpected combination of node types - sizes \(lhs.size), \(rhs.size), lhs is \(type(of: lhs)), rhs is \(type(of: rhs))")
+        fatalError("Logical error: unexpected combination of node types - " +
+            "sizes \(lhs.size), \(rhs.size), lhs is \(type(of: lhs)), rhs is \(type(of: rhs))")
     }
 }
 

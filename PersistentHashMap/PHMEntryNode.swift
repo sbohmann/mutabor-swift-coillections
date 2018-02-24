@@ -44,7 +44,12 @@ final class PHMEntryNode<K: Hashable, V> : PHMNode<K, V> {
         if hash == self.hash && entry.0 == self.entry.0 {
             return PHMEntryNode(shift: shift, entry: entry, hash: hash)
         } else if shift < hashBits {
-            return createPHMTreeNode(shift: shift, firstEntry: self.entry, firstHash: self.hash, secondEntry: entry, secondHash: hash)
+            return createPHMTreeNode(
+                shift: shift,
+                firstEntry: self.entry,
+                firstHash: self.hash,
+                secondEntry: entry,
+                secondHash: hash)
         } else {
             let data = [self.entry, entry]
             

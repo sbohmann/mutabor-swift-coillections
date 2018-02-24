@@ -22,7 +22,12 @@ func randomInt(_ max: Int32) -> Int32 {
 }
 
 func randomLong() -> Int64 {
-    let result = UInt64(arc4random_uniform(1 << 24)) &* UInt64(ReasonablePrime) &* UInt64(ReasonablePrime) &* UInt64(ReasonablePrime)
+    let result =
+            UInt64(arc4random_uniform(1 << 24)) &*
+            UInt64(reasonablePrime) &*
+            UInt64(reasonablePrime) &*
+            UInt64(reasonablePrime)
+    
     return Int64(bitPattern: result)
 }
 

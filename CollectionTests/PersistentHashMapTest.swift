@@ -14,8 +14,8 @@ class PersistentHashMapTest: XCTestCase {
     }
     
     func testBasicAssumptions() {
-        XCTAssert(HASH_BITS == 32 || HASH_BITS == 64)
-        print("HASH_BITS: \(HASH_BITS)")
+        XCTAssert(hashBits == 32 || hashBits == 64)
+        print("hashBits: \(hashBits)")
         XCTAssert(MemoryLayout<Int>.size == 4 || MemoryLayout<Int>.size == 8)
         XCTAssert(MemoryLayout<Int32>.size == 4)
         XCTAssert(MemoryLayout<Int64>.size == 8)
