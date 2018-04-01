@@ -28,6 +28,10 @@ class PVNode<E> {
 
 extension PVNode where E : Equatable {
     static func == (lhs: PVNode<E>, rhs: PVNode<E>) -> Bool {
+        if (lhs === rhs) {
+            return true
+        }
+        
         if let lhsTreeNode = lhs as? PVTreeNode, let rhsTreeNode = rhs as? PVTreeNode
         {
             return lhsTreeNode == rhsTreeNode
