@@ -107,3 +107,13 @@ final class PVValueNode<E> : PVNode<E> {
         }
     }
 }
+
+extension PVValueNode where E : Equatable {
+    static func == <E: Equatable>(lhs: PVValueNode<E>, rhs: PVValueNode<E>) -> Bool {
+        return lhs.data == rhs.data
+    }
+    
+    static func != <E: Equatable>(lhs: PVValueNode<E>, rhs: PVValueNode<E>) -> Bool {
+        return lhs.data != rhs.data
+    }
+}

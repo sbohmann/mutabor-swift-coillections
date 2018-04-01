@@ -26,8 +26,25 @@ class PVNode<E> {
     func removeLast() -> Bool { fatalError() }
 }
 
-func == <E: Equatable>(lhs: PVNode<E>, rhs: PVNode<E>) -> Bool {
-    return false
+extension PVNode where E : Equatable {
+    static func == (lhs: PVNode<E>, rhs: PVNode<E>) -> Bool {
+        if let lhsTreeNode = lhs as? PVTreeNode, let rhsTreeNode = rhs as? PVTreeNode
+        {
+            return lhsTreeNode == rhsTreeNode
+        }
+        else if let lhsValueNode = lhs as? PVValueNode, let rhsValueNode = rhs as? PVValueNode
+        {
+            return lhsValueNode == rhsValueNode
+        }
+        else
+        {
+            return false
+        }
+    }
+    
+    static func != (lhs: PVNode<E>, rhs: PVNode<E>) -> Bool {
+        return !(lhs == rhs)
+    }
 }
 
 func createNodeForValue<E>(level: Int, value: E) -> PVNode<E> {

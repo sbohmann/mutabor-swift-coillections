@@ -308,3 +308,24 @@ final class PVTreeNode<E> : PVNode<E> {
         }
     }
 }
+
+extension PVTreeNode where E : Equatable {
+    static func == (lhs: PVTreeNode<E>, rhs: PVTreeNode<E>) -> Bool {
+        // TODO replace with lhs.nodes == rhs.nodes once possible
+        
+        let size = lhs.nodes.count
+        if (rhs.nodes.count != size) {
+            return false
+        }
+        for index in 0 ..< size {
+            if (lhs.nodes[index] != rhs.nodes[index]) {
+                return false
+            }
+        }
+        return true
+    }
+    
+    static func != (lhs: PVTreeNode<E>, rhs: PVTreeNode<E>) -> Bool {
+        return !(lhs == rhs)
+    }
+}
